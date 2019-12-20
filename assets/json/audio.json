@@ -1,0 +1,14 @@
+{
+  "ret": 200,
+  "data": {
+    "trackId": 238278636,
+    "canPlay": true,
+    "isPaid": false,
+    "hasBuy": true,
+    "src": "https://fdfs.xmcdn.com/group61/M05/F7/6A/wKgMZl38aZiRnG9SAEQg10Muor0804.m4a",
+    "albumIsSample": false,
+    "sampleDuration": 0,
+    "isBaiduMusic": false,
+    "firstPlayStatus": true
+  }
+}

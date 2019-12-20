@@ -1,0 +1,60 @@
+{
+  "values": [
+    {
+      "id": 171890276,
+      "kind": "track",
+      "category_id": 13,
+      "track_title": "为什么有些人习惯性抖腿？",
+      "track_tags": "公开课,职业教育,职场宝典,管理培训,心理学",
+      "track_intro": "微表情读心术 ... ....",
+      "cover_url_small": "http://fdfs.xmcdn.com/group44/M02/90/F3/wKgKjFsjN72wEkprAAHCf9EeigQ860_web_meduim.jpg",
+      "cover_url_middle": "http://fdfs.xmcdn.com/group44/M02/90/F3/wKgKjFsjN72wEkprAAHCf9EeigQ860_web_large.jpg",
+      "cover_url_large": "http://fdfs.xmcdn.com/group44/M02/90/F3/wKgKjFsjN72wEkprAAHCf9EeigQ860_mobile_large.jpg",
+      "announcer": {
+        "id": 34174490,
+        "kind": "user",
+        "nickname": "教你看透人心",
+        "avatar_url": "http://fdfs.xmcdn.com/group56/M01/91/FE/wKgLdlyUkrKyE5QBAAGvJwL48b4174_web_large.jpg",
+        "is_verified": true
+      },
+      "duration": 207,
+      "play_count": 11774,
+      "favorite_count": 55,
+      "comment_count": 0,
+      "can_download": true,
+      "order_num": 0,
+      "subordinated_album": {
+        "id": 5990097,
+        "album_title": "微表情与读心术",
+        "cover_url_small": "http://fdfs.xmcdn.com/group44/M02/90/F3/wKgKjFsjN72wEkprAAHCf9EeigQ860_mobile_small.jpg",
+        "cover_url_middle": "http://fdfs.xmcdn.com/group44/M02/90/F3/wKgKjFsjN72wEkprAAHCf9EeigQ860_mobile_meduim.jpg",
+        "cover_url_large": "http://fdfs.xmcdn.com/group44/M02/90/F3/wKgKjFsjN72wEkprAAHCf9EeigQ860_mobile_large.jpg"
+      },
+      "source": 1,
+      "updated_at": 1553780598000,
+      "created_at": 1553780340000,
+      "is_paid": false,
+      "is_free": false,
+      "is_trailer": false,
+      "has_sample": false,
+      "sample_duration": 0,
+      "play_url_32": "http://fdfs.xmcdn.com/group56/M00/FD/5E/wKgLgFyB8ivzRIJaAAyl1mRG-NI772.mp3",
+      "play_size_32": 828886,
+      "play_url_64": "http://fdfs.xmcdn.com/group56/M00/FD/A2/wKgLdlyB8i7igqzUABlLY6BmaaA827.mp3",
+      "play_size_64": 1657699,
+      "play_url_24_m4a": "http://aod.tx.xmcdn.com/group56/M00/FD/5E/wKgLgFyB8ijDBRlbAAnOaIgoczI377.m4a",
+      "play_size_24_m4a": 642664,
+      "play_url_64_m4a": "http://aod.tx.xmcdn.com/group56/M00/FD/A1/wKgLdlyB8ijC0e7yABmegfi4YOg706.m4a",
+      "play_size_64_m4a": 1678977,
+      "play_url_amr": "http://fdfs.xmcdn.com/group56/M00/FD/A1/wKgLdlyB8ibzWLfrAALYZFKgbRc141.amr",
+      "play_size_amr": 186468,
+      "download_url": "http://download.xmcdn.com/group56/M00/FD/5E/wKgLgFyB8ijDBRlbAAnOaIgoczI377.m4a",
+      "download_size": 642664,
+      "contain_video": false,
+      "download_count": 0
+    }
+  ],
+  "total_page": 97,
+  "total_count": 97,
+  "current_page": 4
+}
