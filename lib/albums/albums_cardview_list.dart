@@ -20,10 +20,11 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   //进度条
   AnimationController percentageAnimationController;
   Animation animation;
-
-  //
-  double percentage = 0.0;
+  double sliderProcessValue = 0;
   double processBarValue = 0.0;
+
+  ///唱片进度
+  double percentage = 0.0;
   double newPercentage = 0.0;
   List flagsList = [false, false, false, false, false];
 
@@ -171,6 +172,9 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   ///
   Widget _widgetAlbumsPlayer() {
+//    setState(() {
+//
+//    });
     return Container(
       //控制唱片的大小
       width: 100.0,
@@ -182,6 +186,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
           foregroundPainter: new MyPainter(
               lineColor: Colors.black45,
               completeColor: Colors.red,
+              // completePercent: percentage,
               completePercent: percentage,
               width: 5),
           child: new Padding(
@@ -199,28 +204,6 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
                   "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
                 ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _widgetAlbumsPlayer2() {
-    return Container(
-      //控制唱片的大小
-      height: 100.0,
-      width: 100.0,
-      child: RotationTransition(
-        alignment: Alignment.center,
-        turns: animation,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(60.0), // 圆角
-          child: FloatingActionButton(
-            onPressed: () {},
-            // 唱片封面
-            child: Image.network(
-              "http://imagev2.xmcdn.com/group28/M03/97/CD/wKgJSFlJClGSLIgiAAPirlGyzwg510.jpg!op_type=5&upload_type=album&device_type=ios&name=mobile_large&magick=png",
             ),
           ),
         ),
@@ -276,6 +259,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     //开启
     albumController.forward();
   }
+
   ///快退
   void fastRewindPlay() {
     if (newPercentage == 0 || processBarValue == 0) {
@@ -318,6 +302,11 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     });
   }
 
+  ///拖动改变进度
+  void changePlayProcess(final double precess) {
+    setState(() {});
+  }
+
   ///暂停
   void stop() {
     albumController.stop();
@@ -337,30 +326,28 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
       play();
     }
   }
+
   ///
   Widget _bottomBar() {
     return Container(
+      color: Colors.white,
       height: 50,
       child: Column(
         children: <Widget>[
           // 线性进度条高度指定为3
-
-//          new Slider(
-//            value: _sliderValue,
-//            max: 100.0,
-//            min: 0.0,
-//            onChanged: (double val) {
-//              setBottomSheetState(() {
-//                this._sliderValue = val;
-//              });
-//            },
-//          ),
           SizedBox(
-            height: 5,
-            child: LinearProgressIndicator(
-              value: processBarValue,
-              backgroundColor: Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation(Colors.red),
+            height: 10,
+            child: Slider(
+              min: 0.0,
+              max: 100.0,
+              value: processBarValue * 100,
+              onChanged: (double val) {
+                setState(() {
+                  processBarValue = val * 0.01;
+                  percentage = val;
+                  print("processBarValue== ${processBarValue}");
+                });
+              },
             ),
           ),
           SizedBox(
@@ -415,15 +402,15 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     Iterable<dynamic> pickList = flagsList.where((e) => (e == true));
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          print("添加播放进度");
-          setState(() {
-            fastForwardPlay();
-          });
-        },
-      ),
+//      floatingActionButton: FloatingActionButton(
+//        child: Icon(Icons.add),
+//        onPressed: () {
+//          print("添加播放进度");
+//          setState(() {
+//            fastForwardPlay();
+//          });
+//        },
+//      ),
       backgroundColor: Colors.grey,
       bottomSheet: _bottomBar(),
       appBar: AppBar(
