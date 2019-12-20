@@ -182,7 +182,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
         child: new CustomPaint(
           foregroundPainter: new MyPainter(
               lineColor: Colors.black45,
-              completeColor: Colors.red,
+              completeColor: Colors.deepOrangeAccent,
               // completePercent: percentage,
               completePercent: percentage,
               width: 5),
