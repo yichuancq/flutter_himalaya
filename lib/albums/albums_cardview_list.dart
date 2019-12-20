@@ -172,9 +172,6 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   ///
   Widget _widgetAlbumsPlayer() {
-//    setState(() {
-//
-//    });
     return Container(
       //控制唱片的大小
       width: 100.0,
@@ -192,17 +189,49 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
           child: new Padding(
             padding: const EdgeInsets.all(2.0),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(60.0), // 圆角
+              borderRadius: BorderRadius.circular(40.0), // 圆角
               child: FloatingActionButton(
                 onPressed: () {
                   print("controlPlay...");
-                  //playFla
                   controlPlay();
                 },
-                // 唱片封面
-                child: Image.network(
-                  "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
+                child: new Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    ClipRRect(
+                      //圆弧处理
+                      borderRadius: BorderRadius.circular(30.0),
+                      child:
+                          Image.asset("assets/images/black-disk.png"), //唱片的背景图
+                    ),
+                    Container(
+                      //内图片的的尺寸
+                      width: 60,
+                      height: 60,
+                      child: ClipRRect(
+                        //圆弧处理
+                        borderRadius: BorderRadius.circular(40.0),
+                        // 唱片内部的图片
+                        child: Image.network(
+                          "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 30,
+                      height: 30,
+                      child: ClipRRect(
+                        //圆弧处理
+                        borderRadius: BorderRadius.circular(5.0),
+                        child: playFlag == true
+                            ? Image.asset("assets/images/pause.png")
+                            : Image.asset("assets/images/play.png"),
+                        //hart的背景图,
+                      ),
+                    ),
+                  ],
                 ),
+                //Image.asset("assets/images/truck.png"),
               ),
             ),
           ),
@@ -210,6 +239,44 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
       ),
     );
   }
+
+//
+//  Widget _widgetAlbumsPlayer() {
+////    setState(() {
+////
+////    });
+//    return Container(
+//      //控制唱片的大小
+//      width: 80.0,
+//      height: 80.0,
+//      child: RotationTransition(
+//        alignment: Alignment.center,
+//        turns: animation,
+//        child: new CustomPaint(
+//          foregroundPainter: new MyPainter(
+//              lineColor: Colors.black45,
+//              completeColor: Colors.red,
+//              // completePercent: percentage,
+//              completePercent: percentage,
+//              width: 5),
+//          child: new Padding(
+//            padding: const EdgeInsets.all(2.0),
+//            child: ClipRRect(
+//              borderRadius: BorderRadius.circular(40.0), // 圆角
+//              child: FloatingActionButton(
+//                onPressed: () {
+//                  print("controlPlay...");
+//                  controlPlay();
+//                },
+//                child: Image.asset("assets/images/truck.png"),
+//              ),
+//            ),
+//          ),
+//        ),
+//      ),
+//    );
+//  }
+//
 
   @override
   void initState() {
@@ -319,12 +386,14 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   ///点击唱片控制运行
   void controlPlay() {
-    playFlag = !playFlag;
-    if (playFlag) {
-      stop();
-    } else {
-      play();
-    }
+    setState(() {
+      playFlag = !playFlag;
+      if (playFlag) {
+        stop();
+      } else {
+        play();
+      }
+    });
   }
 
   ///

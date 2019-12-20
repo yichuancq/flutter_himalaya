@@ -24,3 +24,8 @@ samples, guidance on mobile development, and a full API reference.
 - 播放界面2（带滑动模块） UI
 
 <img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_02.png" width="40%" height="40%">
+
+
+- 播放界面3（唱片中间加入播放和暂停动作，点击联动） UI
+
+<img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_03.png" width="40%" height="40%">
