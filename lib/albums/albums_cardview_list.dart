@@ -15,6 +15,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   //动画控制器
   AnimationController albumController;
 
+  bool playFlag = false;
+
   //进度条
   AnimationController percentageAnimationController;
   Animation animation;
@@ -160,6 +162,26 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     );
   }
 
+  ///暂停
+  void stop() {
+    albumController.stop();
+  }
+
+  ///播放
+  void play() {
+    albumController.forward();
+  }
+
+  ///点击唱片控制运行
+  void controlPlay() {
+    playFlag = !playFlag;
+    if (playFlag) {
+      stop();
+    } else {
+      play();
+    }
+  }
+
   Widget _widgetAlbumsPlayer2() {
     return Container(
       //控制唱片的大小
@@ -179,7 +201,11 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(60.0), // 圆角
               child: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  print("controlPlay...");
+                  //playFla
+                  controlPlay();
+                },
                 // 唱片封面
                 child: Image.network(
                   "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
