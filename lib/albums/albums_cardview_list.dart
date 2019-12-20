@@ -23,6 +23,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   //
   double percentage = 0.0;
+  double processBarValue = 0.0;
   double newPercentage = 0.0;
   List flagsList = [false, false, false, false, false];
 
@@ -118,7 +119,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      height: size.height,
+      height: size.height * 0.8,
+//      height: 600,
       child: ListView(
         children: <Widget>[
           _albumItemBuilder(
@@ -146,6 +148,11 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
               "现代诗歌",
               "现代诗歌集锦，一次收齐经典",
               4),
+          _albumItemBuilder(
+              "http://imagev2.xmcdn.com/group28/M03/97/CD/wKgJSFlJClGSLIgiAAPirlGyzwg510.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
+              "现代诗歌",
+              "现代诗歌集锦，一次收齐经典",
+              4),
           //
         ],
       ),
@@ -162,27 +169,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     );
   }
 
-  ///暂停
-  void stop() {
-    albumController.stop();
-  }
-
-  ///播放
-  void play() {
-    albumController.forward();
-  }
-
-  ///点击唱片控制运行
-  void controlPlay() {
-    playFlag = !playFlag;
-    if (playFlag) {
-      stop();
-    } else {
-      play();
-    }
-  }
-
-  Widget _widgetAlbumsPlayer2() {
+  ///
+  Widget _widgetAlbumsPlayer() {
     return Container(
       //控制唱片的大小
       width: 100.0,
@@ -218,7 +206,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     );
   }
 
-  Widget _widgetAlbumsPlayer() {
+  Widget _widgetAlbumsPlayer2() {
     return Container(
       //控制唱片的大小
       height: 100.0,
@@ -288,18 +276,139 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     //开启
     albumController.forward();
   }
-
-  ///改变播放进度
-  void changePlayProcess() {
-    percentage = newPercentage;
-    newPercentage += 5;
-    if (newPercentage > 100.0) {
-      percentage = 0.0;
-      newPercentage = 0.0;
+  ///快退
+  void fastRewindPlay() {
+    if (newPercentage == 0 || processBarValue == 0) {
+      return;
     }
-    percentageAnimationController.forward(from: 0.0);
-    print("newPercentage=${newPercentage}");
-    print("percentage=${percentage}");
+    setState(() {
+      percentage = newPercentage;
+      newPercentage -= 5;
+      if (newPercentage <= 0) {
+        percentage = 0.0;
+        newPercentage = 0.0;
+      }
+      percentageAnimationController.reverse(from: 0.0);
+      //
+      processBarValue = newPercentage * 0.01;
+      print("percentage=${percentage}");
+      print("newPercentage=${newPercentage}");
+      print("processBarValue=${processBarValue}");
+    });
+  }
+
+  /// 快进
+  void fastForwardPlay() {
+    if (newPercentage == 100 || processBarValue == 1) {
+      return;
+    }
+    setState(() {
+      percentage = newPercentage;
+      newPercentage += 5;
+      if (newPercentage > 100.0) {
+        percentage = 100.0;
+        newPercentage = 100.0;
+      }
+      percentageAnimationController.forward(from: 0.0);
+      //
+      processBarValue = newPercentage * 0.01;
+      print("percentage=${percentage}");
+      print("newPercentage=${newPercentage}");
+      print("processBarValue=${processBarValue}");
+    });
+  }
+
+  ///暂停
+  void stop() {
+    albumController.stop();
+  }
+
+  ///播放
+  void play() {
+    albumController.forward();
+  }
+
+  ///点击唱片控制运行
+  void controlPlay() {
+    playFlag = !playFlag;
+    if (playFlag) {
+      stop();
+    } else {
+      play();
+    }
+  }
+  ///
+  Widget _bottomBar() {
+    return Container(
+      height: 50,
+      child: Column(
+        children: <Widget>[
+          // 线性进度条高度指定为3
+
+//          new Slider(
+//            value: _sliderValue,
+//            max: 100.0,
+//            min: 0.0,
+//            onChanged: (double val) {
+//              setBottomSheetState(() {
+//                this._sliderValue = val;
+//              });
+//            },
+//          ),
+          SizedBox(
+            height: 5,
+            child: LinearProgressIndicator(
+              value: processBarValue,
+              backgroundColor: Colors.grey[200],
+              valueColor: AlwaysStoppedAnimation(Colors.red),
+            ),
+          ),
+          SizedBox(
+            height: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                //快退
+                IconButton(
+                  icon: Icon(Icons.fast_rewind),
+                  onPressed: () {
+                    fastRewindPlay();
+                  },
+                ),
+                //返回前一首
+                IconButton(
+                  icon: Icon(Icons.skip_previous),
+                  onPressed: () {},
+                ),
+                // 播放，暂停
+                IconButton(
+                  //判断是否播放中，返回不同按钮状态
+                  icon: playFlag == true
+                      ? Icon(Icons.stop, color: Colors.red)
+                      : Icon(Icons.play_arrow, color: Colors.blue),
+                  onPressed: () {
+                    setState(() {});
+                    controlPlay();
+                  },
+                ),
+                //一下首
+                IconButton(
+                  icon: Icon(Icons.skip_next),
+                  onPressed: () {},
+                ),
+                // 快进
+                IconButton(
+                  icon: Icon(Icons.fast_forward),
+                  onPressed: () {
+                    fastForwardPlay();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -311,11 +420,12 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
         onPressed: () {
           print("添加播放进度");
           setState(() {
-            changePlayProcess();
+            fastForwardPlay();
           });
         },
       ),
       backgroundColor: Colors.grey,
+      bottomSheet: _bottomBar(),
       appBar: AppBar(
         actions: <Widget>[
           Column(
@@ -345,9 +455,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
             _albumsBuilder(),
             Positioned(
               bottom: 80,
-              //_widgetAlbumsPlayer2
-              //_widgetAlbumsPlayer
-              child: _widgetAlbumsPlayer2(),
+              child: _widgetAlbumsPlayer(),
             )
           ],
         ),
