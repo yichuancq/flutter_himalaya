@@ -14,7 +14,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   //动画控制器
   AnimationController controller;
   Animation animation;
-
+  double percentage = 30.0;
+  double newPercentage = 100.0;
   List flagsList = [false, false, false, false, false];
 
   ///item cell
@@ -153,6 +154,34 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     );
   }
 
+  Widget _widgetAlbumsPlayer2() {
+    return Container(
+      //控制唱片的大小
+      height: 100.0,
+      width: 100.0,
+      child: new CustomPaint(
+        foregroundPainter: new MyPainter(
+            lineColor: Colors.blueGrey,
+            completeColor: Colors.redAccent,
+            completePercent: percentage,
+            width: 5),
+        child: new Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(60.0), // 圆角
+            child: FloatingActionButton(
+              onPressed: () {},
+              // 唱片封面
+              child: Image.network(
+                "http://imagev2.xmcdn.com/group28/M03/97/CD/wKgJSFlJClGSLIgiAAPirlGyzwg510.jpg!op_type=5&upload_type=album&device_type=ios&name=mobile_large&magick=png",
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _widgetAlbumsPlayer() {
     return Container(
       //控制唱片的大小
@@ -253,7 +282,9 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
             _albumsBuilder(),
             Positioned(
               bottom: 80,
-              child: _widgetAlbumsPlayer(),
+              //_widgetAlbumsPlayer2
+              //_widgetAlbumsPlayer
+              child: _widgetAlbumsPlayer2(),
             )
           ],
         ),
