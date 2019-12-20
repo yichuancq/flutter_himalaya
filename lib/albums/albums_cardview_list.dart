@@ -328,6 +328,15 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   }
 
   ///
+  void sliderChangePlay(double val) {
+    setState(() {
+      processBarValue = val * 0.01;
+      percentage = val;
+//      print("processBarValue== ${processBarValue}");
+    });
+  }
+
+  ///
   Widget _bottomBar() {
     return Container(
       color: Colors.white,
@@ -341,13 +350,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
               min: 0.0,
               max: 100.0,
               value: processBarValue * 100,
-              onChanged: (double val) {
-                setState(() {
-                  processBarValue = val * 0.01;
-                  percentage = val;
-                  print("processBarValue== ${processBarValue}");
-                });
-              },
+              onChanged: sliderChangePlay,
             ),
           ),
           SizedBox(
@@ -371,8 +374,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
                 IconButton(
                   //判断是否播放中，返回不同按钮状态
                   icon: playFlag == true
-                      ? Icon(Icons.stop, color: Colors.red)
-                      : Icon(Icons.play_arrow, color: Colors.blue),
+                      ? Icon(Icons.stop) //暂停
+                      : Icon(Icons.play_arrow, color: Colors.red), // 播放
                   onPressed: () {
                     setState(() {});
                     controlPlay();
