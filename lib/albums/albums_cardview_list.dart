@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +13,15 @@ class AlbumsList extends StatefulWidget {
 
 class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   //动画控制器
-  AnimationController controller;
+  AnimationController albumController;
+
+  //进度条
+  AnimationController percentageAnimationController;
   Animation animation;
-  double percentage = 30.0;
-  double newPercentage = 100.0;
+
+  //
+  double percentage = 0.0;
+  double newPercentage = 0.0;
   List flagsList = [false, false, false, false, false];
 
   ///item cell
@@ -157,23 +163,27 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   Widget _widgetAlbumsPlayer2() {
     return Container(
       //控制唱片的大小
-      height: 100.0,
       width: 100.0,
-      child: new CustomPaint(
-        foregroundPainter: new MyPainter(
-            lineColor: Colors.blueGrey,
-            completeColor: Colors.redAccent,
-            completePercent: percentage,
-            width: 5),
-        child: new Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(60.0), // 圆角
-            child: FloatingActionButton(
-              onPressed: () {},
-              // 唱片封面
-              child: Image.network(
-                "http://imagev2.xmcdn.com/group28/M03/97/CD/wKgJSFlJClGSLIgiAAPirlGyzwg510.jpg!op_type=5&upload_type=album&device_type=ios&name=mobile_large&magick=png",
+      height: 100.0,
+      child: RotationTransition(
+        alignment: Alignment.center,
+        turns: animation,
+        child: new CustomPaint(
+          foregroundPainter: new MyPainter(
+              lineColor: Colors.blueGrey,
+              completeColor: Colors.red,
+              completePercent: percentage,
+              width: 5),
+          child: new Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(60.0), // 圆角
+              child: FloatingActionButton(
+                onPressed: () {},
+                // 唱片封面
+                child: Image.network(
+                  "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
+                ),
               ),
             ),
           ),
@@ -207,41 +217,63 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    percentage = 0.0;
 
+    percentageAnimationController = new AnimationController(
+        vsync: this, duration: new Duration(milliseconds: 1000))
+      ..addListener(() {
+        setState(() {
+          percentage = lerpDouble(
+              percentage, newPercentage, percentageAnimationController.value);
+        });
+      });
     //AnimationController是一个特殊的Animation对象，在屏幕刷新的每一帧，就会生成一个新的值，
     // 默认情况下，AnimationController在给定的时间段内会线性的生成从0.0到1.0的数字
     //用来控制动画的开始与结束以及设置动画的监听
     //vsync参数，存在vsync时会防止屏幕外动画（动画的UI不在当前屏幕时）消耗不必要的资源
     //duration 动画的时长，这里设置的 seconds: 2 为2秒，当然也可以设置毫秒 milliseconds：2000.
 
-    controller =
+    albumController =
         AnimationController(duration: const Duration(seconds: 5), vsync: this);
 //    animation = Tween(begin: 0.0, end:0.5).animate(controller);
-    animation = Tween(begin: 0.0, end: 1.0).animate(controller);
+    animation = Tween(begin: 0.0, end: 1.0).animate(albumController);
 
 //    /动画开始、结束、向前移动或向后移动时会调用StatusListener
-    controller.addStatusListener((status) {
+    albumController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         //动画从 controller.forward() 正向执行 结束时会回调此方法
-        print("status is completed");
+//        print("status is completed");
         //重置起点
-        controller.reset();
+        albumController.reset();
         //开启
-        controller.forward();
+        albumController.forward();
       } else if (status == AnimationStatus.dismissed) {
         //动画从 controller.reverse() 反向执行 结束时会回调此方法
-        print("status is dismissed");
+//        print("status is dismissed");
       } else if (status == AnimationStatus.forward) {
-        print("status is forward");
+//        print("status is forward");
         //执行 controller.forward() 会回调此状态
       } else if (status == AnimationStatus.reverse) {
         //执行 controller.reverse() 会回调此状态
-        print("status is reverse");
+//        print("status is reverse");
       }
       setState(() {});
     });
     //开启
-    controller.forward();
+    albumController.forward();
+  }
+
+  ///改变播放进度
+  void changePlayProcess() {
+    percentage = newPercentage;
+    newPercentage += 5;
+    if (newPercentage > 100.0) {
+      percentage = 0.0;
+      newPercentage = 0.0;
+    }
+    percentageAnimationController.forward(from: 0.0);
+    print("newPercentage=${newPercentage}");
+    print("percentage=${percentage}");
   }
 
   @override
@@ -249,8 +281,13 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     Iterable<dynamic> pickList = flagsList.where((e) => (e == true));
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.music_note),
-        onPressed: () {},
+        child: Icon(Icons.add),
+        onPressed: () {
+          print("添加播放进度");
+          setState(() {
+            changePlayProcess();
+          });
+        },
       ),
       backgroundColor: Colors.grey,
       appBar: AppBar(
@@ -295,7 +332,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   @override
   dispose() {
-    controller.dispose();
+    albumController.dispose();
     super.dispose();
   }
 }
