@@ -155,15 +155,17 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   Widget _widgetAlbumsPlayer() {
     return Container(
-      height: 150.0,
-      width: 150.0,
+      //控制唱片的大小
+      height: 100.0,
+      width: 100.0,
       child: RotationTransition(
         alignment: Alignment.center,
         turns: animation,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(100.0),
+          borderRadius: BorderRadius.circular(60.0), // 圆角
           child: FloatingActionButton(
             onPressed: () {},
+            // 唱片封面
             child: Image.network(
               "http://imagev2.xmcdn.com/group28/M03/97/CD/wKgJSFlJClGSLIgiAAPirlGyzwg510.jpg!op_type=5&upload_type=album&device_type=ios&name=mobile_large&magick=png",
             ),
