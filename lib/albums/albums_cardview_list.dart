@@ -170,7 +170,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
         turns: animation,
         child: new CustomPaint(
           foregroundPainter: new MyPainter(
-              lineColor: Colors.blueGrey,
+              lineColor: Colors.black45,
               completeColor: Colors.red,
               completePercent: percentage,
               width: 5),
