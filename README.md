@@ -1,4 +1,6 @@
 # flutter_himalaya
+- 项目只供学习参考非商业用途 
+- developer: yichuan  email:1012027293@qq.com
 
 A new Flutter application.
 
@@ -14,3 +16,11 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+- 播放界面1（不带滑动模块） UI
+
+<img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_01.png" width="40%" height="40%">
+
+- 播放界面2（带滑动模块） UI
+
+<img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_02.png" width="40%" height="40%">
