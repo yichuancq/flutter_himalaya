@@ -140,10 +140,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   ///
   Widget _albumsList() {
     Size size = MediaQuery.of(context).size;
-
     return Container(
       height: size.height,
-//      height: 600,
       child: ListView.builder(
           itemCount: _albumList == null ? 0 : _albumList.length,
           itemBuilder: (BuildContext context, int position) {
@@ -524,18 +522,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-//    Iterable<dynamic> pickList = flagsList.where((e) => (e == true));
     return Scaffold(
-//      floatingActionButton: FloatingActionButton(
-//        child: Icon(Icons.add),
-//        onPressed: () {
-//          print("添加播放进度");
-//          setState(() {
-//            fastForwardPlay();
-//          });
-//        },
-//      ),
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.grey[300],
       bottomSheet: _bottomBar(),
       appBar: AppBar(
         actions: <Widget>[
@@ -556,7 +544,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
           )
         ],
         centerTitle: true,
-        title: Text("专辑"),
+        title: Text("专辑", style: TextStyle(fontSize: 15)),
       ),
       body: Container(
         child: new Stack(

@@ -6,14 +6,13 @@ import 'package:flutter_himalaya/model/album_content.dart';
 
 ///解析站点JSON为对象集合
 Future<String> loadJsonFile() async {
-  ///Users/yichuan/StudioProjects/flutter_himalaya/assets/json/albums.json
-  return await rootBundle.loadString('assets/json/albums.json');
+  return await rootBundle.loadString('assets/json/album-content.json');
 }
 
 ///convertFromAlbumJson
-Future<Album> convertFromAlbumJson() async {
+Future<AlbumContent> convertFromAlbumTractsJson() async {
   String jsonString = await loadJsonFile();
   final jsonMap = json.decode(jsonString);
-  Album albumContent = Album.fromJson(jsonMap);
-  return albumContent;
+  AlbumContent album = AlbumContent.fromJson(jsonMap);
+  return album;
 }
