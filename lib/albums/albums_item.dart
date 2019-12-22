@@ -210,13 +210,12 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   ///AlbumsItemList
   void onTab(Tracks tracks) {
     ///ReportPage
-    //go to station
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       return new TrackItemPlay(
         tracks: tracks,
       );
     }));
-    print("报表统计..");
+    print("TrackItemPlay..");
   }
 
   Widget _albumItemContentBuilder(int position) {
@@ -310,6 +309,36 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
         ));
   }
 
+  //实现构建方法
+  _viewBuild() {
+    if (_albums == null) {
+      // 加载菊花
+      return Center(
+        child: CupertinoActivityIndicator(),
+      );
+      //
+    } else {
+      return Column(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: _headerBuilder(),
+          ),
+          Expanded(
+            flex: 3,
+            child: ListView(
+              children: <Widget>[
+                _widgetTrackInfo(),
+                _albumsContentList(),
+                // _headerBuilder(),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -317,25 +346,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
         title: Text(_albums.albumTitle, style: TextStyle(fontSize: 15)),
       ),
       body: Container(
-//        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: _headerBuilder(),
-            ),
-            Expanded(
-              flex: 3,
-              child: ListView(
-                children: <Widget>[
-                  _widgetTrackInfo(),
-                  _albumsContentList(),
-                  // _headerBuilder(),
-                ],
-              ),
-            ),
-          ],
-        ),
+        child: _viewBuild(),
       ),
     );
   }

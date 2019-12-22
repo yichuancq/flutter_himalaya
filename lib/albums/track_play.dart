@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_himalaya/model/track_item.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
+import 'package:flutter_himalaya/vo/track_item_service.dart';
 
 Tracks _tracks;
 
@@ -16,6 +19,7 @@ class TrackItemPlay extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     _tracks = this.tracks;
+    print("${_tracks.trackId}");
     return _TrackItemPlayState();
   }
 }
@@ -23,6 +27,8 @@ class TrackItemPlay extends StatefulWidget {
 enum PlayerState { stopped, playing, paused }
 
 class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
+  String musicUrl;
+
   // init
   AudioPlayer audioPlayer = AudioPlayer();
   PlayerMode mode;
@@ -55,13 +61,23 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
   //
   bool playFlag = false;
 
-  final String url =
-      "https://fdfs.xmcdn.com/group61/M05/F7/6A/wKgMZl38aZiRnG9SAEQg10Muor0804.m4a";
+//  final String url =
+//      "https://fdfs.xmcdn.com/group61/M05/F7/6A/wKgMZl38aZiRnG9SAEQg10Muor0804.m4a";
 
   @override
   void initState() {
     super.initState();
+    loadMusinUrl();
     _initAudioPlayer();
+  }
+
+  void loadMusinUrl() async {
+    //getTruckItemMusic
+    TruckItemDto truckItemDto = await getTruckItemMusic(_tracks.trackId);
+    if (truckItemDto != null) {
+      //音乐地址
+      musicUrl = truckItemDto.data.src;
+    }
   }
 
   ///
@@ -360,8 +376,8 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
             _position.inMilliseconds < _duration.inMilliseconds)
         ? _position
         : null;
-    final result =
-        await _audioPlayer.play(url, isLocal: null, position: playPosition);
+    final result = await _audioPlayer.play(musicUrl,
+        isLocal: null, position: playPosition);
     if (result == 1) setState(() => _playerState = PlayerState.playing);
 
     if (Theme.of(context).platform == TargetPlatform.iOS) {
@@ -384,17 +400,18 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      bottomSheet: _bottomBar(),
-      appBar: AppBar(
-        title: Text("${_tracks.title}", style: TextStyle(fontSize: 15)),
-      ),
-      body: Container(
+  //实现构建方法
+  _viewBuild() {
+    if (_tracks == null || _tracks.index == 0) {
+      // 加载菊花
+      return Center(
+        child: CupertinoActivityIndicator(),
+      );
+      //
+    } else {
+      return Container(
           child: Column(
         children: <Widget>[
-//          _headerBuilder(),
           Expanded(
             flex: 1,
             child: _headerBuilder(),
@@ -409,7 +426,18 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
             ),
           ),
         ],
-      )),
+      ));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      bottomSheet: _bottomBar(),
+      appBar: AppBar(
+        title: Text("${_tracks.title}", style: TextStyle(fontSize: 15)),
+      ),
+      body: _viewBuild(),
     );
   }
 }

@@ -52,9 +52,6 @@ Future<TrackDto> getTracksList2(int albumId) async {
         "https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=${albumId}&pageNum=1";
     Response response = await Dio().get(url, options: options);
 //    print("" + response.request.baseUrl);
-    if (response.statusCode != 200) {
-      print("访问网络失败。。。。");
-    }
     if (response.statusCode == 200) {
       print(response.request.uri);
       String result = response.data.toString();
