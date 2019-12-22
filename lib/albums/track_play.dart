@@ -88,11 +88,11 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
     _initPlayAblum();
     //第一次进入默认不播放动画
     stop();
-    setState(() {});
+//    setState(() {});
   }
 
+  ///音乐地址
   void _loadMusicUrl() async {
-    //getTruckItemMusic
     TruckItemDto truckItemDto = await getTruckItemMusic(_tracks.trackId);
     if (truckItemDto != null) {
       //音乐地址
@@ -141,7 +141,18 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
         //执行 controller.reverse() 会回调此状态
 //        print("status is reverse");
       }
-      setState(() {});
+      setState(() {
+        if (_position != null &&
+            _duration != null &&
+            _position.inMilliseconds > 0 &&
+            _position.inMilliseconds < _duration.inMilliseconds) {
+          //_position.inMilliseconds / _duration.inMilliseconds
+          percentage =
+              (_position.inMilliseconds / _duration.inMilliseconds) * 100;
+        } else {
+          percentage = 0;
+        }
+      });
     });
     //开启
     albumController.forward();
@@ -275,22 +286,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
     super.dispose();
   }
 
-  ///
-  void _sliderChangePlay(double val) {
-    setState(() {
-      newPercentage += val;
-      percentage = newPercentage;
-      if (newPercentage <= 0) {
-        percentage = 0.0;
-        newPercentage = 0.0;
-      }
-      processBarValue = newPercentage;
-      print("percentage=${percentage}");
-      print("newPercentage=${newPercentage}");
-      print("processBarValue=${processBarValue}");
-    });
-  }
-
   Widget _headerBuilder() {
     setState(() {});
     return Container(
@@ -300,11 +295,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
           Expanded(
             flex: 1,
             child: _widgetAlbumsPlayer(),
-//            child: Image.asset(
-//              "assets/images/black-disk.png",
-//              height: 120,
-//              width: 120,
-//            ),
           ),
           SizedBox(
             width: 5,
@@ -418,7 +408,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
                 final Position = newValue * _duration.inMilliseconds;
                 _audioPlayer.seek(Duration(milliseconds: Position.round()));
 
-                _sliderChangePlay(newValue);
+                //_sliderChangePlay(newValue);
               },
             ),
           ),
