@@ -87,6 +87,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
     _initAudioPlayer();
     _initPlayAblum();
     //第一次进入默认不播放动画
+//    play();
+//    _play();
+
     stop();
 //    setState(() {});
   }
