@@ -394,8 +394,8 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
       if (playFlag) {
         _play();
       } else {
-        _stop();
-        //_pause();
+//        _stop();
+        _pause();
       }
     });
   }
