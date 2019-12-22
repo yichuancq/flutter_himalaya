@@ -44,7 +44,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
         albums: albumsItem,
       );
     }));
-    print("报表统计..");
+    print("AlbumsItemList..");
   }
 
   ///item cell
@@ -54,7 +54,9 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     return GestureDetector(
       onTap: () {
         print(" on item click...");
-        onTab(albumsItem);
+        if (albumsItem != null) {
+          onTab(albumsItem);
+        }
       },
       child: Container(
         height: 100,

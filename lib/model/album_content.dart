@@ -1,3 +1,5 @@
+import 'package:flutter_himalaya/model/tracks.dart';
+
 class AlbumContent {
   int ret;
   String msg;
@@ -22,74 +24,74 @@ class AlbumContent {
   }
 }
 
-class Data {
-  bool isSelfAlbum;
-  int currentUid;
-  int albumId;
-  MainInfo mainInfo;
-  AnchorInfo anchorInfo;
-  TracksInfo tracksInfo;
-  String subSiteAlbumUrl;
-  RecommendKw recommendKw;
-  Null draft;
-  bool isTemporaryVIP;
-
-  Data(
-      {this.isSelfAlbum,
-      this.currentUid,
-      this.albumId,
-      this.mainInfo,
-      this.anchorInfo,
-      this.tracksInfo,
-      this.subSiteAlbumUrl,
-      this.recommendKw,
-      this.draft,
-      this.isTemporaryVIP});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    isSelfAlbum = json['isSelfAlbum'];
-    currentUid = json['currentUid'];
-    albumId = json['albumId'];
-    mainInfo = json['mainInfo'] != null
-        ? new MainInfo.fromJson(json['mainInfo'])
-        : null;
-    anchorInfo = json['anchorInfo'] != null
-        ? new AnchorInfo.fromJson(json['anchorInfo'])
-        : null;
-    tracksInfo = json['tracksInfo'] != null
-        ? new TracksInfo.fromJson(json['tracksInfo'])
-        : null;
-    subSiteAlbumUrl = json['subSiteAlbumUrl'];
-//    recommendKw = json['recommendKw'] != null
-//        ? new RecommendKw.fromJson(json['recommendKw'])
+//class Data {
+//  bool isSelfAlbum;
+//  int currentUid;
+//  int albumId;
+//  MainInfo mainInfo;
+//  AnchorInfo anchorInfo;
+//  TracksInfo tracksInfo;
+//  String subSiteAlbumUrl;
+//  RecommendKw recommendKw;
+//  Null draft;
+//  bool isTemporaryVIP;
+//
+//  Data(
+//      {this.isSelfAlbum,
+//      this.currentUid,
+//      this.albumId,
+//      this.mainInfo,
+//      this.anchorInfo,
+//      this.tracksInfo,
+//      this.subSiteAlbumUrl,
+//      this.recommendKw,
+//      this.draft,
+//      this.isTemporaryVIP});
+//
+//  Data.fromJson(Map<String, dynamic> json) {
+//    isSelfAlbum = json['isSelfAlbum'];
+//    currentUid = json['currentUid'];
+//    albumId = json['albumId'];
+//    mainInfo = json['mainInfo'] != null
+//        ? new MainInfo.fromJson(json['mainInfo'])
 //        : null;
-    draft = json['draft'];
-    isTemporaryVIP = json['isTemporaryVIP'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['isSelfAlbum'] = this.isSelfAlbum;
-    data['currentUid'] = this.currentUid;
-    data['albumId'] = this.albumId;
-    if (this.mainInfo != null) {
-      data['mainInfo'] = this.mainInfo.toJson();
-    }
-    if (this.anchorInfo != null) {
-      data['anchorInfo'] = this.anchorInfo.toJson();
-    }
-    if (this.tracksInfo != null) {
-      data['tracksInfo'] = this.tracksInfo.toJson();
-    }
-    data['subSiteAlbumUrl'] = this.subSiteAlbumUrl;
-//    if (this.recommendKw != null) {
-//      data['recommendKw'] = this.recommendKw.toJson();
+//    anchorInfo = json['anchorInfo'] != null
+//        ? new AnchorInfo.fromJson(json['anchorInfo'])
+//        : null;
+//    tracksInfo = json['tracksInfo'] != null
+//        ? new TracksInfo.fromJson(json['tracksInfo'])
+//        : null;
+//    subSiteAlbumUrl = json['subSiteAlbumUrl'];
+////    recommendKw = json['recommendKw'] != null
+////        ? new RecommendKw.fromJson(json['recommendKw'])
+////        : null;
+//    draft = json['draft'];
+//    isTemporaryVIP = json['isTemporaryVIP'];
+//  }
+//
+//  Map<String, dynamic> toJson() {
+//    final Map<String, dynamic> data = new Map<String, dynamic>();
+//    data['isSelfAlbum'] = this.isSelfAlbum;
+//    data['currentUid'] = this.currentUid;
+//    data['albumId'] = this.albumId;
+//    if (this.mainInfo != null) {
+//      data['mainInfo'] = this.mainInfo.toJson();
 //    }
-    data['draft'] = this.draft;
-    data['isTemporaryVIP'] = this.isTemporaryVIP;
-    return data;
-  }
-}
+//    if (this.anchorInfo != null) {
+//      data['anchorInfo'] = this.anchorInfo.toJson();
+//    }
+//    if (this.tracksInfo != null) {
+//      data['tracksInfo'] = this.tracksInfo.toJson();
+//    }
+//    data['subSiteAlbumUrl'] = this.subSiteAlbumUrl;
+////    if (this.recommendKw != null) {
+////      data['recommendKw'] = this.recommendKw.toJson();
+////    }
+//    data['draft'] = this.draft;
+//    data['isTemporaryVIP'] = this.isTemporaryVIP;
+//    return data;
+//  }
+//}
 
 class MainInfo {
   int albumStatus;
@@ -385,7 +387,7 @@ class AnchorAlbumList {
   int tracksCount;
   int anchorId;
   String anchorName;
-  String url;
+//  String url;
 
   AnchorAlbumList(
       {this.albumId,
@@ -395,7 +397,8 @@ class AnchorAlbumList {
       this.tracksCount,
       this.anchorId,
       this.anchorName,
-      this.url});
+//      this.url
+      });
 
   AnchorAlbumList.fromJson(Map<String, dynamic> json) {
     albumId = json['albumId'];
@@ -405,7 +408,7 @@ class AnchorAlbumList {
     tracksCount = json['tracksCount'];
     anchorId = json['anchorId'];
     anchorName = json['anchorName'];
-    url = json['url'];
+//    url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -417,7 +420,7 @@ class AnchorAlbumList {
     data['tracksCount'] = this.tracksCount;
     data['anchorId'] = this.anchorId;
     data['anchorName'] = this.anchorName;
-    data['url'] = this.url;
+//    data['url'] = this.url;
     return data;
   }
 }
@@ -461,107 +464,107 @@ class TracksInfo {
     return data;
   }
 }
-
-class Tracks {
-  int index;
-  int trackId;
-  bool isPaid;
-  int tag;
-  String title;
-  int playCount;
-  bool showLikeBtn;
-  bool isLike;
-  bool showShareBtn;
-  bool showCommentBtn;
-  bool showForwardBtn;
-  String createDateFormat;
-  String url;
-  int duration;
-  bool isVideo;
-  Null videoCover;
-
-  Tracks(
-      {this.index,
-      this.trackId,
-      this.isPaid,
-      this.tag,
-      this.title,
-      this.playCount,
-      this.showLikeBtn,
-      this.isLike,
-      this.showShareBtn,
-      this.showCommentBtn,
-      this.showForwardBtn,
-      this.createDateFormat,
-      this.url,
-      this.duration,
-      this.isVideo,
-      this.videoCover});
-
-  Tracks.fromJson(Map<String, dynamic> json) {
-    index = json['index'];
-    trackId = json['trackId'];
-    isPaid = json['isPaid'];
-    tag = json['tag'];
-    title = json['title'];
-    playCount = json['playCount'];
-    showLikeBtn = json['showLikeBtn'];
-    isLike = json['isLike'];
-    showShareBtn = json['showShareBtn'];
-    showCommentBtn = json['showCommentBtn'];
-    showForwardBtn = json['showForwardBtn'];
-    createDateFormat = json['createDateFormat'];
-    url = json['url'];
-    duration = json['duration'];
-    isVideo = json['isVideo'];
-    videoCover = json['videoCover'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['index'] = this.index;
-    data['trackId'] = this.trackId;
-    data['isPaid'] = this.isPaid;
-    data['tag'] = this.tag;
-    data['title'] = this.title;
-    data['playCount'] = this.playCount;
-    data['showLikeBtn'] = this.showLikeBtn;
-    data['isLike'] = this.isLike;
-    data['showShareBtn'] = this.showShareBtn;
-    data['showCommentBtn'] = this.showCommentBtn;
-    data['showForwardBtn'] = this.showForwardBtn;
-    data['createDateFormat'] = this.createDateFormat;
-    data['url'] = this.url;
-    data['duration'] = this.duration;
-    data['isVideo'] = this.isVideo;
-    data['videoCover'] = this.videoCover;
-    return data;
-  }
-}
-
-class RecommendKw {
-  String sourceKw;
-  List<Null> recommendText;
-
-  RecommendKw({this.sourceKw, this.recommendText});
-
-//  RecommendKw.fromJson(Map<String, dynamic> json) {
-//    sourceKw = json['sourceKw'];
-//    if (json['recommendText'] != null) {
-//      recommendText = new List<Null>();
-//      json['recommendText'].forEach((v) {
-//        // recommendText.add(new String.fromJson(v));
-//      });
-//    }
+//
+//class Tracks {
+//  int index;
+//  int trackId;
+//  bool isPaid;
+//  int tag;
+//  String title;
+//  int playCount;
+//  bool showLikeBtn;
+//  bool isLike;
+//  bool showShareBtn;
+//  bool showCommentBtn;
+//  bool showForwardBtn;
+//  String createDateFormat;
+//  String url;
+//  int duration;
+//  bool isVideo;
+//  Null videoCover;
+//
+//  Tracks(
+//      {this.index,
+//      this.trackId,
+//      this.isPaid,
+//      this.tag,
+//      this.title,
+//      this.playCount,
+//      this.showLikeBtn,
+//      this.isLike,
+//      this.showShareBtn,
+//      this.showCommentBtn,
+//      this.showForwardBtn,
+//      this.createDateFormat,
+//      this.url,
+//      this.duration,
+//      this.isVideo,
+//      this.videoCover});
+//
+//  Tracks.fromJson(Map<String, dynamic> json) {
+//    index = json['index'];
+//    trackId = json['trackId'];
+//    isPaid = json['isPaid'];
+//    tag = json['tag'];
+//    title = json['title'];
+//    playCount = json['playCount'];
+//    showLikeBtn = json['showLikeBtn'];
+//    isLike = json['isLike'];
+//    showShareBtn = json['showShareBtn'];
+//    showCommentBtn = json['showCommentBtn'];
+//    showForwardBtn = json['showForwardBtn'];
+//    createDateFormat = json['createDateFormat'];
+//    url = json['url'];
+//    duration = json['duration'];
+//    isVideo = json['isVideo'];
+//    videoCover = json['videoCover'];
 //  }
 //
 //  Map<String, dynamic> toJson() {
 //    final Map<String, dynamic> data = new Map<String, dynamic>();
-//    data['sourceKw'] = this.sourceKw;
-//    if (this.recommendText != null) {
-//      data['recommendText'] =
-//      //this.recommendText.map((v) => v.toJson()).toList();
-//    }
+//    data['index'] = this.index;
+//    data['trackId'] = this.trackId;
+//    data['isPaid'] = this.isPaid;
+//    data['tag'] = this.tag;
+//    data['title'] = this.title;
+//    data['playCount'] = this.playCount;
+//    data['showLikeBtn'] = this.showLikeBtn;
+//    data['isLike'] = this.isLike;
+//    data['showShareBtn'] = this.showShareBtn;
+//    data['showCommentBtn'] = this.showCommentBtn;
+//    data['showForwardBtn'] = this.showForwardBtn;
+//    data['createDateFormat'] = this.createDateFormat;
+//    data['url'] = this.url;
+//    data['duration'] = this.duration;
+//    data['isVideo'] = this.isVideo;
+//    data['videoCover'] = this.videoCover;
 //    return data;
 //  }
-}
+//}
+////
+////class RecommendKw {
+////  String sourceKw;
+////  List<Null> recommendText;
+////
+////  RecommendKw({this.sourceKw, this.recommendText});
+//
+////  RecommendKw.fromJson(Map<String, dynamic> json) {
+////    sourceKw = json['sourceKw'];
+////    if (json['recommendText'] != null) {
+////      recommendText = new List<Null>();
+////      json['recommendText'].forEach((v) {
+////        // recommendText.add(new String.fromJson(v));
+////      });
+////    }
+////  }
+////
+////  Map<String, dynamic> toJson() {
+////    final Map<String, dynamic> data = new Map<String, dynamic>();
+////    data['sourceKw'] = this.sourceKw;
+////    if (this.recommendText != null) {
+////      data['recommendText'] =
+////      //this.recommendText.map((v) => v.toJson()).toList();
+////    }
+////    return data;
+////  }
+//}

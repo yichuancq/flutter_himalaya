@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/album_content.dart';
+import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:flutter_himalaya/vo/albums_track_json_convert.dart';
+
+import 'track_play.dart';
 
 Albums _albums;
 AlbumContent _albumContent;
@@ -92,7 +95,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "作者: ${_albumContent.data.anchorInfo.anchorName}",
+                      "作者: ${_albums.announcer.nickname}",
                       style: TextStyle(
                           fontSize: 12,
                           decoration: TextDecoration.none,
@@ -185,14 +188,35 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   }
 
   void loadData() async {
-    _albumContent = await convertFromAlbumTractsJson();
-    print(_albumContent.data.albumId);
-    print("专辑的播放列表： ${_albumContent.data.tracksInfo.tracks.length}");
-    _tracks = _albumContent.data.tracksInfo.tracks;
+    //getTracksList(int albumId)
+
+    //TrackDto trackDto2 = await getTracksList2(_albums.id);
+    TrackDto trackDto = await getTracksList2(_albums.id);
+    print("trackDto==${trackDto}}");
+    if (trackDto != null && trackDto.data != null) {
+      _tracks = trackDto.data.tracks;
+    } else {
+      trackDto = await getTracksList(_albums.id);
+      print(_albumContent.data.albumId);
+      print("专辑的播放列表： ${_tracks.length}");
+      _tracks = _albumContent.data.tracks;
+    }
     //更新列表
     setState(() {
       //状态
     });
+  }
+
+  ///AlbumsItemList
+  void onTab(Tracks tracks) {
+    ///ReportPage
+    //go to station
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      return new TrackItemPlay(
+        tracks: tracks,
+      );
+    }));
+    print("报表统计..");
   }
 
   Widget _albumItemContentBuilder(int position) {
@@ -202,7 +226,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
     return GestureDetector(
       onTap: () {
         print(" on item click...");
-        //onTab(albumsItem);
+        onTab(tracks);
       },
       child: Container(
         height: 50,
@@ -290,13 +314,10 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-//        backgroundColor: Colors.amber,
-        //  backgroundColor: Colors.grey[300],
         title: Text(_albums.albumTitle, style: TextStyle(fontSize: 15)),
       ),
       body: Container(
 //        width: MediaQuery.of(context).size.width,
-//        height: MediaQuery.of(context).size.height,
         child: Column(
           children: <Widget>[
             Expanded(

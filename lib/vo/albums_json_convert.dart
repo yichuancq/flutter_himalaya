@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_himalaya/model/album.dart';
-import 'package:flutter_himalaya/model/album_content.dart';
 
 ///解析站点JSON为对象集合
 Future<String> loadJsonFile() async {
@@ -17,3 +16,4 @@ Future<Album> convertFromAlbumJson() async {
   Album albumContent = Album.fromJson(jsonMap);
   return albumContent;
 }
+
