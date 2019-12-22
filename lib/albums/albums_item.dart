@@ -134,27 +134,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                   ],
                 ),
 
-//                Row(
-//                  mainAxisAlignment: MainAxisAlignment.start,
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  children: <Widget>[
-//                    SizedBox(
-//                      width: 250,
-//                      child: Text(
-//                        "推荐理由：" + _albums.recommendReason,
-//                        maxLines: 1,
-//                        style: TextStyle(
-//                            fontSize: 12,
-//                            decoration: TextDecoration.none,
-//                            color: Colors.grey),
-//                        overflow: TextOverflow.ellipsis,
-//                      ),
-//                    ),
-//                  ],
-//                ),
-
-                ///
-
                 ///
                 Row(
                   children: <Widget>[
