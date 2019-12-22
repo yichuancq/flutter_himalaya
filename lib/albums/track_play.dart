@@ -407,8 +407,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
               onChanged: (newValue) {
                 final Position = newValue * _duration.inMilliseconds;
                 _audioPlayer.seek(Duration(milliseconds: Position.round()));
-
-                //_sliderChangePlay(newValue);
               },
             ),
           ),
@@ -417,13 +415,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                //快退
-                IconButton(
-                  icon: Icon(Icons.fast_rewind),
-                  onPressed: () {
-                    //fastRewindPlay();
-                  },
-                ),
                 //返回前一首
                 IconButton(
                   icon: Icon(Icons.skip_previous),
@@ -447,13 +438,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
                 IconButton(
                   icon: Icon(Icons.skip_next),
                   onPressed: () {},
-                ),
-                // 快进
-                IconButton(
-                  icon: Icon(Icons.fast_forward),
-                  onPressed: () {
-//                    fastForwardPlay();
-                  },
                 ),
               ],
             ),
