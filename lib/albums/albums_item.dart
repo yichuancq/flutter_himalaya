@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/album_content.dart';
@@ -18,7 +17,6 @@ class AlbumsItemList extends StatefulWidget {
     print("" + albums.albumTitle);
     print("" + albums.kind == "album");
     _albums = this.albums;
-    _albums = this.albums;
     return _AlbumsItemListState();
   }
 }
@@ -29,10 +27,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   ///
   Widget _headerBuilder() {
     return Container(
-//      margin: EdgeInsets.only(left: 1,right: 1,top: 1),
       padding: EdgeInsets.only(left: 5, right: 5, top: 5),
-//      height: 130,
-//      color: Colors.blue,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -213,9 +208,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
       },
       child: Container(
         height: 50,
-//        color: Colors.white,
-        //内边距
-
         padding: EdgeInsets.only(left: 5, right: 5),
         child: SizedBox(
           child: Row(
@@ -262,10 +254,11 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   Widget _albumsContentList() {
     Size size = MediaQuery.of(context).size * 0.8;
     return Container(
+//      color: Colors.amber,
       padding: EdgeInsets.only(bottom: 20),
       height: size.height,
       child: ListView.builder(
-          itemCount: _tracks == null ? 0 : _tracks.length,
+          itemCount: _tracks.length,
           itemBuilder: (BuildContext context, int position) {
             return _albumItemContentBuilder(position);
           }),
@@ -299,6 +292,8 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
+//        backgroundColor: Colors.amber,
+        //  backgroundColor: Colors.grey[300],
         title: Text(_albums.albumTitle, style: TextStyle(fontSize: 15)),
       ),
       body: Container(
