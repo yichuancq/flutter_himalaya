@@ -6,6 +6,7 @@ import 'package:flutter_himalaya/model/album_content.dart';
 import 'package:flutter_himalaya/vo/albums_track_json_convert.dart';
 
 Albums _albums;
+AlbumContent _albumContent;
 
 class AlbumsItemList extends StatefulWidget {
   final Albums albums;
@@ -87,6 +88,19 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "作者: ${_albumContent.data.anchorInfo.anchorName}",
+                      style: TextStyle(
+                          fontSize: 12,
+                          decoration: TextDecoration.none,
+                          color: Colors.grey),
+                    ),
+                  ],
+                ),
+                Row(
                   children: <Widget>[
                     Icon(Icons.graphic_eq, size: 20, color: Colors.grey),
                     Text(
@@ -120,24 +134,26 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                   ],
                 ),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      width: 250,
-                      child: Text(
-                        "推荐理由：" + _albums.recommendReason,
-                        maxLines: 1,
-                        style: TextStyle(
-                            fontSize: 12,
-                            decoration: TextDecoration.none,
-                            color: Colors.grey),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
+//                Row(
+//                  mainAxisAlignment: MainAxisAlignment.start,
+//                  crossAxisAlignment: CrossAxisAlignment.start,
+//                  children: <Widget>[
+//                    SizedBox(
+//                      width: 250,
+//                      child: Text(
+//                        "推荐理由：" + _albums.recommendReason,
+//                        maxLines: 1,
+//                        style: TextStyle(
+//                            fontSize: 12,
+//                            decoration: TextDecoration.none,
+//                            color: Colors.grey),
+//                        overflow: TextOverflow.ellipsis,
+//                      ),
+//                    ),
+//                  ],
+//                ),
+
+                ///
 
                 ///
                 Row(
@@ -178,6 +194,9 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   @override
   dispose() {
     super.dispose();
+    _tracks = null;
+//    _albums = null;
+//    _albumContent = null;
   }
 
   @override
@@ -187,10 +206,10 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   }
 
   void loadData() async {
-    AlbumContent albumContent = await convertFromAlbumTractsJson();
-    print(albumContent.data.albumId);
-    print("专辑的播放列表： ${albumContent.data.tracksInfo.tracks.length}");
-    _tracks = albumContent.data.tracksInfo.tracks;
+    _albumContent = await convertFromAlbumTractsJson();
+    print(_albumContent.data.albumId);
+    print("专辑的播放列表： ${_albumContent.data.tracksInfo.tracks.length}");
+    _tracks = _albumContent.data.tracksInfo.tracks;
     //更新列表
     setState(() {
       //状态
@@ -267,7 +286,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
 
   Widget _widgetTrackInfo() {
     return Container(
-        padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
+        padding: EdgeInsets.only(left: 5, right: 5, bottom: 0),
         child: Row(
           children: <Widget>[
             Expanded(
