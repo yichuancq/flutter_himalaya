@@ -26,8 +26,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   ///唱片进度
   double percentage = 0.0;
   double newPercentage = 0.0;
-
-//  List flagsList = [false, false, false, false, false];
+  List flagsList = [false, false, false, false, false];
 
   ///item cell
   Widget _albumItemBuilder(final String headImageUrl, final String titleText,
@@ -38,35 +37,32 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 //        setState(() {});
       },
       child: Container(
-        height: 100,
+        height: 110,
         //内边距
-//        padding: EdgeInsets.only(left: 1, right: 1),
+        padding: EdgeInsets.all(1),
         child: Card(
           child: Row(
             //对齐方式
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               //弹性布局
               Expanded(
                 flex: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(6.0),
-                      child: Image.network(
-                        headImageUrl,
-                        fit: BoxFit.fill,
-                        width: 80,
-                        height: 80, //图片高度
-                      ),
+                    Image.network(
+                      headImageUrl,
+                      fit: BoxFit.fill,
+                      width: 80,
+                      height: 80, //图片高度
                     ),
                   ],
                 ),
               ),
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,48 +75,39 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
                       subTitleText,
                       maxLines: 2,
                       style: TextStyle(
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
-                          color: Colors.grey),
+                        fontSize: 12,
+                        decoration: TextDecoration.none,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Row(
                       children: <Widget>[
-                        Icon(Icons.graphic_eq,
+                        Icon(Icons.surround_sound,
                             size: 20, color: Colors.orangeAccent),
-                        Text(
-                          "100",
-                          style: (TextStyle(color: Colors.grey)),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        Text("播放量 10000"),
                         Icon(
-                          Icons.headset,
+                          Icons.email,
                           size: 20,
                           color: Colors.orangeAccent,
                         ),
-                        Text(
-                          "112",
-                          style: (TextStyle(color: Colors.grey)),
-                        ),
+                        Text("订阅量 112"),
                       ],
                     ),
                   ],
                 ),
               ),
-//              Column(
-//                mainAxisAlignment: MainAxisAlignment.center,
-//                children: <Widget>[
-//                  Checkbox(
-//                    value: flagsList[index],
-//                    onChanged: (value) {
-//                      flagsList[index] = value;
-//                      setState(() {});
-//                    },
-//                  ),
-//                ],
-//              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Checkbox(
+                    value: flagsList[index],
+                    onChanged: (value) {
+                      flagsList[index] = value;
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -485,7 +472,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-//    Iterable<dynamic> pickList = flagsList.where((e) => (e == true));
+    Iterable<dynamic> pickList = flagsList.where((e) => (e == true));
     return Scaffold(
 //      floatingActionButton: FloatingActionButton(
 //        child: Icon(Icons.add),
@@ -496,7 +483,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 //          });
 //        },
 //      ),
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.grey,
       bottomSheet: _bottomBar(),
       appBar: AppBar(
         actions: <Widget>[
@@ -505,9 +492,9 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
               SizedBox(
                 child: Row(
                   children: <Widget>[
-//                    Text("${pickList.length} pick"),
+                    Text("${pickList.length} pick"),
                     IconButton(
-                      icon: Icon(Icons.menu),
+                      icon: Icon(Icons.play_circle_outline),
                       onPressed: () {},
                     ),
                   ],
