@@ -1,24 +1,30 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_himalaya/albums/my_painter.dart';
+import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/track_item.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:flutter_himalaya/vo/track_item_service.dart';
 
 Tracks _tracks;
+Albums _albums;
 
 ///专辑明细
 class TrackItemPlay extends StatefulWidget {
   final Tracks tracks;
+  final Albums albums;
 
-  const TrackItemPlay({Key key, this.tracks}) : super(key: key);
+  const TrackItemPlay({Key key, this.tracks, this.albums}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
     _tracks = this.tracks;
+    _albums = this.albums;
     print("${_tracks.trackId}");
     return _TrackItemPlayState();
   }
@@ -26,8 +32,25 @@ class TrackItemPlay extends StatefulWidget {
 
 enum PlayerState { stopped, playing, paused }
 
-class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
+class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
+    with TickerProviderStateMixin {
   String musicUrl;
+
+  //动画控制器
+  AnimationController albumController;
+
+  //
+  bool playFlag = false;
+
+  //进度条
+  AnimationController percentageAnimationController;
+  Animation animation;
+  double sliderProcessValue = 0;
+  double processBarValue = 0.0;
+
+  ///唱片进度
+  double percentage = 0.0;
+  double newPercentage = 0.0;
 
   // init
   AudioPlayer audioPlayer = AudioPlayer();
@@ -46,7 +69,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
   StreamSubscription _playerErrorSubscription;
   StreamSubscription _playerStateSubscription;
 
-//  https://github.com/luanpotter/audioplayers/blob/master/example/lib/player_widget.dart
   get _isPlaying => _playerState == PlayerState.playing;
 
   get _isPaused => _playerState == PlayerState.paused;
@@ -58,26 +80,106 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
   //
   String process = "";
 
-  //
-  bool playFlag = false;
-
-//  final String url =
-//      "https://fdfs.xmcdn.com/group61/M05/F7/6A/wKgMZl38aZiRnG9SAEQg10Muor0804.m4a";
-
   @override
   void initState() {
     super.initState();
-    loadMusinUrl();
+    _loadMusicUrl();
     _initAudioPlayer();
+    _initPlayAblum();
+    //第一次进入默认不播放动画
+    stop();
+    setState(() {});
   }
 
-  void loadMusinUrl() async {
+  void _loadMusicUrl() async {
     //getTruckItemMusic
     TruckItemDto truckItemDto = await getTruckItemMusic(_tracks.trackId);
     if (truckItemDto != null) {
       //音乐地址
       musicUrl = truckItemDto.data.src;
     }
+  }
+
+  ///动画初始化
+  void _initPlayAblum() {
+    percentage = 0.0;
+    percentageAnimationController = new AnimationController(
+        vsync: this, duration: new Duration(milliseconds: 1000))
+      ..addListener(() {
+        setState(() {
+          percentage = lerpDouble(
+              percentage, newPercentage, percentageAnimationController.value);
+        });
+      });
+    //AnimationController是一个特殊的Animation对象，在屏幕刷新的每一帧，就会生成一个新的值，
+    // 默认情况下，AnimationController在给定的时间段内会线性的生成从0.0到1.0的数字
+    //用来控制动画的开始与结束以及设置动画的监听
+    //vsync参数，存在vsync时会防止屏幕外动画（动画的UI不在当前屏幕时）消耗不必要的资源
+    //duration 动画的时长，这里设置的 seconds: 2 为2秒，当然也可以设置毫秒 milliseconds：2000.
+
+    albumController =
+        AnimationController(duration: const Duration(seconds: 5), vsync: this);
+//    animation = Tween(begin: 0.0, end:0.5).animate(controller);
+    animation = Tween(begin: 0.0, end: 1.0).animate(albumController);
+
+//    /动画开始、结束、向前移动或向后移动时会调用StatusListener
+    albumController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        //动画从 controller.forward() 正向执行 结束时会回调此方法
+//        print("status is completed");
+        //重置起点
+        albumController.reset();
+        //开启
+        albumController.forward();
+      } else if (status == AnimationStatus.dismissed) {
+        //动画从 controller.reverse() 反向执行 结束时会回调此方法
+//        print("status is dismissed");
+      } else if (status == AnimationStatus.forward) {
+//        print("status is forward");
+        //执行 controller.forward() 会回调此状态
+      } else if (status == AnimationStatus.reverse) {
+        //执行 controller.reverse() 会回调此状态
+//        print("status is reverse");
+      }
+      setState(() {});
+    });
+    //开启
+    albumController.forward();
+  }
+
+  ///
+  Widget _widgetAlbumsPlayer() {
+    return Container(
+      //控制唱片的大小
+      width: 100.0,
+      height: 100.0,
+      child: new CustomPaint(
+        foregroundPainter: new MyPainter(
+            lineColor: Colors.black45,
+            completeColor: Colors.red,
+            // completePercent: percentage,
+            completePercent: percentage,
+            width: 2),
+        child: RotationTransition(
+          alignment: Alignment.center,
+          turns: animation,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(80.0), // 圆角
+            child: FloatingActionButton(
+              child: Container(
+                //内图片的的尺寸
+                child: ClipRRect(
+                  //圆弧处理
+                  borderRadius: BorderRadius.circular(40.0),
+                  // 唱片内部的图片
+                  child: Image.network(_albums.coverUrlMiddle),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   ///
@@ -163,6 +265,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
 
   @override
   void dispose() {
+    albumController.dispose();
     _audioPlayer.stop();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
@@ -173,24 +276,35 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
   }
 
   ///
-  void sliderChangePlay(double val) {
+  void _sliderChangePlay(double val) {
     setState(() {
-      print("processBarValue== ${val}");
+      newPercentage += val;
+      percentage = newPercentage;
+      if (newPercentage <= 0) {
+        percentage = 0.0;
+        newPercentage = 0.0;
+      }
+      processBarValue = newPercentage;
+      print("percentage=${percentage}");
+      print("newPercentage=${newPercentage}");
+      print("processBarValue=${processBarValue}");
     });
   }
 
   Widget _headerBuilder() {
+    setState(() {});
     return Container(
       padding: EdgeInsets.only(left: 5, right: 5, top: 5),
       child: Row(
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: Image.asset(
-              "assets/images/black-disk.png",
-              height: 120,
-              width: 120,
-            ),
+            child: _widgetAlbumsPlayer(),
+//            child: Image.asset(
+//              "assets/images/black-disk.png",
+//              height: 120,
+//              width: 120,
+//            ),
           ),
           SizedBox(
             width: 5,
@@ -283,6 +397,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
     );
   }
 
+  ///
   Widget _bottomBar() {
     return Container(
 //      color: Colors.white,
@@ -299,9 +414,11 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
                       _position.inMilliseconds < _duration.inMilliseconds)
                   ? _position.inMilliseconds / _duration.inMilliseconds
                   : 0.0,
-              onChanged: (v) {
-                final Position = v * _duration.inMilliseconds;
+              onChanged: (newValue) {
+                final Position = newValue * _duration.inMilliseconds;
                 _audioPlayer.seek(Duration(milliseconds: Position.round()));
+
+                _sliderChangePlay(newValue);
               },
             ),
           ),
@@ -387,15 +504,26 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
     return result;
   }
 
+  ///暂停
+  void stop() {
+    albumController.stop();
+  }
+
+  ///播放
+  void play() {
+    albumController.forward();
+  }
+
   ///点击唱片控制运行
   void controlPlay() {
     setState(() {
       playFlag = !playFlag;
       if (playFlag) {
         _play();
+        play();
       } else {
-//        _stop();
         _pause();
+        stop();
       }
     });
   }

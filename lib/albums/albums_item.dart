@@ -212,7 +212,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
     ///ReportPage
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       return new TrackItemPlay(
-        tracks: tracks,
+        tracks: tracks,albums: _albums,
       );
     }));
     print("TrackItemPlay..");

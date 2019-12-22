@@ -21,6 +21,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   List<Albums> _albumList = new List();
 
+  //
   bool playFlag = false;
 
   //进度条
@@ -32,8 +33,6 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   ///唱片进度
   double percentage = 0.0;
   double newPercentage = 0.0;
-
-//  List flagsList = [false, false, false, false, false];
 
   ///AlbumsItemList
   void onTab(Albums albumsItem) {
@@ -332,9 +331,13 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     super.initState();
 
     loadData();
+    //动画初始化
+    initPlayAblum();
+  }
 
+  ///动画初始化
+  void initPlayAblum() {
     percentage = 0.0;
-
     percentageAnimationController = new AnimationController(
         vsync: this, duration: new Duration(milliseconds: 1000))
       ..addListener(() {
