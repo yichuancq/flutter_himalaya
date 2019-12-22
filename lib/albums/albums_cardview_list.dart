@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/vo/albums_json_convert.dart';
+import 'albums_item.dart';
 import 'my_painter.dart';
 
 class AlbumsList extends StatefulWidget {
@@ -34,6 +35,18 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
 //  List flagsList = [false, false, false, false, false];
 
+  ///AlbumsItemList
+  void onTab(Albums albumsItem) {
+    ///ReportPage
+    //go to station
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      return new AlbumsItemList(
+        albums: albumsItem,
+      );
+    }));
+    print("报表统计..");
+  }
+
   ///item cell
   Widget _albumItemBuilder(final int index) {
     Albums albumsItem = _albumList[index];
@@ -41,8 +54,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     return GestureDetector(
       onTap: () {
         print(" on item click...");
-//        flagsList[index] = !flagsList[index];
-//        setState(() {});
+        onTab(albumsItem);
       },
       child: Container(
         height: 100,
