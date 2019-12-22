@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
@@ -18,14 +19,43 @@ class TrackItemPlay extends StatefulWidget {
 }
 
 class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
+  // init
+  AudioPlayer audioPlayer = AudioPlayer();
+
+  //
+  String process = "";
+
+  //
+  bool playFlag = false;
+
+  final String url =
+      "https://fdfs.xmcdn.com/group61/M05/F7/6A/wKgMZl38aZiRnG9SAEQg10Muor0804.m4a";
+
   @override
   void initState() {
     super.initState();
+    audioPlayer.onAudioPositionChanged.listen((p) async {
+      // p参数可以获取当前进度，也是可以调整的，比如p.inMilliseconds
+      process = "${p}";
+      print("p-->${p}");
+      setState(() {});
+    });
+    setState(() {});
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  ///
+  void sliderChangePlay(double val) {
+    setState(() {
+      print("processBarValue== ${val}");
+      //processBarValue = val * 0.01;
+//      percentage = val;
+//      print("processBarValue== ${processBarValue}");
+    });
   }
 
   Widget _headerBuilder() {
@@ -73,6 +103,12 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
                       "上传时间：" + "${_tracks.createDateFormat}",
                       style: (TextStyle(color: Colors.grey)),
                     ),
+                  ],
+                ),
+
+                Row(
+                  children: <Widget>[
+                    Text("process->${process}"),
                   ],
                 ),
 
@@ -153,10 +189,14 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
                 // 播放，暂停
                 IconButton(
                   //判断是否播放中，返回不同按钮状态
-                  icon: //暂停
-                      Icon(Icons.play_arrow, color: Colors.red), // 播放
+                  icon: playFlag == true
+                      ? Icon(Icons.stop) //暂停
+                      : Icon(Icons.play_arrow, color: Colors.red), // 播放
                   onPressed: () {
-                    setState(() {});
+                    setState(() {
+                      controlPlay();
+//                      play();
+                    });
                     //controlPlay();
                   },
                 ),
@@ -180,11 +220,55 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay> {
     );
   }
 
+  void play() async {
+    int result = await audioPlayer.play(url);
+    print("result-->${result}");
+    if (result == 1) {
+      print('play success');
+    } else {
+      print('play failed');
+    }
+  }
+
+  void pause() async {
+    int result = await audioPlayer.pause();
+    print("result-->${result}");
+    if (result == 1) {
+      // success
+      print('pause success');
+    } else {
+      print('pause failed');
+    }
+  }
+
+  ///结束
+  @override
+  void deactivate() async {
+    print('结束');
+    int result = await audioPlayer.release();
+    if (result == 1) {
+      print('release success');
+    } else {
+      print('release failed');
+    }
+    super.deactivate();
+  }
+
+  ///点击唱片控制运行
+  void controlPlay() {
+    setState(() {
+      playFlag = !playFlag;
+      if (playFlag) {
+        play();
+      } else {
+        pause();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-//      backgroundColor: Colors.grey[300],
-
       bottomSheet: _bottomBar(),
       appBar: AppBar(
         title: Text("${_tracks.title}", style: TextStyle(fontSize: 15)),

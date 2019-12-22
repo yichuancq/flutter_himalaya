@@ -52,14 +52,6 @@ class Data {
     }
     pageNum = json['pageNum'];
     pageSize = json['pageSize'];
-//    if (json['superior'] != null) {
-//      superior = new List<Null>();
-//      json['superior'].forEach((v) {
-//       // superior.add(new Null.fromJson(v));
-//      }
-//
-//      );
-//    }
   }
 
   Map<String, dynamic> toJson() {
@@ -73,9 +65,6 @@ class Data {
     }
     data['pageNum'] = this.pageNum;
     data['pageSize'] = this.pageSize;
-//    if (this.superior != null) {
-//      data['superior'] = this.superior.map((v) => v.toJson()).toList();
-//    }
     return data;
   }
 }
