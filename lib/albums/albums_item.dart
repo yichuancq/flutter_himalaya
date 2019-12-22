@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_himalaya/model/album.dart';
+import 'package:flutter_himalaya/vo/albums_json_convert.dart';
 import 'my_painter.dart';
 
 class AlbumsList extends StatefulWidget {
@@ -15,6 +17,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   //动画控制器
   AnimationController albumController;
 
+  List<Albums> _albumList = new List();
+
   bool playFlag = false;
 
   //进度条
@@ -26,87 +30,92 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   ///唱片进度
   double percentage = 0.0;
   double newPercentage = 0.0;
-  List flagsList = [false, false, false, false, false];
+
+//  List flagsList = [false, false, false, false, false];
 
   ///item cell
-  Widget _albumItemBuilder(final String headImageUrl, final String titleText,
-      final String subTitleText, final int index) {
+  Widget _albumItemBuilder(final int index) {
+    Albums albumsItem = _albumList[index];
+
     return GestureDetector(
       onTap: () {
+        print(" on item click...");
 //        flagsList[index] = !flagsList[index];
 //        setState(() {});
       },
       child: Container(
-        height: 110,
+        height: 100,
+        color: Colors.white,
         //内边距
-        padding: EdgeInsets.all(1),
-        child: Card(
+//        padding: EdgeInsets.only(left: 1, right: 1),
+        child: SizedBox(
           child: Row(
             //对齐方式
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               //弹性布局
               Expanded(
                 flex: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Image.network(
-                      headImageUrl,
-                      fit: BoxFit.fill,
-                      width: 80,
-                      height: 80, //图片高度
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(6.0),
+                      child: Image.network(
+                        albumsItem.coverUrlMiddle,
+                        fit: BoxFit.fill,
+                        width: 80,
+                        height: 80, //图片高度
+                      ),
                     ),
                   ],
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(titleText),
+                    Text(albumsItem.albumTitle),
                     SizedBox(
                       height: 4,
                     ),
                     Text(
-                      subTitleText,
+                      albumsItem.shortIntro == null
+                          ? albumsItem.albumTags
+                          : albumsItem.shortIntro,
                       maxLines: 2,
                       style: TextStyle(
-                        fontSize: 12,
-                        decoration: TextDecoration.none,
-                      ),
+                          fontSize: 12,
+                          decoration: TextDecoration.none,
+                          color: Colors.grey),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Row(
                       children: <Widget>[
-                        Icon(Icons.surround_sound,
-                            size: 20, color: Colors.orangeAccent),
-                        Text("播放量 10000"),
-                        Icon(
-                          Icons.email,
-                          size: 20,
-                          color: Colors.orangeAccent,
+                        Icon(Icons.graphic_eq, size: 20, color: Colors.grey),
+                        Text(
+                          "100",
+                          style: (TextStyle(color: Colors.grey)),
                         ),
-                        Text("订阅量 112"),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Icon(
+                          Icons.headset,
+                          size: 20,
+                          color: Colors.grey,
+                        ),
+                        Text(
+                          "112",
+                          style: (TextStyle(color: Colors.grey)),
+                        ),
                       ],
                     ),
                   ],
                 ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Checkbox(
-                    value: flagsList[index],
-                    onChanged: (value) {
-                      flagsList[index] = value;
-                      setState(() {});
-                    },
-                  ),
-                ],
               ),
             ],
           ),
@@ -122,51 +131,66 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     return Container(
       height: size.height * 0.8,
 //      height: 600,
-      child: ListView(
-        children: <Widget>[
-          _albumItemBuilder(
-              "http://imagev2.xmcdn.com/group29/M05/00/14/wKgJXVlQ7vmBi-__AAFgYj4HfQ0789.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
-              "每晚一个睡前故事",
-              "啊~啊~困了吗！来吧，闭上你的眼睛，来听可乐姐姐专门为你讲的睡前故事吧，让我们一起进入甜美的梦乡~",
-              0),
-          _albumItemBuilder(
-              "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
-              "宝宝经典儿歌",
-              "网趣宝贝经典儿歌，是把中国最经典的儿歌制作成小朋友喜欢的童趣、可爱、诙谐的动漫，这样不仅能使宝贝的语言能力有很大提高，更能使他们的小头脑思维活跃。网趣儿歌是培养宝宝语言能力的最佳选择。",
-              1),
-          _albumItemBuilder(
-              "http://imagev2.xmcdn.com/group5/M01/63/36/wKgDtVOygRLTfiE4AATGSSgr1kA848.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
-              "睡前故事：一千零一夜",
-              "儿童读物,儿童故事,童话,睡前故事,晚安故事",
-              2),
-          _albumItemBuilder(
-              "http://imagev2.xmcdn.com/group16/M02/5D/54/wKgDbFcpubOAcFbpAAFgmIO_2l8844.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
-              "《夜色钢琴曲》",
-              "咖啡,日韩,流行,纯音乐,钢琴曲",
-              3),
-          _albumItemBuilder(
-              "http://imagev2.xmcdn.com/group28/M03/97/CD/wKgJSFlJClGSLIgiAAPirlGyzwg510.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
-              "现代诗歌",
-              "现代诗歌集锦，一次收齐经典",
-              4),
-          _albumItemBuilder(
-              "http://imagev2.xmcdn.com/group28/M03/97/CD/wKgJSFlJClGSLIgiAAPirlGyzwg510.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
-              "现代诗歌",
-              "现代诗歌集锦，一次收齐经典",
-              4),
-          //
-        ],
-      ),
+      child: ListView.builder(
+          itemCount: _albumList == null ? 0 : _albumList.length,
+          itemBuilder: (BuildContext context, int position) {
+            return _albumItemBuilder(position);
+          }),
     );
   }
 
   Widget _albumsBuilder() {
     return Container(
+//      width: MediaQuery.of(context).size.width,
       child: ListView(
         children: <Widget>[
+          Container(
+            color: Colors.white,
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: Row(
+              children: <Widget>[
+//                Image.asset("assets/images/logo.png"),
+                Expanded(
+                  flex: 4,
+                  child: buildTextField(),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: RaisedButton(
+//                    color: Colors.black45,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    child: Text("搜索"),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+          ),
           _albumsList(),
         ],
       ),
+    );
+  }
+
+  Widget buildTextField() {
+    //theme设置局部主题
+    return TextField(
+      cursorColor: Colors.red, //设置光标
+      decoration: InputDecoration(
+          contentPadding: new EdgeInsets.only(left: 0.0),
+          border: InputBorder.none,
+          icon: Icon(
+            Icons.search,
+            size: 20,
+            color: Colors.grey,
+          ),
+          hintText: "输入专辑名称",
+          hintStyle: new TextStyle(fontSize: 14, color: Colors.grey)),
+      style: new TextStyle(fontSize: 14, color: Colors.red),
     );
   }
 
@@ -174,64 +198,31 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   Widget _widgetAlbumsPlayer() {
     return Container(
       //控制唱片的大小
-      width: 100.0,
-      height: 100.0,
-      child: RotationTransition(
-        alignment: Alignment.center,
-        turns: animation,
-        child: new CustomPaint(
-          foregroundPainter: new MyPainter(
-              lineColor: Colors.black45,
-              completeColor: Colors.deepOrangeAccent,
-              // completePercent: percentage,
-              completePercent: percentage,
-              width: 5),
-          child: new Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(40.0), // 圆角
-              child: FloatingActionButton(
-                onPressed: () {
-                  print("controlPlay...");
-                  controlPlay();
-                },
-                child: new Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    ClipRRect(
-                      //圆弧处理
-                      borderRadius: BorderRadius.circular(30.0),
-                      child:
-                          Image.asset("assets/images/black-disk.png"), //唱片的背景图
-                    ),
-                    Container(
-                      //内图片的的尺寸
-                      width: 60,
-                      height: 60,
-                      child: ClipRRect(
-                        //圆弧处理
-                        borderRadius: BorderRadius.circular(40.0),
-                        // 唱片内部的图片
-                        child: Image.network(
-                          "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 30,
-                      height: 30,
-                      child: ClipRRect(
-                        //圆弧处理
-                        borderRadius: BorderRadius.circular(5.0),
-                        child: playFlag == true
-                            ? Image.asset("assets/images/pause.png")
-                            : Image.asset("assets/images/play.png"),
-                        //hart的背景图,
-                      ),
-                    ),
-                  ],
+      width: 80.0,
+      height: 80.0,
+      child: new CustomPaint(
+        foregroundPainter: new MyPainter(
+            lineColor: Colors.black45,
+            completeColor: Colors.red,
+            // completePercent: percentage,
+            completePercent: percentage,
+            width: 2),
+        child: RotationTransition(
+          alignment: Alignment.center,
+          turns: animation,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(40.0), // 圆角
+            child: FloatingActionButton(
+              child: Container(
+                //内图片的的尺寸
+                child: ClipRRect(
+                  //圆弧处理
+                  borderRadius: BorderRadius.circular(40.0),
+                  // 唱片内部的图片
+                  child: Image.network(
+                    "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
+                  ),
                 ),
-                //Image.asset("assets/images/truck.png"),
               ),
             ),
           ),
@@ -240,22 +231,18 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     );
   }
 
-//
-//  Widget _widgetAlbumsPlayer() {
-////    setState(() {
-////
-////    });
+//  Widget _widgetAlbumsPlayer2() {
 //    return Container(
 //      //控制唱片的大小
-//      width: 80.0,
-//      height: 80.0,
+//      width: 100.0,
+//      height: 100.0,
 //      child: RotationTransition(
 //        alignment: Alignment.center,
 //        turns: animation,
 //        child: new CustomPaint(
 //          foregroundPainter: new MyPainter(
 //              lineColor: Colors.black45,
-//              completeColor: Colors.red,
+//              completeColor: Colors.deepOrangeAccent,
 //              // completePercent: percentage,
 //              completePercent: percentage,
 //              width: 5),
@@ -268,7 +255,43 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 //                  print("controlPlay...");
 //                  controlPlay();
 //                },
-//                child: Image.asset("assets/images/truck.png"),
+//                child: new Stack(
+//                  alignment: Alignment.center,
+//                  children: <Widget>[
+//                    ClipRRect(
+//                      //圆弧处理
+//                      borderRadius: BorderRadius.circular(30.0),
+//                      child:
+//                      Image.asset("assets/images/black-disk.png"), //唱片的背景图
+//                    ),
+//                    Container(
+//                      //内图片的的尺寸
+//                      width: 60,
+//                      height: 60,
+//                      child: ClipRRect(
+//                        //圆弧处理
+//                        borderRadius: BorderRadius.circular(40.0),
+//                        // 唱片内部的图片
+//                        child: Image.network(
+//                          "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png",
+//                        ),
+//                      ),
+//                    ),
+//                    Container(
+//                      width: 30,
+//                      height: 30,
+//                      child: ClipRRect(
+//                        //圆弧处理
+//                        borderRadius: BorderRadius.circular(5.0),
+//                        child: playFlag == true
+//                            ? Image.asset("assets/images/pause.png")
+//                            : Image.asset("assets/images/play.png"),
+//                        //hart的背景图,
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//                //Image.asset("assets/images/truck.png"),
 //              ),
 //            ),
 //          ),
@@ -276,11 +299,27 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 //      ),
 //    );
 //  }
-//
+
+  ///
+  void loadData() async {
+    print("on loadData...");
+
+    Album album = await convertFromAlbumJson();
+    //读取json
+    _albumList = album.albums;
+    print("list size: ${_albumList.length}");
+    //更新列表
+    setState(() {
+      //状态
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+
+    loadData();
+
     percentage = 0.0;
 
     percentageAnimationController = new AnimationController(
@@ -472,7 +511,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    Iterable<dynamic> pickList = flagsList.where((e) => (e == true));
+//    Iterable<dynamic> pickList = flagsList.where((e) => (e == true));
     return Scaffold(
 //      floatingActionButton: FloatingActionButton(
 //        child: Icon(Icons.add),
@@ -483,7 +522,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 //          });
 //        },
 //      ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white70,
       bottomSheet: _bottomBar(),
       appBar: AppBar(
         actions: <Widget>[
@@ -492,9 +531,9 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
               SizedBox(
                 child: Row(
                   children: <Widget>[
-                    Text("${pickList.length} pick"),
+//                    Text("${pickList.length} pick"),
                     IconButton(
-                      icon: Icon(Icons.play_circle_outline),
+                      icon: Icon(Icons.menu),
                       onPressed: () {},
                     ),
                   ],
@@ -526,6 +565,7 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   @override
   dispose() {
     albumController.dispose();
+    _albumList = null;
     super.dispose();
   }
 }
