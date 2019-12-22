@@ -210,11 +210,6 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     loadData();
   }
 
-  ///拖动改变进度
-  void changePlayProcess(final double precess) {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
