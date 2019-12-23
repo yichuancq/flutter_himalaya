@@ -280,10 +280,12 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
 
   ///
   Widget _albumsContentList() {
-    Size size = MediaQuery.of(context).size * 0.8;
+    //  Size size = MediaQuery.of(context).size * 0.8;
+    Size size = MediaQuery.of(context).size;
     return Container(
 //      color: Colors.amber,
-      padding: EdgeInsets.only(bottom: 20),
+//      padding: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.only(bottom: 245),
       height: size.height,
       child: ListView.separated(
           itemCount: _tracks.length,
