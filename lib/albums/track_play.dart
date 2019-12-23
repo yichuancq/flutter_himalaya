@@ -355,7 +355,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
                     OutlineButton.icon(
                       onPressed: () {},
                       label: Text("喜欢"),
-                      icon: Icon(Icons.favorite, size: 20, color: Colors.red),
+                      icon: Icon(Icons.favorite, size: 12, color: Colors.red),
                     ),
                     SizedBox(
                       width: 10,

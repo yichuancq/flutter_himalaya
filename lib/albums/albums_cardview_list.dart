@@ -129,8 +129,11 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     Size size = MediaQuery.of(context).size;
     return Container(
       height: size.height,
-      child: ListView.builder(
+      child: ListView.separated(
           itemCount: _albumList == null ? 0 : _albumList.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return new Container(height: 0.5, color: Colors.grey);
+          },
           itemBuilder: (BuildContext context, int position) {
             return _albumItemBuilder(position);
           }),

@@ -278,10 +278,13 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
 //      color: Colors.amber,
       padding: EdgeInsets.only(bottom: 20),
       height: size.height,
-      child: ListView.builder(
+      child: ListView.separated(
           itemCount: _tracks.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return new Container(height: 0.5, color: Colors.grey);
+          },
           itemBuilder: (BuildContext context, int position) {
-            return _albumItemContentBuilder(position);
+            return  Padding(padding: EdgeInsets.all(5.0), child: _albumItemContentBuilder(position));//_albumItemContentBuilder(position);
           }),
     );
   }
