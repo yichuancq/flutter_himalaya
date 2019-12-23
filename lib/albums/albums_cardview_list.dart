@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/vo/albums_json_convert.dart';
+import 'package:flutter_himalaya/vo/search.dart';
 import 'albums_item.dart';
 
 class AlbumsList extends StatefulWidget {
@@ -207,11 +208,27 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     });
   }
 
+  void searchAlbum() async {
+    await searchAlbumByKeyWords("music");
+  }
+
   @override
   void initState() {
     super.initState();
     loadData();
+    searchAlbum();
   }
+
+//  ///搜索
+//  Widget search() {
+//    var container = new Container(
+//      margin: EdgeInsets.only(top: 5, left: 0, right: 0),
+//      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+//      height: 40,
+//      child: TextFileWidget(),
+//    );
+//    return container;
+//  }
 
   @override
   Widget build(BuildContext context) {

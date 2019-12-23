@@ -1,0 +1,60 @@
+{
+  "ret": 200,
+  "data": {
+    "tdkMeta": {
+      "title": "轻音乐_轻音乐的专辑,声音-喜马拉雅FM",
+      "keywords": "轻音乐的专辑-喜马拉雅FM",
+      "description": "喜马拉雅FM提供轻音乐的专辑，声音，更多轻音乐的专辑，声音，就在喜马拉雅FM。",
+      "tips": "喜马拉雅电台是一个专业的音频分享平台，精彩内容包括有声书，相声段子，音乐，新闻，综艺娱乐、儿童、情感生活、评书、外语、培训讲座、百家讲坛、广播剧、历史人文、电台、商业财经、IT科技、健康养生、校园电台、汽车、旅游、电影、游戏等5453多个分类，上千万条声音。听书听催眠音乐，让你随时随地，听我想听！",
+      "quickEntries": [
+        {
+          "name": "听单",
+          "url": "https://www.ximalaya.com/ting/"
+        },
+        {
+          "name": "未来女友实验室",
+          "url": "https://www.ximalaya.com/youshengshu/19213034/"
+        },
+        {
+          "name": "冰蓝色女士",
+          "url": "https://www.ximalaya.com/youshengshu/19213034/138970686"
+        }
+      ],
+      "friendLinks": [],
+      "hotLinks": [
+        {
+          "name": "鬼故事",
+          "url": "http://www.ximalaya.com/yule/mr10t3202/"
+        },
+        {
+          "name": "武侠小说",
+          "url": "http://www.ximalaya.com/youshengshu/wuxia/"
+        },
+        {
+          "name": "轻音乐",
+          "url": "http://www.ximalaya.com/yinyue/qingyinyue/"
+        },
+        {
+          "name": "相声",
+          "url": "http://www.ximalaya.com/xiangsheng/xiangsheng/"
+        },
+        {
+          "name": "京剧",
+          "url": "http://www.ximalaya.com/xiqu/jingju/"
+        },
+        {
+          "name": "新概念英语",
+          "url": "http://www.ximalaya.com/waiyu/yingyu/mr34t1991/"
+        },
+        {
+          "name": "国学",
+          "url": "http://www.ximalaya.com/renwen/guoxue/"
+        },
+        {
+          "name": "睡前故事",
+          "url": "http://www.ximalaya.com/ertong/gushi/mr15t151/"
+        }
+      ]
+    }
+  }
+}

@@ -5,6 +5,7 @@ import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/album_content.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:flutter_himalaya/vo/albums_track_json_convert.dart';
+import 'package:flutter_himalaya/vo/search.dart';
 
 import 'track_play.dart';
 
@@ -185,6 +186,11 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   void initState() {
     super.initState();
     loadData();
+    //  searchAlbum();
+  }
+
+  void searchAlbum() async {
+    await searchAlbumByKeyWords("music");
   }
 
   void loadData() async {
@@ -212,7 +218,8 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
     ///ReportPage
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       return new TrackItemPlay(
-        tracks: tracks,albums: _albums,
+        tracks: tracks,
+        albums: _albums,
       );
     }));
     print("TrackItemPlay..");
@@ -284,7 +291,10 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
             return new Container(height: 0.5, color: Colors.grey);
           },
           itemBuilder: (BuildContext context, int position) {
-            return  Padding(padding: EdgeInsets.all(5.0), child: _albumItemContentBuilder(position));//_albumItemContentBuilder(position);
+            return Padding(
+                padding: EdgeInsets.all(5.0),
+                child: _albumItemContentBuilder(
+                    position)); //_albumItemContentBuilder(position);
           }),
     );
   }

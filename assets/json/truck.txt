@@ -10,3 +10,15 @@ https://www.ximalaya.com/revision/play/v1/audio?id=238014616&ptype=1
 
 
 #https://fdfs.xmcdn.com/group65/M01/CE/7A/wKgMal37ObiiAUL8AEK0qnUOgGc790.m4a
+
+#热搜
+https://www.ximalaya.com/revision/search/hotWord?size=10
+
+#专辑搜索
+https://www.ximalaya.com/revision/search/main?core=all&kw=%E8%BD%BB%E9%9F%B3%E4%B9%90&spellchecker=true&device=iPhone
+规则是 md5(ximalaya-服务器时间戳)(100以内随机数)服务器时间戳(100以内随机数)现在时间戳
+将xm-sign添加到请求头中
+#xm-sing
+33382f95f7913d14d86267f180e0310b(61)1577110354445(10)1577110222593
+
+md5(ximalaya-服务器时间戳) +(100以内的随机数) + 服务器时间戳 + (100以内的随机数) + 现在的时间戳
