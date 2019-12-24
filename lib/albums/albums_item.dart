@@ -15,10 +15,11 @@ AlbumContent _albumContent;
 class AlbumsItemList extends StatefulWidget {
   final Albums albums;
 
-  const AlbumsItemList({Key key, this.albums}) : super(key: key);
+  const AlbumsItemList({Key key, @required this.albums}) : super(key: key);
 
   @override
   _AlbumsItemListState createState() {
+    assert(albums != null);
     print("" + albums.albumTitle);
     print("" + albums.kind == "album");
     _albums = this.albums;

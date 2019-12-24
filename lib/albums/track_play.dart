@@ -19,10 +19,15 @@ class TrackItemPlay extends StatefulWidget {
   final Tracks tracks;
   final Albums albums;
 
-  const TrackItemPlay({Key key, this.tracks, this.albums}) : super(key: key);
+  // @required 必须带带参数
+  const TrackItemPlay({Key key, @required this.tracks, @required this.albums})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
+    //断言不为空
+    assert(tracks != null);
+    assert(albums != null);
     _tracks = this.tracks;
     _albums = this.albums;
     print("${_tracks.trackId}");
@@ -60,6 +65,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay>
 
   AudioPlayerState _audioPlayerState;
   Duration _duration;
+
   Duration _position;
 
   PlayerState _playerState = PlayerState.stopped;
