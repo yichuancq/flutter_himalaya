@@ -1,7 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_himalaya/bak/albums_cardview_list2.dart';
+
+DateTime _lastPressedAt; //上次点击时间
 
 class MePage extends StatefulWidget {
   @override
@@ -13,99 +14,37 @@ class MePage extends StatefulWidget {
 class _MePageStateful extends State<MePage> {
   List flagsList = [false, false, false, false];
 
+  ///导航返回拦截
+  ///为了避免用户误触返回按钮而导致APP退出，在很多APP中都拦截了用户点击返回键的按钮，
+  ///然后进行一些防误触判断，比如当用户在某一个时间段内点击两次时
+  ///，才会认为用户是要退出（而非误触）。Flutter中可以通过WillPopScope来实现返回按钮拦截，
+  _willPop() {
+    return WillPopScope(
+        onWillPop: () async {
+          if (_lastPressedAt == null ||
+              DateTime.now().difference(_lastPressedAt) >
+                  Duration(milliseconds: 500)) {
+            //两次点击间隔超过1秒则重新计时
+            _lastPressedAt = DateTime.now();
+            return false;
+          }
+          return true;
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: _content(),
+        ));
+  }
+
+  Widget _content() {
+    return Container(
+      color: Colors.white.withOpacity(0.1),
+      child: Text("hello"),
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     Size size = MediaQuery.of(context).size;
-
-    ///
-    Widget _albumsList() {
-      Size size = MediaQuery.of(context).size;
-
-      return Container(
-        height: size.height,
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              leading: Image.network(
-                  "http://imagev2.xmcdn.com/group29/M05/00/14/wKgJXVlQ7vmBi-__AAFgYj4HfQ0789.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png"),
-              title: Text("每晚一个睡前故事"),
-//            subtitle: Text("albums subTitle"),
-              subtitle: Text("儿童故事,可乐姐姐,学前教育,童话,睡前故事"),
-              trailing: Checkbox(
-                value: flagsList[0],
-                onChanged: (value) {
-                  flagsList[0] = value;
-                  setState(() {});
-                },
-              ),
-              onTap: () {
-                flagsList[0] = !flagsList[0];
-                setState(() {});
-              },
-            ),
-            Divider(
-              height: 1,
-              color: Colors.red,
-            ),
-            ListTile(
-              //
-              leading: Image.network(
-                  "http://imagev2.xmcdn.com/group4/M02/11/BF/wKgDs1MoE13Cbd5aAADbM_v7Sf0531.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png"),
-              title: Text("睡前故事：一千零一夜"),
-              subtitle: Text("儿童读物,儿童故事,童话,睡前故事,晚安故事"),
-              trailing: Checkbox(
-                value: flagsList[1],
-                onChanged: (value) {
-                  flagsList[1] = value;
-                  setState(() {});
-                },
-              ),
-              //trailing: IconButton(icon: Icon(Icons.chevron_right)),
-              onTap: () {
-                flagsList[1] = !flagsList[1];
-                setState(() {});
-              },
-            ),
-            Divider(
-              height: 1,
-              color: Colors.red,
-            ),
-            ListTile(
-              //
-              leading: Image.network(
-                  "http://imagev2.xmcdn.com/group5/M01/63/36/wKgDtVOygRLTfiE4AATGSSgr1kA848.jpg!op_type=5&upload_type=album&device_type=ios&name=medium&magick=png"),
-              title: Text("夜色钢琴曲》"),
-              subtitle: Text("咖啡,日韩,流行,纯音乐,钢琴曲"),
-              trailing: Checkbox(
-                value: flagsList[2],
-                onChanged: (value) {
-                  flagsList[2] = value;
-                  setState(() {});
-                },
-              ),
-              //trailing: IconButton(icon: Icon(Icons.chevron_right)),
-              onTap: () {
-                flagsList[2] = !flagsList[2];
-                setState(() {});
-              },
-            ),
-            Divider(
-              height: 1,
-              color: Colors.red,
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget _content() {
-      return Container(
-        color: Colors.white.withOpacity(0.1),
-        child: Text("hello"),
-      );
-    }
-
     return Scaffold(
       //利用PreferredSize随意定制你的toolbar，如果是滑动布局可以使用sliverPreferredSize
       appBar: PreferredSize(
