@@ -6,12 +6,14 @@ import 'menu/menu.dart';
 void main() {
   runApp(new MyApp());
   if (Platform.isAndroid) {
-    // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
+    // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，
+    // 覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
     SystemUiOverlayStyle systemUiOverlayStyle =
-    SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }
+
 //https://pub.flutter-io.cn/packages
 ////https://javiercbk.github.io/json_to_dart/
 //分页获取听单内容
@@ -27,7 +29,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-//      home:  Home(),
       home: MenuPage(),
     );
   }

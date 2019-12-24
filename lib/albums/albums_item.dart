@@ -67,106 +67,108 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
           ),
           Expanded(
             flex: 3,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text("" + _albums.albumTitle),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(_albums.kind == "album"
-                        ? "分类:" + "专辑"
-                        : "${_albums.kind}"),
-                  ],
-                ),
-                Text(
-                  "简介：" + _albums.shortIntro,
-                  maxLines: 2,
-                  style: TextStyle(
-                      fontSize: 12,
-                      decoration: TextDecoration.none,
-                      color: Colors.grey),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "作者: ${_albums.announcer.nickname}",
-                      style: TextStyle(
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
-                          color: Colors.grey),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Icon(Icons.graphic_eq, size: 20, color: Colors.grey),
-                    Text(
-                      "${_albums.playCount % 1000}k",
-                      style: (TextStyle(color: Colors.grey)),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Icon(
-                      Icons.headset,
-                      size: 18,
-                      color: Colors.grey,
-                    ),
-                    Text(
-                      "${_albums.playCount % 1000}K",
-                      style: (TextStyle(color: Colors.grey)),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Icon(
-                      Icons.share,
-                      size: 18,
-                      color: Colors.grey,
-                    ),
-                    Text(
-                      "${_albums.shareCount % 1000}K",
-                      style: (TextStyle(color: Colors.grey)),
-                    ),
-                  ],
-                ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text("" + _albums.albumTitle),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(_albums.kind == "album"
+                          ? "分类:" + "专辑"
+                          : "${_albums.kind}"),
+                    ],
+                  ),
+                  Text(
+                    "简介：" + _albums.shortIntro,
+                    maxLines: 2,
+                    style: TextStyle(
+                        fontSize: 12,
+                        decoration: TextDecoration.none,
+                        color: Colors.grey),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "作者: ${_albums.announcer.nickname}",
+                        style: TextStyle(
+                            fontSize: 12,
+                            decoration: TextDecoration.none,
+                            color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.graphic_eq, size: 20, color: Colors.grey),
+                      Text(
+                        "${_albums.playCount % 1000}k",
+                        style: (TextStyle(color: Colors.grey)),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(
+                        Icons.headset,
+                        size: 18,
+                        color: Colors.grey,
+                      ),
+                      Text(
+                        "${_albums.playCount % 1000}K",
+                        style: (TextStyle(color: Colors.grey)),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(
+                        Icons.share,
+                        size: 18,
+                        color: Colors.grey,
+                      ),
+                      Text(
+                        "${_albums.shareCount % 1000}K",
+                        style: (TextStyle(color: Colors.grey)),
+                      ),
+                    ],
+                  ),
 
-                ///
-                Row(
-                  children: <Widget>[
-                    OutlineButton.icon(
-                      onPressed: () {},
-                      label: Text("下载"),
-                      icon: Icon(Icons.file_download,
-                          size: 20, color: Colors.red),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    OutlineButton.icon(
-                      onPressed: () {},
-                      label: Text("订阅"),
-                      icon: Icon(Icons.subscriptions,
-                          size: 20, color: Colors.red),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    OutlineButton.icon(
-                      onPressed: () {},
-                      label: Text("分享"),
-                      icon: Icon(Icons.share, size: 20, color: Colors.red),
-                    ),
-                  ],
-                ),
-              ],
+                  ///
+                  Row(
+                    children: <Widget>[
+                      OutlineButton.icon(
+                        onPressed: () {},
+                        label: Text("下载"),
+                        icon: Icon(Icons.file_download,
+                            size: 20, color: Colors.red),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      OutlineButton.icon(
+                        onPressed: () {},
+                        label: Text("订阅"),
+                        icon: Icon(Icons.subscriptions,
+                            size: 20, color: Colors.red),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      OutlineButton.icon(
+                        onPressed: () {},
+                        label: Text("分享"),
+                        icon: Icon(Icons.share, size: 20, color: Colors.red),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -361,7 +363,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
         title: Text(_albums.albumTitle, style: TextStyle(fontSize: 15)),
       ),
       body: Container(
-
         child: _viewBuild(),
       ),
     );

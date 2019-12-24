@@ -239,7 +239,9 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent, //把scaffold的背景色改成透明
+      //backgroundColor: Colors.transparent.withOpacity(0.1),
+      backgroundColor: Colors.transparent,
+      //把scaffold的背景色改成透明
       appBar: PreferredSize(
           child: Container(
             width: double.infinity,
