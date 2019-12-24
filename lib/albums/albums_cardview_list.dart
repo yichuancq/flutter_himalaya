@@ -143,6 +143,12 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   Widget _albumsBuilder() {
     return Container(
+//      decoration: BoxDecoration(
+//          image: DecorationImage(
+//        image: NetworkImage(
+//            'https://img.zcool.cn/community/0372d195ac1cd55a8012062e3b16810.jpg'),
+//        fit: BoxFit.cover,
+//      )),
       child: ListView(
         children: <Widget>[
           Container(
@@ -233,29 +239,42 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-//      bottomSheet: _bottomBar(),
-      appBar: AppBar(
-        actions: <Widget>[
-          Column(
-            children: <Widget>[
-              SizedBox(
-                child: Row(
+      backgroundColor: Colors.transparent, //把scaffold的背景色改成透明
+      appBar: PreferredSize(
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: NetworkImage(
+                  'https://img.zcool.cn/community/0372d195ac1cd55a8012062e3b16810.jpg'),
+              fit: BoxFit.cover,
+            )),
+            child: SafeArea(
+                child: AppBar(
+              actions: <Widget>[
+                Column(
                   children: <Widget>[
+                    SizedBox(
+                      child: Row(
+                        children: <Widget>[
 //                    Text("${pickList.length} pick"),
-                    IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () {},
+                          IconButton(
+                            icon: Icon(Icons.menu),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
                     ),
                   ],
-                ),
-              ),
-            ],
-          )
-        ],
-        centerTitle: true,
-        title: Text("专辑", style: TextStyle(fontSize: 15)),
-      ),
+                )
+              ],
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              title: Text("专辑", style: TextStyle(fontSize: 15)),
+            )),
+          ),
+          preferredSize: Size(double.infinity, 60)),
       body: _albumsBuilder(),
     );
   }

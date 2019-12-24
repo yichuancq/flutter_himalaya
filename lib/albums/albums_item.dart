@@ -361,6 +361,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
         title: Text(_albums.albumTitle, style: TextStyle(fontSize: 15)),
       ),
       body: Container(
+
         child: _viewBuild(),
       ),
     );
