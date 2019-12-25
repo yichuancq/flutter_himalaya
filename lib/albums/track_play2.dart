@@ -1,15 +1,14 @@
 import 'dart:ui';
 
-import 'package:color_thief_flutter/color_thief_flutter.dart';
-import 'package:color_thief_flutter/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_himalaya/me/announcer_page.dart';
+import 'package:flutter_himalaya/me/content_page.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
-import 'package:flutter/material.dart';
 
 Albums _albums;
 Tracks _tracks;
@@ -42,19 +41,34 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     with SingleTickerProviderStateMixin {
   TabController _tabController; //需要定义一个Controller
   List tabs = ["新闻", "历史", "图片"];
+  ScrollController _scrollViewController;
 
   Widget _ablumConver() {
-    return Container(
-//      color: Color.fromARGB(10, 36, 28, 28),
-      alignment: Alignment.center,
-      width: 150,
-      height: 150,
-      child: ClipRRect(
-        //圆角
-        borderRadius: BorderRadius.circular(6.0),
-        child: Image.network(
-          "${_albums.coverUrlMiddle}",
-          fit: BoxFit.fill,
+    return new Opacity(
+      //透明度
+      opacity: 1,
+      child: Container(
+        alignment: Alignment.center,
+        width: 150,
+        height: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12,
+                offset: Offset(0.0, 15.0), //阴影xy轴偏移量
+                blurRadius: 15.0, //阴影模糊程度
+                spreadRadius: 10.0 //阴影扩散程度
+                ),
+          ],
+        ),
+        child: ClipRRect(
+          //圆角
+          borderRadius: BorderRadius.circular(6.0),
+          child: Image.network(
+            "${_albums.coverUrlMiddle}",
+            fit: BoxFit.fill,
+          ),
         ),
       ),
     );
@@ -63,51 +77,8 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
   @override
   void initState() {
     super.initState();
-  }
-
-  Widget _header() {
-    return SliverAppBar(
-//      backgroundColor: Colors.white,
-      pinned: true,
-      expandedHeight: 400.0,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Container(
-          decoration: BoxDecoration(
-//            color: Color.fromARGB(200, 40, 84, 140),
-            image: DecorationImage(
-              image: new AssetImage('assets/images/bg01.jpeg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          padding: EdgeInsets.all(0.0), //容器内补白
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: 300,
-                child: _ablumConver(),
-              ),
-              SizedBox(
-                height: 50,
-                child: Text(
-                  '${_tracks.title}',
-                  style: TextStyle(fontSize: 15, color: Colors.white),
-                ),
-              ),
-              // 线性进度条高度指定为3
-              SizedBox(
-                height: 5,
-                child: _widgetProcessBar(),
-              ),
-              SizedBox(
-                height: 50,
-                child: _widgetPlayBar(), //_widgetPlayBar(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    _scrollViewController = ScrollController(initialScrollOffset: 0.0);
+    _tabController = TabController(vsync: this, length: 4);
   }
 
   Widget _widgetProcessBar() {
@@ -162,31 +133,99 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     );
   }
 
-  Widget _body() {
-    //List
-    return new SliverFixedExtentList(
-      itemExtent: 50.0,
-      delegate: new SliverChildBuilderDelegate(
-        (BuildContext context, int index) {
-          //创建列表项
-          return new Container(
-            alignment: Alignment.center,
-            color: Colors.grey,
-            child: new Text('list item $index'),
-          );
-        },
-        childCount: 20,
-      ),
-    );
-  }
-
   ///
-  Widget _viewBuild() {
-    return Material(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          _header(),
-          _body(),
+  StatefulWidget _nestedScrollView() {
+    return new NestedScrollView(
+      controller: _scrollViewController,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            pinned: true,
+            floating: true,
+            expandedHeight: 440,
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.pin,
+              background: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: new AssetImage('assets/images/bg01.jpeg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                //头部整个背景颜色
+                height: double.infinity,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 100,
+                    ),
+                    _ablumConver(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    SizedBox(
+                      height: 50,
+                      child: Text(
+                        '${_tracks.title}',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        maxLines: 2,
+                      ),
+                    ),
+                    // 线性进度条高度指定为3
+                    SizedBox(
+                      height: 5,
+                      child: _widgetProcessBar(),
+                    ),
+                    SizedBox(
+                      height: 80,
+                      child: _widgetPlayBar(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            bottom: TabBar(
+              controller: _tabController,
+              //指示器厚度
+              indicatorWeight: 2,
+              //展示器颜色
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicatorColor: Colors.blue,
+              //
+              labelColor: Colors.white,
+              //没有被选中的颜色
+              unselectedLabelColor: Colors.black,
+              //没有被选中的样式
+              unselectedLabelStyle: new TextStyle(fontSize: 13),
+              tabs: [
+                Tab(text: "介绍"),
+                Tab(text: "主播"),
+                Tab(text: "评论"),
+                Tab(text: "相关"),
+              ],
+            ),
+          )
+        ];
+      },
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          ContentPage(
+            albums: _albums,
+            tracks: _tracks,
+          ),
+          AnnouncerPage(
+            albums: _albums,
+            tracks: _tracks,
+          ),
+          ContentPage(
+            albums: _albums,
+            tracks: _tracks,
+          ),
+          AnnouncerPage(
+            albums: _albums,
+            tracks: _tracks,
+          ),
         ],
       ),
     );
@@ -195,7 +234,8 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: _viewBuild(),
+//      backgroundColor: Colors.orangeAccent,
+      body: _nestedScrollView(),
     );
   }
 }
