@@ -362,49 +362,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     );
   }
 
-  Widget _widgetPlayBar() {
-    return Container(
-//      height: 80,
-      color: Colors.transparent,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.reorder, color: Colors.white),
-            onPressed: () {
-              _showModalSheet();
-            },
-          ),
-
-          //返回前一首
-          IconButton(
-            icon: Icon(Icons.skip_previous, color: Colors.white),
-            onPressed: () {},
-          ),
-          // 播放，暂停
-          IconButton(
-            //判断是否播放中，返回不同按钮状态
-            icon: Icon(Icons.play_arrow, color: Colors.white), // 播放
-            onPressed: () {
-              print("play...");
-            },
-          ),
-          //一下首
-          IconButton(
-            icon: Icon(Icons.skip_next, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.timer, color: Colors.white),
-            onPressed: () {
-              _showModalSheet();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   ///
   StatefulWidget _nestedScrollView() {
     return new NestedScrollView(
@@ -578,6 +535,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
           SizedBox(
             height: 40,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 IconButton(
@@ -596,14 +554,13 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                 IconButton(
                   //判断是否播放中，返回不同按钮状态
                   icon: playFlag == true
-                      ? Icon(Icons.stop, color: Colors.red) //暂停
-                      : Icon(Icons.play_arrow, color: Colors.white), // 播放
+                      ? Icon(Icons.pause, color: Colors.orangeAccent) //暂停
+                      : Icon(Icons.play_arrow, color: Colors.white),
+                  iconSize: 30, // 播放
                   onPressed: () {
                     setState(() {
                       controlPlay();
-//                      play();
                     });
-                    //controlPlay();
                   },
                 ),
                 //一下首
