@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
@@ -51,130 +52,94 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2> {
 
   Widget _header() {
     return SliverAppBar(
-//      backgroundColor: Colors.transparent,
-      title: Text(
-        '${_tracks.title}',
-        maxLines: 1,
-        style: TextStyle(fontSize: 15),
-      ),
-      centerTitle: true,
       pinned: true,
       expandedHeight: 400.0,
       flexibleSpace: FlexibleSpaceBar(
-        background: Column(
-//          mainAxisAlignment: MainAxisAlignment.start,
-//          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: 4,
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                overflow: Overflow.clip,
-                // AlignmentDirectional.topStart,
-                children: <Widget>[
-                  Image.asset(
-                    "assets/images/bg01.jpeg",
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.fill,
-                  ),
-                  _ablumConver(),
-                ],
+        background: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: new AssetImage('assets/images/bg01.jpeg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          padding: EdgeInsets.all(0.0), //容器内补白
+//          color: Colors.grey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: 300,
+                child: _ablumConver(),
               ),
-            ),
-            SizedBox(
-              height: 50,
-              child: _widgetPlayBar(),
-            ),
-          ],
+              SizedBox(
+                height: 50,
+                child: Text(
+                  '${_tracks.title}',
+                  style: TextStyle(fontSize: 15, color: Colors.white),
+                ),
+              ),
+              // 线性进度条高度指定为3
+              SizedBox(
+                height: 5,
+                child: _widgetProcessBar(),
+              ),
+              SizedBox(
+                height: 50,
+                child: _widgetPlayBar(), //_widgetPlayBar(),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
+  Widget _widgetProcessBar() {
+    return Slider(
+      value: 29,
+      max: 100.0,
+      min: 0.0,
+      activeColor: Colors.white,
+      inactiveColor: Colors.grey,
+      onChanged: (double val) {
+        this.setState(() {});
+      },
+    );
+  }
+
   Widget _widgetPlayBar() {
     return Container(
-      height: 80,
-      color: Colors.black45,
+//      height: 80,
+      color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.reorder),
+            icon: Icon(Icons.reorder, color: Colors.white),
             onPressed: () {},
           ),
 
           //返回前一首
           IconButton(
-            icon: Icon(Icons.skip_previous),
+            icon: Icon(Icons.skip_previous, color: Colors.white),
             onPressed: () {},
           ),
           // 播放，暂停
           IconButton(
             //判断是否播放中，返回不同按钮状态
-            icon: Icon(Icons.play_arrow, color: Colors.black45), // 播放
+            icon: Icon(Icons.play_arrow, color: Colors.white), // 播放
             onPressed: () {
-              setState(() {
-//                      play();
-              });
+              print("play...");
             },
           ),
           //一下首
           IconButton(
-            icon: Icon(Icons.skip_next),
+            icon: Icon(Icons.skip_next, color: Colors.white),
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.timer),
+            icon: Icon(Icons.timer, color: Colors.white),
             onPressed: () {},
-          ),
-        ],
-      ),
-    );
-  }
-
-  ///
-  Widget _controlBar() {
-    return Container(
-//      color: Colors.white,
-      width: MediaQuery.of(context).size.width,
-      height: 50,
-      child: Column(
-        children: <Widget>[
-          // 线性进度条高度指定为3
-          SizedBox(
-            height: 10,
-            child: Slider(
-              value: 30,
-              onChanged: (newValue) {},
-            ),
-          ),
-          SizedBox(
-            height: 40,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                //返回前一首
-                IconButton(
-                  icon: Icon(Icons.skip_previous),
-                  onPressed: () {},
-                ),
-                // 播放，暂停
-                IconButton(
-                  //判断是否播放中，返回不同按钮状态
-                  icon: Icon(Icons.play_arrow, color: Colors.red), // 播放
-                  onPressed: () {
-                    setState(() {
-//                      play();
-                    });
-                  },
-                ),
-                //一下首
-                IconButton(
-                  icon: Icon(Icons.skip_next),
-                  onPressed: () {},
-                ),
-              ],
-            ),
           ),
         ],
       ),
@@ -199,26 +164,21 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2> {
     );
   }
 
-  /////因为本路由没有使用Scaffold，为了让子级Widget(如Text)使用
-  //    //Material Design 默认的样式风格,我们使用Material作为本路由的根。
+  ///
   Widget _viewBuild() {
     return Material(
-      child: CustomScrollView(slivers: <Widget>[
-        //AppBar，包含一个导航栏
-        _header(),
-//        _controlBar()
-        _body(),
-        //_controlBar(),
-      ]),
+      child: CustomScrollView(
+        slivers: <Widget>[
+          _header(),
+          _body(),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-//      appBar: AppBar(
-//        title: Text("truck", style: TextStyle(fontSize: 15)),
-//      ),
       body: _viewBuild(),
     );
   }

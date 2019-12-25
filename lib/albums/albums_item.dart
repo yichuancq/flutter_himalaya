@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_himalaya/albums/track_play2.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/album_content.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
@@ -220,7 +221,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   void onTab(Tracks tracks) {
     ///ReportPage
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new TrackItemPlay(
+      return new TrackItemPlay2(
         tracks: tracks,
         albums: _albums,
       );
