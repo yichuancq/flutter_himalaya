@@ -103,7 +103,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.reorder, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              _showModalSheet();
+            },
           ),
 
           //返回前一首
@@ -126,7 +128,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
           ),
           IconButton(
             icon: Icon(Icons.timer, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              _showModalSheet();
+            },
           ),
         ],
       ),
@@ -231,10 +235,47 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     );
   }
 
+  void _showModalSheet() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+        ),
+        context: context,
+        builder: (builder) {
+          return new Container(
+            height: 300,
+            child: new ListView(
+              children: <Widget>[
+                ListTile(
+                  title: Text("${_tracks.title}"),
+                ),
+                ListTile(
+                  title: Text("${_tracks.title}"),
+                ),
+                ListTile(
+                  title: Text("${_tracks.title}"),
+                ),
+                ListTile(
+                  title: Text("${_tracks.title}"),
+                ),
+                ListTile(
+                  title: Text("${_tracks.title}"),
+                ),
+                ListTile(
+                  title: Text("${_tracks.title}"),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-//      backgroundColor: Colors.orangeAccent,
       body: _nestedScrollView(),
     );
   }
