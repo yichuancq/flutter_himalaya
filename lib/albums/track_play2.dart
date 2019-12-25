@@ -573,6 +573,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
             ),
           ),
           SizedBox(
+            height: 10,
+          ),
+          SizedBox(
             height: 40,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
