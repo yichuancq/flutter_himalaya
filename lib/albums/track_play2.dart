@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:color_thief_flutter/color_thief_flutter.dart';
+import 'package:color_thief_flutter/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -31,11 +33,19 @@ class TrackItemPlay2 extends StatefulWidget {
     return _TrackItemPlayState();
   }
 }
+//
+//final url = "${_albums.coverUrlMiddle}";
+//final imageProvider = NetworkImage(url);
+//final imageProvider2 = AssetImage('assets/images/bg01.jpeg');
 
-class _TrackItemPlayState<Albums> extends State<TrackItemPlay2> {
+class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController; //需要定义一个Controller
+  List tabs = ["新闻", "历史", "图片"];
+
   Widget _ablumConver() {
     return Container(
-//      color: Colors.grey,
+//      color: Color.fromARGB(10, 36, 28, 28),
       alignment: Alignment.center,
       width: 150,
       height: 150,
@@ -50,20 +60,26 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Widget _header() {
     return SliverAppBar(
+//      backgroundColor: Colors.white,
       pinned: true,
       expandedHeight: 400.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
           decoration: BoxDecoration(
+//            color: Color.fromARGB(200, 40, 84, 140),
             image: DecorationImage(
               image: new AssetImage('assets/images/bg01.jpeg'),
               fit: BoxFit.cover,
             ),
           ),
           padding: EdgeInsets.all(0.0), //容器内补白
-//          color: Colors.grey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

@@ -27,6 +27,8 @@ dependencies:
   dio: ^2.1.2
   #
   audioplayers: ^0.13.5
+  #
+  color_thief_flutter: ^1.0.1
 # audioplayers: ^0.13.1
 
 dev_dependencies:
