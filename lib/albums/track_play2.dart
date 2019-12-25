@@ -13,6 +13,8 @@ import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_himalaya/vo/track_item_service.dart';
 
+import 'my_painter.dart';
+
 Albums _albums;
 Tracks _tracks;
 
@@ -348,17 +350,53 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     //开启
     albumController.forward();
   }
-
-  Widget _widgetProcessBar() {
-    return Slider(
-      value: 29,
-      max: 100.0,
-      min: 0.0,
-      activeColor: Colors.white,
-      inactiveColor: Colors.grey,
-      onChanged: (double val) {
-        this.setState(() {});
-      },
+  ///
+  Widget _widgetAlbumsPlayer() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(80.0),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0.0, 15.0), //阴影xy轴偏移量
+              blurRadius: 15.0, //阴影模糊程度
+              spreadRadius: 10.0 //阴影扩散程度
+              ),
+        ],
+      ),
+      //控制唱片的大小
+      width: 150.0,
+      height: 150.0,
+      child: new CustomPaint(
+        foregroundPainter: new MyPainter(
+            lineColor: Colors.black45,
+            completeColor: Colors.orange,
+            completePercent: percentage,
+            width: 3),
+        child: RotationTransition(
+          alignment: Alignment.center,
+          turns: animation,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(80.0), // 圆角
+            child: FloatingActionButton(
+              child: Container(
+                //内图片的的尺寸
+                child: ClipRRect(
+                  //圆弧处理
+                  borderRadius: BorderRadius.circular(60.0),
+                  // 唱片内部的图片
+                  child: Image.network(
+                    _albums.coverUrlMiddle,
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -388,8 +426,8 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                     SizedBox(
                       height: 100,
                     ),
-                    _ablumConver(),
-
+//                    _ablumConver(),
+                    _widgetAlbumsPlayer(),
                     SizedBox(
                       height: 20,
                     ),
@@ -554,7 +592,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                 IconButton(
                   //判断是否播放中，返回不同按钮状态
                   icon: playFlag == true
-                      ? Icon(Icons.pause, color: Colors.orangeAccent) //暂停
+                      ? Icon(Icons.pause, color: Colors.orange) //暂停
                       : Icon(Icons.play_arrow, color: Colors.white),
                   iconSize: 30, // 播放
                   onPressed: () {
