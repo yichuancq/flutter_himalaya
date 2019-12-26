@@ -21,7 +21,7 @@ samples, guidance on mobile development, and a full API reference.
 
 <img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_01.png" width="40%" height="40%">
 
-- 专辑界面） UI
+- 专辑界面 UI
 
 <img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_03.png" width="40%" height="40%">
 
