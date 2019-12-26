@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:async';
+import 'package:color_thief_flutter/color_thief_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -12,7 +13,6 @@ import 'package:flutter_himalaya/model/track_item.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_himalaya/vo/track_item_service.dart';
-
 import 'my_painter.dart';
 
 Albums _albums;
@@ -38,14 +38,12 @@ class TrackItemPlay2 extends StatefulWidget {
   }
 }
 
-//
-//final url = "${_albums.coverUrlMiddle}";
-//final imageProvider = NetworkImage(url);
-//final imageProvider2 = AssetImage('assets/images/bg01.jpeg');
 enum PlayerState { stopped, playing, paused }
 
 class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     with SingleTickerProviderStateMixin, TickerProviderStateMixin {
+  //
+  List<int> color_Rgb;
   String musicUrl;
 
   //动画控制器
@@ -136,13 +134,25 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     super.dispose();
   }
 
+  void _getMainColor() async {
+    // 提取网络图片的主要颜色
+    await getColorFromUrl("${_albums.coverUrlMiddle}").then((color) {
+      setState(() {
+        color_Rgb = color;
+        print(color); // [R,G,B]
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
+    //
+    _getMainColor();
     _loadMusicUrl();
     _initAudioPlayer();
     _initPlayAblum();
+
     //第一次进入默认不播放动画
     stop();
     _scrollViewController = ScrollController(initialScrollOffset: 0.0);
@@ -184,7 +194,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
         _position = _duration;
       });
     });
-
     _playerErrorSubscription = _audioPlayer.onPlayerError.listen((msg) {
       print('audioPlayer error : $msg');
       setState(() {
@@ -350,6 +359,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     //开启
     albumController.forward();
   }
+
   ///
   Widget _widgetAlbumsPlayer() {
     return Container(
@@ -359,8 +369,8 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
           BoxShadow(
               color: Colors.black12,
               offset: Offset(0.0, 15.0), //阴影xy轴偏移量
-              blurRadius: 15.0, //阴影模糊程度
-              spreadRadius: 15.0 //阴影扩散程度
+              blurRadius: 60.0, //阴影模糊程度
+              spreadRadius: 10.0 //阴影扩散程度
               ),
         ],
       ),
@@ -412,49 +422,60 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
             expandedHeight: 440,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
-              background: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
+              background: Stack(
+                children: <Widget>[
+                  new Image(
                     image: new AssetImage('assets/images/bg01.jpeg'),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitWidth,
+                    width: double.infinity,
                   ),
-                ),
-                //头部整个背景颜色
-                height: double.infinity,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 100,
+                  Container(
+                    decoration: BoxDecoration(
+                      //动态获取封面背景色
+                      color: Color.fromARGB(
+                          200,
+                          color_Rgb == null ? 0 : color_Rgb[0],
+                          color_Rgb == null ? 0 : color_Rgb[1],
+                          color_Rgb == null ? 0 : color_Rgb[2]),
                     ),
+                    //头部整个背景颜色
+                    height: double.infinity,
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 100,
+                        ),
 //                    _ablumConver(),
-                    _widgetAlbumsPlayer(),
-                    SizedBox(
-                      height: 20,
+                        _widgetAlbumsPlayer(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          _position != null
+                              ? '${_positionText ?? ''} / ${_durationText ?? ''}'
+                              : _duration != null ? _durationText : '',
+                          style: TextStyle(fontSize: 19.0, color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 50,
+                          child: Text(
+                            '${_tracks.title}',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            maxLines: 2,
+                          ),
+                        ),
+                        // 线性进度条高度指定为3
+                        SizedBox(
+                          height: 80,
+                          child: _bottomBar(),
+                        ),
+                      ],
                     ),
-                    Text(
-                      _position != null
-                          ? '${_positionText ?? ''} / ${_durationText ?? ''}'
-                          : _duration != null ? _durationText : '',
-                      style: TextStyle(fontSize: 19.0, color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: Text(
-                        '${_tracks.title}',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                        maxLines: 2,
-                      ),
-                    ),
-                    // 线性进度条高度指定为3
-                    SizedBox(
-                      height: 80,
-                      child: _bottomBar(),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             bottom: TabBar(
