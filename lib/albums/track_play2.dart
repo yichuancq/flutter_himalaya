@@ -360,19 +360,19 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
               color: Colors.black12,
               offset: Offset(0.0, 15.0), //阴影xy轴偏移量
               blurRadius: 15.0, //阴影模糊程度
-              spreadRadius: 10.0 //阴影扩散程度
+              spreadRadius: 15.0 //阴影扩散程度
               ),
         ],
       ),
       //控制唱片的大小
-      width: 150.0,
-      height: 150.0,
+      width: 140.0,
+      height: 140.0,
       child: new CustomPaint(
         foregroundPainter: new MyPainter(
             lineColor: Colors.black45,
-            completeColor: Colors.orange,
+            completeColor: Colors.red,
             completePercent: percentage,
-            width: 3),
+            width: 2),
         child: RotationTransition(
           alignment: Alignment.center,
           turns: animation,
@@ -387,8 +387,8 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                   // 唱片内部的图片
                   child: Image.network(
                     _albums.coverUrlMiddle,
-                    width: 150,
-                    height: 150,
+                    width: 140,
+                    height: 140,
                     fit: BoxFit.fill,
                   ),
                 ),
