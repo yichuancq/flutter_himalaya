@@ -603,14 +603,11 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
 // 专辑列表
   Widget _albumItemContentBuilder(int position) {
     //Tracks
-
     Tracks tracks = _trackList[position];
     return GestureDetector(
       onTap: () {
         changePlayItem(position);
-
         // TODO play music
-        //  play()
       },
       child: ListTile(
         contentPadding: EdgeInsets.all(2),
@@ -619,12 +616,10 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
           "${tracks.title}",
           style: TextStyle(fontSize: 14),
         ),
-//        trailing: Image.network(
-//          _albums.coverUrlMiddle,
-//          width: 40,
-//          height: 40,
-//          fit: BoxFit.fill,
-//        ),
+        trailing: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.play_circle_filled),
+        ),
       ),
     );
   }

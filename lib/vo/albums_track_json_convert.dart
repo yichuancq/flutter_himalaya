@@ -49,7 +49,7 @@ Future<TrackDto> getTracksList2(int albumId) async {
         new Options(headers: headers, responseType: ResponseType.plain);
     //https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=15000&pageNum=1
     final String url =
-        "https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=${albumId}&pageNum=1";
+        "https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=${albumId}&pageNum=2";
     Response response = await Dio().get(url, options: options);
 //    print("" + response.request.baseUrl);
     if (response.statusCode == 200) {
