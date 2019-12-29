@@ -213,6 +213,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
             )),
             child: SafeArea(
               child: SearchBar(
+                onQuerySubmitted: (query) {},
+                onQueryChanged: (query) {},
                 searchHint: "输入专辑 ",
                 defaultBar: AppBar(
                   backgroundColor: Colors.transparent,
