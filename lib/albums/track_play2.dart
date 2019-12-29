@@ -18,14 +18,20 @@ import 'dart:math' as math;
 
 Albums _albums;
 Tracks _tracks;
+List<Tracks> _trackList;
 
 ///专辑明细
 class TrackItemPlay2 extends StatefulWidget {
   final Tracks tracks;
   final Albums albums;
+  final List<Tracks> trackList;
 
   // @required 必须带带参数
-  const TrackItemPlay2({Key key, @required this.tracks, @required this.albums})
+  const TrackItemPlay2(
+      {Key key,
+      @required this.tracks,
+      @required this.albums,
+      @required this.trackList})
       : super(key: key);
 
   @override
@@ -33,8 +39,10 @@ class TrackItemPlay2 extends StatefulWidget {
     //断言不为空
     assert(tracks != null);
     assert(albums != null);
+    assert(trackList != null);
     _albums = this.albums;
     _tracks = this.tracks;
+    _trackList = this.trackList;
     return _TrackItemPlayState();
   }
 }
@@ -264,6 +272,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     super.deactivate();
   }
 
+  ///
   Future<int> _play() async {
     final playPosition = (_position != null &&
             _duration != null &&
@@ -388,7 +397,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
       child: new CustomPaint(
         foregroundPainter: new MyPainter(
             lineColor: Colors.black45,
-            completeColor: Colors.red,
+            completeColor: Colors.white,
             completePercent: percentage,
             width: 2),
         child: RotationTransition(
@@ -396,22 +405,30 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
           turns: animation,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(80.0), // 圆角
-            child: FloatingActionButton(
-              child: Container(
-                //内图片的的尺寸
-                child: ClipRRect(
+            child: new Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                ClipRRect(
                   //圆弧处理
-                  borderRadius: BorderRadius.circular(60.0),
-                  // 唱片内部的图片
-                  child: Image.network(
-                    _albums.coverUrlMiddle,
-                    width: 140,
-                    height: 140,
-                    fit: BoxFit.fill,
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Image.asset("assets/images/black-disk.png"), //唱片的背景图
+                ),
+                Container(
+                  //内图片的的尺寸
+                  width: 78,
+                  height: 78,
+                  child: ClipRRect(
+                    //圆弧处理
+                    borderRadius: BorderRadius.circular(40.0),
+                    // 唱片内部的图片
+                    child: Image.network(
+                      _albums.coverUrlMiddle,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
+            //Image.asset("assets/images/truck.png"),
           ),
         ),
       ),
@@ -560,6 +577,58 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     );
   }
 
+  ///选集播放
+  void changePlayItem(int position) {
+    Tracks tracks = _trackList[position];
+    print("选播： ${tracks.index}, ${tracks.title}");
+//    final result = await _audioPlayer.stop();
+//    //
+//    if (result == 1) {
+//      setState(() {
+//        deactivate();
+//        _playerState = PlayerState.stopped;
+//        _duration = Duration(seconds: 0);
+//        _position = Duration(seconds: 0);
+//        if (_playerState == PlayerState.stopped) {
+//          _tracks = tracks;
+//          _loadMusicUrl();
+//          print("选播  in： ${tracks.index}, ${tracks.title}");
+//          _play();
+//          play();
+//        }
+//      });
+//  }
+  }
+
+// 专辑列表
+  Widget _albumItemContentBuilder(int position) {
+    //Tracks
+
+    Tracks tracks = _trackList[position];
+    return GestureDetector(
+      onTap: () {
+        changePlayItem(position);
+
+        // TODO play music
+        //  play()
+      },
+      child: ListTile(
+        contentPadding: EdgeInsets.all(2),
+        leading: Text("${tracks.index}"),
+        title: Text(
+          "${tracks.title}",
+          style: TextStyle(fontSize: 14),
+        ),
+//        trailing: Image.network(
+//          _albums.coverUrlMiddle,
+//          width: 40,
+//          height: 40,
+//          fit: BoxFit.fill,
+//        ),
+      ),
+    );
+  }
+
   void _showModalSheet() {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -571,29 +640,18 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
         context: context,
         builder: (builder) {
           return new Container(
-            height: 300,
-            child: new ListView(
-              children: <Widget>[
-                ListTile(
-                  title: Text("${_tracks.title}"),
-                ),
-                ListTile(
-                  title: Text("${_tracks.title}"),
-                ),
-                ListTile(
-                  title: Text("${_tracks.title}"),
-                ),
-                ListTile(
-                  title: Text("${_tracks.title}"),
-                ),
-                ListTile(
-                  title: Text("${_tracks.title}"),
-                ),
-                ListTile(
-                  title: Text("${_tracks.title}"),
-                ),
-              ],
-            ),
+            height: 500,
+            child: new ListView.separated(
+                itemCount: _trackList.length,
+                separatorBuilder: (BuildContext context, int position) {
+                  return new Container(height: 0.5, color: Colors.grey);
+                },
+                itemBuilder: (BuildContext context, int position) {
+                  return Padding(
+                      padding: EdgeInsets.all(5.0),
+                      child: _albumItemContentBuilder(
+                          position)); //_albumItemContentBuilder(position);
+                }),
           );
         });
   }
@@ -680,6 +738,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+//      backgroundColor: Colors.white,
       body: _nestedScrollView(),
     );
   }

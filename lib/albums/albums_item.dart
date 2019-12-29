@@ -8,11 +8,8 @@ import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:flutter_himalaya/vo/albums_track_json_convert.dart';
 import 'package:flutter_himalaya/vo/search.dart';
 
-import 'track_play.dart';
-
 Albums _albums;
 AlbumContent _albumContent;
-
 class AlbumsItemList extends StatefulWidget {
   final Albums albums;
 
@@ -211,6 +208,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
       print("专辑的播放列表： ${_tracks.length}");
       _tracks = _albumContent.data.tracks;
     }
+//    _trackList = _tracks;
     //更新列表
     setState(() {
       //状态
@@ -224,6 +222,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
       return new TrackItemPlay2(
         tracks: tracks,
         albums: _albums,
+        trackList: _tracks,
       );
     }));
     print("TrackItemPlay..");
