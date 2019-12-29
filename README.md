@@ -26,6 +26,6 @@ samples, guidance on mobile development, and a full API reference.
 <img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_03.png" width="40%" height="40%">
 
 
-- 播放界面3（唱片中间加入播放和暂停动作，点击联动,背景模糊和根据专辑主色调动态改变） UI
+- 播放界面3（唱片中间加入播放和暂停动作，点击联动,背景模糊和根据专辑主色调动态改变）UI
 
 <img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_04_01.png" width="40%" height="40%">
