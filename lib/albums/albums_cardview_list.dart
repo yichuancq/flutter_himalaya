@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/vo/albums_json_convert.dart';
 import 'package:flutter_himalaya/vo/search.dart';
+import 'package:loader_search_bar/loader_search_bar.dart';
 import 'albums_item.dart';
 
 class AlbumsList extends StatefulWidget {
@@ -143,39 +144,8 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
 
   Widget _albumsBuilder() {
     return Container(
-//      decoration: BoxDecoration(
-//          image: DecorationImage(
-//        image: NetworkImage(
-//            'https://img.zcool.cn/community/0372d195ac1cd55a8012062e3b16810.jpg'),
-//        fit: BoxFit.cover,
-//      )),
       child: ListView(
         children: <Widget>[
-          Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 4,
-                  child: buildTextField(),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: RaisedButton(
-//                    color: Colors.black45,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: Text("搜索"),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-            ),
-          ),
           _albumsList(),
         ],
       ),
@@ -225,17 +195,6 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
     searchAlbum();
   }
 
-//  ///搜索
-//  Widget search() {
-//    var container = new Container(
-//      margin: EdgeInsets.only(top: 5, left: 0, right: 0),
-//      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-//      height: 40,
-//      child: TextFileWidget(),
-//    );
-//    return container;
-//  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -253,28 +212,18 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
               fit: BoxFit.cover,
             )),
             child: SafeArea(
-                child: AppBar(
-              actions: <Widget>[
-                Column(
-                  children: <Widget>[
-                    SizedBox(
-                      child: Row(
-                        children: <Widget>[
-//                    Text("${pickList.length} pick"),
-                          IconButton(
-                            icon: Icon(Icons.menu),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
-              ],
-              backgroundColor: Colors.transparent,
-              centerTitle: true,
-              title: Text("专辑", style: TextStyle(fontSize: 15)),
-            )),
+              child: SearchBar(
+                searchHint: "输入专辑 ",
+                defaultBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  centerTitle: true,
+                  title: Text(
+                    '输入专辑',
+                    style: new TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ),
+              ),
+            ),
           ),
           preferredSize: Size(double.infinity, 60)),
       body: _albumsBuilder(),
