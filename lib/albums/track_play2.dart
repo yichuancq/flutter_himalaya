@@ -43,7 +43,7 @@ enum PlayerState { stopped, playing, paused }
 class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     with SingleTickerProviderStateMixin, TickerProviderStateMixin {
   //
-  List<int> color_Rgb;
+  List<int> color_rgb;
   String musicUrl;
 
   //动画控制器
@@ -138,7 +138,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     // 提取网络图片的主要颜色
     await getColorFromUrl("${_albums.coverUrlMiddle}").then((color) {
       setState(() {
-        color_Rgb = color;
+        color_rgb = color;
         print(color); // [R,G,B]
       });
     });
@@ -434,9 +434,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                       //动态获取封面背景色
                       color: Color.fromARGB(
                           200,
-                          color_Rgb == null ? 0 : color_Rgb[0],
-                          color_Rgb == null ? 0 : color_Rgb[1],
-                          color_Rgb == null ? 0 : color_Rgb[2]),
+                          color_rgb == null ? 0 : color_rgb[0],
+                          color_rgb == null ? 0 : color_rgb[1],
+                          color_rgb == null ? 0 : color_rgb[2]),
                     ),
                     //头部整个背景颜色
                     height: double.infinity,
