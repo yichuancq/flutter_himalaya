@@ -14,6 +14,7 @@ import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_himalaya/vo/track_item_service.dart';
 import 'my_painter.dart';
+import 'dart:math' as math;
 
 Albums _albums;
 Tracks _tracks;
@@ -45,6 +46,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
   //
   List<int> color_rgb;
   String musicUrl;
+
+  //唱片指针旋转度
+  double _angleValue = -math.pi / 12;
 
   //动画控制器
   AnimationController albumController;
@@ -293,9 +297,13 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     setState(() {
       playFlag = !playFlag;
       if (playFlag) {
+        //播放时，指针归位
+        _angleValue = 0;
         _play();
         play();
       } else {
+        //停止播放时，指针移出唱片外
+        _angleValue = -math.pi / 12;
         _pause();
         stop();
       }
@@ -423,7 +431,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
               background: Stack(
+                alignment: AlignmentDirectional.topCenter,
                 children: <Widget>[
+                  //头部背景图片
                   new Image(
                     image: new AssetImage('assets/images/bg01.jpeg'),
                     fit: BoxFit.fitWidth,
@@ -442,10 +452,11 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                     height: double.infinity,
                     child: Column(
                       children: <Widget>[
-                        SizedBox(
-                          height: 100,
-                        ),
 //                    _ablumConver(),
+                        SizedBox(
+                          height: 80,
+                        ),
+                        //唱片
                         _widgetAlbumsPlayer(),
                         SizedBox(
                           height: 20,
@@ -469,11 +480,35 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                         ),
                         // 线性进度条高度指定为3
                         SizedBox(
-                          height: 80,
+                          height: 60,
                           child: _bottomBar(),
                         ),
                       ],
                     ),
+                  ),
+                  //定位指针
+                  new Positioned(
+                    top: 50,
+                    right: 130,
+                    child: Transform(
+                      //旋转90度
+                      alignment: Alignment.topRight, //相对于坐标系原点的对齐方式
+                      transform: new Matrix4.rotationZ(_angleValue), // 旋转
+                      child: Image.asset(
+                        "assets/images/needle.png",
+                      ),
+                    ),
+                  ),
+                  //定位指针point
+                  new Positioned(
+                    top: 37,
+                    right: 117.5,
+                    child: SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: Image.asset(
+                          "assets/images/needle-point.png",
+                        )),
                   ),
                 ],
               ),
