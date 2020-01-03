@@ -33,7 +33,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-//  Size size = MediaQuery
-//      .of(context)
-//      .size;
-///

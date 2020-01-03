@@ -10,6 +10,7 @@ import 'package:flutter_himalaya/vo/search.dart';
 
 Albums _albums;
 AlbumContent _albumContent;
+
 class AlbumsItemList extends StatefulWidget {
   final Albums albums;
 
@@ -196,7 +197,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
 
   void loadData() async {
     //getTracksList(int albumId)
-
+//    await getXimalaya();
     //TrackDto trackDto2 = await getTracksList2(_albums.id);
     TrackDto trackDto = await getTracksList2(_albums.id);
     print("trackDto==${trackDto}}");

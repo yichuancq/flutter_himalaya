@@ -22,3 +22,7 @@ https://www.ximalaya.com/revision/search/main?core=all&kw=%E8%BD%BB%E9%9F%B3%E4%
 33382f95f7913d14d86267f180e0310b(61)1577110354445(10)1577110222593
 
 md5(ximalaya-服务器时间戳) +(100以内的随机数) + 服务器时间戳 + (100以内的随机数) + 现在的时间戳
+
+#这个地址就是返回服务器时间戳的接口
+https://www.ximalaya.com/revision/time
+

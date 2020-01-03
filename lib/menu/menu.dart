@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_himalaya/albums/albums_cardview_list.dart';
 import 'package:flutter_himalaya/albums/my_painter.dart';
 import 'package:flutter_himalaya/me/me_page.dart';
+import 'package:flutter_himalaya/menu/expand_down_menu.dart';
 
 class MenuPage extends StatefulWidget {
   @override
@@ -263,7 +264,8 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
   void onTabPageRoute() {
     ///ReportPage
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new MePage();
+      return new ExpandDownMenuPage();
+      // return new MePage();
     }));
     print("me..");
   }

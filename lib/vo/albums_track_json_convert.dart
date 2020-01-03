@@ -33,9 +33,6 @@ Future<TrackDto> getTracksList(int albumId) async {
   return album;
 }
 
-//
-//
-///// 专辑明细播放列表
 Future<TrackDto> getTracksList2(int albumId) async {
   try {
     Map<String, dynamic> headers = new Map();
@@ -49,7 +46,7 @@ Future<TrackDto> getTracksList2(int albumId) async {
         new Options(headers: headers, responseType: ResponseType.plain);
     //https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=15000&pageNum=1
     final String url =
-        "https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=${albumId}&pageNum=2";
+        "https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=${albumId}&pageNum=1";
     Response response = await Dio().get(url, options: options);
 //    print("" + response.request.baseUrl);
     if (response.statusCode == 200) {
@@ -62,4 +59,45 @@ Future<TrackDto> getTracksList2(int albumId) async {
   } catch (e) {
     print(e);
   }
+  //https://www.ximalaya.com/
+}
+
+//
+///// 专辑明细播放列表
+void getXimalaya() async {
+  try {
+    //md5(ximalaya-服务器时间戳) +(100以内的随机数) + 服务器时间戳 + (100以内的随机数) + 现在的时间戳
+    //xm-sign
+//    /1e354564c36cc50ae3c6397dddbd00ae(62)1577629053115(33)1577628976844
+    Map<String, dynamic> headers = new Map();
+    //注意这个
+    //responseType: ResponseType.plain
+    headers['Cookie'] = "";
+    Options options =
+        new Options(headers: headers, responseType: ResponseType.plain);
+    //https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=15000&pageNum=1
+    final String url =
+        "https://www.ximalaya.com/revision/seo/getTdk?typeName=SEARCH&uri=%2Fsearch%2F%E9%80%81%E5%88%AB%20%E6%9C%B4%E6%A0%91";
+    //https://www.ximalaya.com/revision/seo/getTdk?typeName=SEARCH&uri=%2Fsearch%2F%E9%80%81%E5%88%AB%20%E6%9C%B4%E6%A0%91
+    //Request Method: GET
+    Response response = await Dio().get(url, options: options);
+//    print("" + response.request.baseUrl);
+    if (response.statusCode == 200) {
+      //cookie
+      bool sign = response.extra.containsKey('xm-sign');
+
+      print("has sign:${sign}");
+
+      bool haskey = response.extra.containsKey("user-agent");
+      print("has key:${haskey}");
+
+      print(response.request.uri);
+      String result = response.data.toString();
+      print(result);
+      final jsonMap = json.decode(result);
+    }
+  } catch (e) {
+    print(e);
+  }
+  //https://www.ximalaya.com/
 }

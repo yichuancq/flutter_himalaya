@@ -31,7 +31,10 @@ dependencies:
   color_thief_flutter: ^1.0.1
   #search bar
   loader_search_bar: ^1.0.3+3
-# audioplayers: ^0.13.1
+  #flutter_redux
+  flutter_redux: ^0.6.0
+  #menu
+  dropdown_menu: ^1.1.0
 
 dev_dependencies:
   flutter_test:
