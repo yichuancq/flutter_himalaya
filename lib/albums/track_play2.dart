@@ -386,9 +386,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
       if (playFlag) {
         //播放时，指针归位
         _angleValue = 0;
-//        _play(_songData.nextSong);
         _play(_tracks);
-        // _play(_tracks);
         play();
       } else {
         //停止播放时，指针移出唱片外
@@ -663,8 +661,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     Tracks tracks = _trackList[position];
     return GestureDetector(
       onTap: () {
-        //changePlayItem(position);
-        // TODO play music
       },
       child: ListTile(
         contentPadding: EdgeInsets.all(2),
@@ -796,7 +792,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-//      backgroundColor: Colors.white,
       body: _nestedScrollView(),
     );
   }
