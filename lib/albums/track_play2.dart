@@ -13,6 +13,7 @@ import 'package:flutter_himalaya/model/track_item.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_himalaya/vo/track_item_service.dart';
+import 'album_songs_data.dart';
 import 'my_painter.dart';
 import 'dart:math' as math;
 
@@ -51,8 +52,12 @@ enum PlayerState { stopped, playing, paused }
 
 class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     with SingleTickerProviderStateMixin, TickerProviderStateMixin {
-  //
+  //播放专辑列表
+  SongData _songData;
+
   List<int> color_rgb;
+
+  //音乐的URL
   String musicUrl;
 
   //唱片指针旋转度
@@ -160,11 +165,15 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
   void initState() {
     super.initState();
     //
+    _songData = SongData(_trackList);
+    //进入第一次默认播放第一首
+    _tracks = _songData.nextSong;
+    //
     _getMainColor();
-    _loadMusicUrl();
+    //
     _initAudioPlayer();
+    //
     _initPlayAblum();
-
     //第一次进入默认不播放动画
     stop();
     _scrollViewController = ScrollController(initialScrollOffset: 0.0);
@@ -229,21 +238,54 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
   }
 
   ///音乐地址
-  void _loadMusicUrl() async {
-    TruckItemDto truckItemDto = await getTruckItemMusic(_tracks.trackId);
+  Future<String> _loadMusicUrl(final int trackId) async {
+    TruckItemDto truckItemDto = await getTruckItemMusic(trackId);
+
     if (truckItemDto != null) {
-      //音乐地址
-      musicUrl = truckItemDto.data.src;
+      setState(() {
+        //音乐地址
+        musicUrl = truckItemDto.data.src;
+      });
     }
+    return musicUrl;
   }
 
+  ///
+  Future<int> _play(final Tracks tracks) async {
+    final musicUrl = await _loadMusicUrl(tracks.trackId);
+
+    final playPosition = (_position != null &&
+            _duration != null &&
+            _position.inMilliseconds > 0 &&
+            _position.inMilliseconds < _duration.inMilliseconds)
+        ? _position
+        : null;
+    final result = await _audioPlayer.play(musicUrl,
+        isLocal: null, position: playPosition);
+
+    ///
+    if (result == 1) {
+      setState(() {
+        //
+        _tracks = tracks;
+        _playerState = PlayerState.playing;
+      });
+    }
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      _audioPlayer.setPlaybackRate(playbackRate: 1.0);
+    }
+
+    return result;
+  }
+
+  ///_pause
   Future<int> _pause() async {
     final result = await _audioPlayer.pause();
     if (result == 1) setState(() => _playerState = PlayerState.paused);
     return result;
   }
 
-//
+  ///_stop
   Future<int> _stop() async {
     final result = await _audioPlayer.stop();
     if (result == 1) {
@@ -253,6 +295,55 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
       });
     }
     return result;
+  }
+
+  ///_next
+  Future _next() async {
+    print('下一首');
+    _stop();
+    stop();
+    setState(() {
+      _duration = Duration(seconds: 0);
+      _position = Duration(seconds: 0);
+
+      _play(_songData.nextSong);
+      play();
+      //_play(s.nextSong);
+    });
+  }
+
+  ///
+  Future _prev() async {
+    print('上一首');
+    _stop();
+    stop();
+    //
+    setState(() {
+      _duration = Duration(seconds: 0);
+      _position = Duration(seconds: 0);
+
+      _play(_songData.prevSong);
+      play();
+    });
+
+    // _play(s.prevSong);
+  }
+
+  ///选集播放
+  Future<void> changePlayItem(int position) async {
+    Tracks tracks = _trackList[position];
+    final result = await _audioPlayer.stop();
+    //
+    if (result == 1) {
+      setState(() {
+        _duration = Duration(seconds: 0);
+        _position = Duration(seconds: 0);
+        _tracks = tracks;
+        print("选播  in： ${tracks.index}, ${tracks.title}");
+        _play(_tracks);
+        play();
+      });
+    }
   }
 
   void _onComplete() {
@@ -272,25 +363,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     super.deactivate();
   }
 
-  ///
-  Future<int> _play() async {
-    final playPosition = (_position != null &&
-            _duration != null &&
-            _position.inMilliseconds > 0 &&
-            _position.inMilliseconds < _duration.inMilliseconds)
-        ? _position
-        : null;
-    final result = await _audioPlayer.play(musicUrl,
-        isLocal: null, position: playPosition);
-    if (result == 1) setState(() => _playerState = PlayerState.playing);
-
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
-      _audioPlayer.setPlaybackRate(playbackRate: 1.0);
-    }
-
-    return result;
-  }
-
   ///暂停
   void stop() {
     albumController.stop();
@@ -308,7 +380,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
       if (playFlag) {
         //播放时，指针归位
         _angleValue = 0;
-        _play();
+//        _play(_songData.nextSong);
+        _play(_tracks);
+        // _play(_tracks);
         play();
       } else {
         //停止播放时，指针移出唱片外
@@ -577,36 +651,13 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     );
   }
 
-  ///选集播放
-  void changePlayItem(int position) {
-    Tracks tracks = _trackList[position];
-    print("选播： ${tracks.index}, ${tracks.title}");
-//    final result = await _audioPlayer.stop();
-//    //
-//    if (result == 1) {
-//      setState(() {
-//        deactivate();
-//        _playerState = PlayerState.stopped;
-//        _duration = Duration(seconds: 0);
-//        _position = Duration(seconds: 0);
-//        if (_playerState == PlayerState.stopped) {
-//          _tracks = tracks;
-//          _loadMusicUrl();
-//          print("选播  in： ${tracks.index}, ${tracks.title}");
-//          _play();
-//          play();
-//        }
-//      });
-//  }
-  }
-
 // 专辑列表
   Widget _albumItemContentBuilder(int position) {
     //Tracks
     Tracks tracks = _trackList[position];
     return GestureDetector(
       onTap: () {
-        changePlayItem(position);
+        //changePlayItem(position);
         // TODO play music
       },
       child: ListTile(
@@ -617,8 +668,10 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
           style: TextStyle(fontSize: 14),
         ),
         trailing: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.play_circle_filled),
+          onPressed: () {
+            changePlayItem(position);
+          },
+          icon: Icon(Icons.play_circle_outline),
         ),
       ),
     );
@@ -695,7 +748,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                 //返回前一首
                 IconButton(
                   icon: Icon(Icons.skip_previous, color: Colors.white),
-                  onPressed: () {},
+                  onPressed: () {
+                    _prev();
+                  },
                 ),
                 // 播放，暂停
                 IconButton(
@@ -713,7 +768,9 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                 //一下首
                 IconButton(
                   icon: Icon(Icons.skip_next, color: Colors.white),
-                  onPressed: () {},
+                  onPressed: () {
+                    _next();
+                  },
                 ),
 
                 IconButton(
