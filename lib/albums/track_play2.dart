@@ -346,8 +346,14 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     }
   }
 
+  ///播放完成后自动播放下一曲
   void _onComplete() {
-    setState(() => _playerState = PlayerState.stopped);
+    //
+    if (_songData.currentIndex >= _songData.length) {
+      setState(() => _playerState = PlayerState.stopped);
+    } else {
+      _next();
+    }
   }
 
   ///结束
