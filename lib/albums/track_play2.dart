@@ -660,15 +660,15 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
     //Tracks
     Tracks tracks = _trackList[position];
     return GestureDetector(
-      onTap: () {
-      },
+      onTap: () {},
       child: ListTile(
-        contentPadding: EdgeInsets.all(2),
+        contentPadding: EdgeInsets.all(1),
         leading: Text("${tracks.index}"),
         title: Text(
           "${tracks.title}",
           style: TextStyle(fontSize: 14),
         ),
+        subtitle: Text("  更新时间：${tracks.createDateFormat}"),
         trailing: IconButton(
           onPressed: () {
             changePlayItem(position);
@@ -698,7 +698,7 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
                 },
                 itemBuilder: (BuildContext context, int position) {
                   return Padding(
-                      padding: EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(4.0),
                       child: _albumItemContentBuilder(
                           position)); //_albumItemContentBuilder(position);
                 }),
@@ -709,7 +709,6 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
   ///
   Widget _bottomBar() {
     return Container(
-//      color: Colors.white,
       height: 50,
       child: Column(
         children: <Widget>[
