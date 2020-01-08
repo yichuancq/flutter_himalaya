@@ -663,7 +663,16 @@ class _TrackItemPlayState<Albums> extends State<TrackItemPlay2>
       onTap: () {},
       child: ListTile(
         contentPadding: EdgeInsets.all(1),
-        leading: Text("${tracks.index}"),
+        //序号居中
+        leading: SizedBox(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("${tracks.index}"),
+          ],
+        )),
+
+        //
         title: Text(
           "${tracks.title}",
           style: TextStyle(fontSize: 14),
