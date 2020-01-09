@@ -121,13 +121,17 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           SizedBox(
-            height: 50,
+            height: 20,
           ),
-          _ablumConver(),
+          Text(
+            "${this.playTracks.title}",
+            style: TextStyle(fontSize: 15),
+          ),
           SizedBox(
             height: 20,
           ),
-          Text("${this.playTracks.title}"),
+          _ablumConver(),
+
           //
           SizedBox(
             height: 10,
@@ -139,29 +143,56 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
             child: slider(),
           ),
           //
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              OutlineButton(
-                child: Text("上一首"),
-                onPressed: () {
-                  _prev();
-                },
-              ),
-              OutlineButton(
-                child: Text(playFlag == false ? "播放" : "暂停"),
-                onPressed: () {
-//                  _play();
-                  this.controlPlay();
-                },
-              ),
-              OutlineButton(
-                child: Text("下一首"),
-                onPressed: () {
-                  _next();
-                },
-              ),
-            ],
+
+          SizedBox(
+            height: 40,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.reorder, color: Colors.black),
+                  onPressed: () {
+                    //_showModalSheet();
+                  },
+                ),
+
+                //返回前一首
+                IconButton(
+                  icon: Icon(Icons.skip_previous, color: Colors.black),
+                  onPressed: () {
+                    _prev();
+                  },
+                ),
+                // 播放，暂停
+                IconButton(
+                  //判断是否播放中，返回不同按钮状态
+                  icon: playFlag == true
+                      ? Icon(Icons.pause, color: Colors.red) //暂停
+                      : Icon(Icons.play_arrow, color: Colors.black),
+                  // 播放
+                  onPressed: () {
+                    setState(() {
+                      controlPlay();
+                    });
+                  },
+                ),
+                //一下首
+                IconButton(
+                  icon: Icon(Icons.skip_next, color: Colors.black),
+                  onPressed: () {
+                    _next();
+                  },
+                ),
+
+                IconButton(
+                  icon: Icon(Icons.timer, color: Colors.black),
+                  onPressed: () {
+                    // _showModalSheet();
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -178,7 +209,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     return new Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("${this.playTracks.title}", style: TextStyle(fontSize: 15)),
+        title: Text("${this.playTracks.index}", style: TextStyle(fontSize: 15)),
       ),
       body: _body(),
     );
