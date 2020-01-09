@@ -317,7 +317,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
             Text("专辑里的声音(${_tracks.length})"),
             //
             IconButton(
-              icon: Icon(Icons.format_line_spacing, color: Colors.black),
+              icon: Icon(Icons.format_line_spacing, color: Colors.grey),
               onPressed: () {
                 setState(() {});
                 _reversOrder();
