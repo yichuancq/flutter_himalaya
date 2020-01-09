@@ -110,7 +110,8 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
   }
 
   Widget _body() {
-    var timeText = processText();
+    var process = processWidget();
+    var slider = sliderWidget;
     return Container(
       alignment: Alignment.topCenter,
       //头部整个背景颜色
@@ -129,9 +130,15 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
           Text("${this.playTracks.title}"),
           //
           SizedBox(
-            height: 20,
+            height: 10,
           ),
-          timeText,
+          process,
+          //process bar
+          SizedBox(
+            height: 30,
+            child: slider(),
+          ),
+          //
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[

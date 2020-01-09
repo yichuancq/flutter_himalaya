@@ -59,8 +59,27 @@ abstract class PlayerManager<T> extends State {
     this.playTracks = tracks;
   }
 
-  ///
-  Widget processText() {
+  ///sliderValue
+  ///播放进度条
+  Widget sliderWidget() {
+    return Slider(
+      activeColor: Colors.redAccent,
+      inactiveColor: Colors.red,
+      value: (_position != null &&
+              _duration != null &&
+              _position.inMilliseconds > 0 &&
+              _position.inMilliseconds < _duration.inMilliseconds)
+          ? _position.inMilliseconds / _duration.inMilliseconds
+          : 0.0,
+      onChanged: (newValue) {
+        final Position = newValue * _duration.inMilliseconds;
+        _audioPlayer.seek(Duration(milliseconds: Position.round()));
+      },
+    );
+  }
+
+  ///播放进度文字
+  Widget processWidget() {
     return Text(
         _position != null
             ? '${_positionText ?? ''} / ${_durationText ?? ''}'
