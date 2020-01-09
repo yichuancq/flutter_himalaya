@@ -298,24 +298,30 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
     );
   }
 
+  ///逆序
+  void _reversOrder() {
+    print("reOrder...");
+    Iterable iterable = _tracks.reversed;
+    setState(() {
+      _tracks = iterable.toList();
+      print("_reversOrder...");
+    });
+  }
+
   Widget _widgetTrackInfo() {
     return Container(
         padding: EdgeInsets.only(left: 5, right: 5, bottom: 0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Expanded(
-              flex: 4,
-              child: Text("专辑里的声音(${_tracks.length})"),
-            ),
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: <Widget>[
-                  Text("顺序"),
-                  Text("|"),
-                  Text("倒序"),
-                ],
-              ),
+            Text("专辑里的声音(${_tracks.length})"),
+            //
+            IconButton(
+              icon: Icon(Icons.format_line_spacing, color: Colors.black),
+              onPressed: () {
+                setState(() {});
+                _reversOrder();
+              },
             ),
           ],
         ));
