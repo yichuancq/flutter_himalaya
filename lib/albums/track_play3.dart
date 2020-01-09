@@ -1,22 +1,15 @@
 import 'dart:ui';
-import 'dart:async';
-import 'package:color_thief_flutter/color_thief_flutter.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_himalaya/me/announcer_page.dart';
-import 'package:flutter_himalaya/me/content_page.dart';
 import 'package:flutter_himalaya/model/album.dart';
-import 'package:flutter_himalaya/model/track_item.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_himalaya/player/player_manager.dart';
-import 'package:flutter_himalaya/vo/track_item_service.dart';
+
 import 'album_songs_data.dart';
-import 'my_painter.dart';
-import 'dart:math' as math;
 
 Albums _albums;
 Tracks _tracks;
@@ -50,10 +43,9 @@ class TrackItemPlay3 extends StatefulWidget {
 }
 
 class _TrackItemPlayState<Albums> extends PlayerManager {
+  ///
   @override
   void initState() {
-//    super.context = context;
-    //
     this.setSongData(new SongData(_trackList));
     //
     this.playTracks = _tracks;
@@ -68,10 +60,6 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
 
   void _next() {
     super.next();
-  }
-
-  void _play() {
-    super.play(_tracks);
   }
 
 // 专辑列表
@@ -89,8 +77,6 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
             Text("${tracks.index}"),
           ],
         )),
-
-        //
         title: Text(
           "${tracks.title}",
           style: TextStyle(fontSize: 14),
@@ -233,31 +219,75 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     super.dispose();
   }
 
+  ///逆序
+  void _reversOrder() {
+    print("reOrder...");
+    Iterable iterable = _trackList.reversed;
+    setState(() {
+      _trackList = iterable.toList();
+      this.setSongData(new SongData(_trackList));
+      print("_reversOrder...");
+    });
+  }
+
+  ///
   void showModalSheet() {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10.0),
-            topRight: Radius.circular(10.0),
-          ),
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0),
+          topRight: Radius.circular(10.0),
         ),
-        context: context,
-        builder: (builder) {
-          return new Container(
-            height: 500,
-            child: new ListView.separated(
-                itemCount: _trackList.length,
-                separatorBuilder: (BuildContext context, int position) {
-                  return new Container(height: 0.5, color: Colors.grey);
-                },
-                itemBuilder: (BuildContext context, int position) {
-                  return Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: _albumItemContentBuilder(
-                          position)); //_albumItemContentBuilder(position);
-                }),
-          );
-        });
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          //在这里为了区分，在构建builder的时候将setState方法命名为了setBottomSheetState。
+          builder: (context, setBottomSheetState) {
+            return new Container(
+              height: 500,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 45,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.format_line_spacing,
+                              color: Colors.black),
+                          onPressed: () {
+                            // 排序
+                            _reversOrder();
+                            //
+                            setBottomSheetState(() {});
+                            // _reversOrder();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: new ListView.separated(
+                        itemCount: _trackList.length,
+                        separatorBuilder: (BuildContext context, int position) {
+                          return new Container(height: 0.5, color: Colors.grey);
+                        },
+                        itemBuilder: (BuildContext context, int position) {
+                          return Padding(
+                              padding: EdgeInsets.all(4.0),
+                              child: _albumItemContentBuilder(
+                                  position)); //_albumItemContentBuilder(position);
+                        }),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
