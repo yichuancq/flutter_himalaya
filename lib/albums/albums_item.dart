@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_himalaya/albums/track_play3.dart';
 import 'package:flutter_himalaya/model/album.dart';
@@ -281,25 +282,19 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   }
 
   ///
-  Widget _albumsContentList() {
-    //  Size size = MediaQuery.of(context).size * 0.8;
-    Size size = MediaQuery.of(context).size;
-    return Container(
-//      color: Colors.amber,
-//      padding: EdgeInsets.only(bottom: 20),
-      padding: EdgeInsets.only(bottom: 245),
-      height: size.height,
-      child: ListView.separated(
-          itemCount: _tracks.length,
-          separatorBuilder: (BuildContext context, int index) {
-            return new Container(height: 0.5, color: Colors.grey);
-          },
-          itemBuilder: (BuildContext context, int position) {
-            return Padding(
-                padding: EdgeInsets.all(5.0),
-                child: _albumItemContentBuilder(
-                    position)); //_albumItemContentBuilder(position);
-          }),
+  Widget _albumsListView() {
+    return ListView.separated(
+      scrollDirection: Axis.vertical,
+      itemCount: _tracks.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return new Container(height: 0.5, color: Colors.grey);
+      },
+      itemBuilder: (BuildContext context, int position) {
+        return Padding(
+            padding: EdgeInsets.all(5.0),
+            child: _albumItemContentBuilder(
+                position)); //_albumItemContentBuilder(position);
+      },
     );
   }
 
@@ -328,6 +323,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
 
   //实现构建方法
   _viewBuild() {
+    Size size = MediaQuery.of(context).size;
     if (_albums == null) {
       // 加载菊花
       return Center(
@@ -335,23 +331,25 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
       );
       //
     } else {
-      return Column(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: _headerBuilder(),
-          ),
-          Expanded(
-            flex: 3,
-            child: ListView(
-              children: <Widget>[
-                _widgetTrackInfo(),
-                _albumsContentList(),
-                // _headerBuilder(),
-              ],
+      return new Container(
+        height: size.height,
+        child: Column(
+          children: <Widget>[
+            //表头
+            SizedBox(
+              height: 150,
+              child: _headerBuilder(),
             ),
-          ),
-        ],
+            SizedBox(
+              child: _widgetTrackInfo(),
+            ),
+            //专辑列表
+            Expanded(
+              child: _albumsListView(),
+              // _headerBuilder(),
+            ),
+          ],
+        ),
       );
     }
   }
