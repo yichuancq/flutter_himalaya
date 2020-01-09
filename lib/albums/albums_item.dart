@@ -270,9 +270,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
               Text("${tracks.createDateFormat} 更新"),
             ],
           ),
-//          trailing: IconButton(
-//            icon: Icon(Icons.navigate_next, color: Colors.black),
-//          ),
           //
         ),
       ),
