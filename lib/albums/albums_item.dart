@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_himalaya/albums/track_play2.dart';
 import 'package:flutter_himalaya/albums/track_play3.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/album_content.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
-import 'package:flutter_himalaya/player/player_manager.dart';
 import 'package:flutter_himalaya/vo/albums_track_json_convert.dart';
 import 'package:flutter_himalaya/vo/search.dart';
 
