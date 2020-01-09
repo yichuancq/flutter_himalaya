@@ -68,13 +68,6 @@ abstract class PlayerManager<T> extends State {
         style: TextStyle(fontSize: 15.0, color: Colors.redAccent));
   }
 
-//  void showTracks() {
-//    print(songData.length);
-//    for (var x in songData.songs) {
-//      print(x.title);
-//    }
-//  }
-
   ///音乐地址
   Future<String> _loadMusicUrl(final int trackId) async {
     TruckItemDto truckItemDto = await getTruckItemMusic(trackId);
@@ -91,7 +84,25 @@ abstract class PlayerManager<T> extends State {
   @override
   void initState() {
     _initAudioPlayer();
+    //设置当前播放的索引
+    songData.setCurrentIndex(_playIndex(playTracks));
     super.initState();
+  }
+
+  /// 设置当前播放的索引
+  int _playIndex(Tracks playTracks) {
+    print("_playIndex..");
+    int index = 0;
+    print(songData.length);
+    if (songData.songs.length == 0) {
+      return index;
+    }
+    for (var i = 0; i < songData.songs.length; i++) {
+      if (songData.songs[i].trackId == playTracks.trackId) {
+        index = i;
+      }
+    }
+    return index;
   }
 
   void _initAudioPlayer() {

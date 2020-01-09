@@ -57,27 +57,10 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     this.setSongData(new SongData(_trackList));
     //
     this.playTracks = _tracks;
-    //
-    this.songData.setCurrentIndex(_playIndex(playTracks));
+
     //
     super.initState();
     setState(() {});
-  }
-
-  /// 设置当前播放的索引
-  int _playIndex(Tracks playTracks) {
-    print("_playIndex..");
-    int index = 0;
-    print(songData.length);
-    if (songData.songs.length == 0) {
-      return index;
-    }
-    for (var i = 0; i < songData.songs.length; i++) {
-      if (songData.songs[i].trackId == playTracks.trackId) {
-        index = i;
-      }
-    }
-    return index;
   }
 
   void _prev() {
