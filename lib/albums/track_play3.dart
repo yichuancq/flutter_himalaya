@@ -52,30 +52,59 @@ class TrackItemPlay3 extends StatefulWidget {
 class _TrackItemPlayState<Albums> extends PlayerManager {
   @override
   void initState() {
-    super.context = context;
+//    super.context = context;
     //
     this.setSongData(new SongData(_trackList));
     //
     this.playTracks = _tracks;
-
     //
     super.initState();
     setState(() {});
   }
 
   void _prev() {
-    print("_prev");
     super.prev();
   }
 
   void _next() {
-    print("_next");
     super.next();
   }
 
   void _play() {
-    print("play");
     super.play(_tracks);
+  }
+
+// 专辑列表
+  Widget _albumItemContentBuilder(int position) {
+    //Tracks
+    Tracks tracks = _trackList[position];
+    return GestureDetector(
+      onTap: () {},
+      child: ListTile(
+        //序号居中
+        leading: SizedBox(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("${tracks.index}"),
+          ],
+        )),
+
+        //
+        title: Text(
+          "${tracks.title}",
+          style: TextStyle(fontSize: 14),
+        ),
+        subtitle: Text("  更新时间：${tracks.createDateFormat}"),
+        trailing: IconButton(
+          onPressed: () {
+            //
+            changePlayItem(position);
+          },
+          icon: Icon(Icons.play_circle_outline),
+        ),
+      ),
+    );
   }
 
   Widget _ablumConver() {
@@ -153,7 +182,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
                 IconButton(
                   icon: Icon(Icons.reorder, color: Colors.black),
                   onPressed: () {
-                    //_showModalSheet();
+                    showModalSheet();
                   },
                 ),
 
@@ -202,6 +231,33 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void showModalSheet() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+        ),
+        context: context,
+        builder: (builder) {
+          return new Container(
+            height: 500,
+            child: new ListView.separated(
+                itemCount: _trackList.length,
+                separatorBuilder: (BuildContext context, int position) {
+                  return new Container(height: 0.5, color: Colors.grey);
+                },
+                itemBuilder: (BuildContext context, int position) {
+                  return Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: _albumItemContentBuilder(
+                          position)); //_albumItemContentBuilder(position);
+                }),
+          );
+        });
   }
 
   @override

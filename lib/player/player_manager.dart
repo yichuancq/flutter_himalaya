@@ -18,8 +18,8 @@ abstract class PlayerManager<T> extends State {
 
   AudioPlayer audioPlayer = AudioPlayer();
 
-  //region 变量
-  BuildContext context;
+//  //region 变量
+//  BuildContext context;
 
   //播放专辑列表
   SongData songData;
@@ -220,6 +220,22 @@ abstract class PlayerManager<T> extends State {
     return result;
   }
 
+  ///选集播放
+  Future<void> changePlayItem(int position) async {
+    Tracks tracks = songData.songs[position];
+    final result = await _audioPlayer.stop();
+    //
+    if (result == 1) {
+      setState(() {
+        _duration = Duration(seconds: 0);
+        _position = Duration(seconds: 0);
+        playTracks = tracks;
+        print("选播  in： ${tracks.index}, ${tracks.title}");
+        play(playTracks);
+      });
+    }
+  }
+
   ///点击唱片控制运行
   void controlPlay() {
     setState(() {
@@ -267,14 +283,23 @@ abstract class PlayerManager<T> extends State {
   }
 
   @override
-  void dispose() {
+  void deactivate() {
+    super.deactivate();
+  }
+
+  void stopPlayMusic() {
+    //
     _audioPlayer.stop();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
     _playerCompleteSubscription?.cancel();
     _playerErrorSubscription?.cancel();
     _playerStateSubscription?.cancel();
+  }
 
+  @override
+  void dispose() {
+    stopPlayMusic();
     super.dispose();
   }
 
