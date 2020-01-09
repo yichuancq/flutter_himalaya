@@ -194,6 +194,26 @@ abstract class PlayerManager<T> extends State {
     return result;
   }
 
+  ///_pause
+  Future<int> _pause() async {
+    final result = await _audioPlayer.pause();
+    if (result == 1) setState(() => _playerState = PlayerState.paused);
+    return result;
+  }
+
+  ///点击唱片控制运行
+  void controlPlay() {
+    setState(() {
+      if (!playFlag) {
+        play(playTracks);
+      } else {
+        //停止播放时，指针移出唱片外
+        _pause();
+      }
+      playFlag = !playFlag;
+    });
+  }
+
   ///下一首
   Future next() async {
     print('下一首');
@@ -201,7 +221,12 @@ abstract class PlayerManager<T> extends State {
     setState(() {
       _duration = Duration(seconds: 0);
       _position = Duration(seconds: 0);
-      play(songData.nextSong);
+      if (playFlag) {
+        play(songData.nextSong);
+      } else {
+        //非播放暂停改变只索引
+        playTracks = songData.nextSong;
+      }
     });
   }
 
@@ -213,7 +238,12 @@ abstract class PlayerManager<T> extends State {
     setState(() {
       _duration = Duration(seconds: 0);
       _position = Duration(seconds: 0);
-      play(songData.prevSong);
+      if (playFlag) {
+        play(songData.prevSong);
+      } else {
+        //非播放暂停改变只索引
+        playTracks = songData.prevSong;
+      }
     });
   }
 

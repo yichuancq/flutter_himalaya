@@ -142,9 +142,10 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
                 },
               ),
               OutlineButton(
-                child: Text("play"),
+                child: Text(playFlag == false ? "播放" : "暂停"),
                 onPressed: () {
-                  _play();
+//                  _play();
+                  this.controlPlay();
                 },
               ),
               OutlineButton(
