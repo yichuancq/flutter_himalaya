@@ -231,6 +231,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   }
 
   Widget _albumItemContentBuilder(int position) {
+    //
     Tracks tracks = _tracks[position];
     return GestureDetector(
       onTap: () {
@@ -238,44 +239,38 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
         onTab(tracks);
       },
       child: Container(
-        height: 50,
-        padding: EdgeInsets.only(left: 5, right: 5),
-        child: SizedBox(
-          child: Row(
-            //对齐方式
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListTile(
+          //序号居中
+          leading: SizedBox(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("${tracks.index}"),
+              ],
+            ),
+          ),
+          title: Text(
+            "${tracks.title}",
+            style: TextStyle(fontSize: 14),
+          ),
+          subtitle: Row(
             children: <Widget>[
-              Text("${tracks.index}"),
               SizedBox(
                 width: 10,
               ),
-              Expanded(
-                flex: 3,
-                child: Text("${tracks.title}"),
+              Icon(
+                Icons.headset,
+                size: 18,
+                color: Colors.grey,
               ),
+              Text("${tracks.playCount % 10000}万"),
               SizedBox(
-                width: 1,
+                width: 20,
               ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.headset,
-                      size: 18,
-                      color: Colors.grey,
-                    ),
-                    Text("${tracks.playCount % 10000}万"),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Text("${tracks.createDateFormat}"),
-              ),
+              Text("${tracks.createDateFormat} 更新"),
             ],
           ),
+          //
         ),
       ),
     );
