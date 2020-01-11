@@ -92,7 +92,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     );
   }
 
-  Widget _ablumConver() {
+  Widget _albumConver() {
     return new Opacity(
       //透明度
       opacity: 1,
@@ -144,7 +144,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
           SizedBox(
             height: 20,
           ),
-          _ablumConver(),
+          _albumConver(),
 
           //
           SizedBox(
@@ -220,14 +220,11 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
 
   ///逆序
   void _reversOrder() {
-    print("reOrder...");
     Iterable iterable = _trackList.reversed;
     setState(() {
       _trackList = iterable.toList();
       this.initPlayerManager(
           playTracks: playTracks, songData: SongData(_trackList));
-      //this.setSongData(new SongData(_trackList));
-      print("_reversOrder...");
     });
   }
 
