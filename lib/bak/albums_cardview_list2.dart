@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../albums/my_painter.dart';
+import '../util/my_painter.dart';
 
 class AlbumsList extends StatefulWidget {
   @override

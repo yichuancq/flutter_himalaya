@@ -10,7 +10,7 @@ import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:flutter_himalaya/player/player_manager.dart';
 
-import 'album_songs_data.dart';
+import '../model/album_songs_data.dart';
 
 Albums _albums;
 Tracks _tracks;

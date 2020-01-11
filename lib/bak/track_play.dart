@@ -5,7 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_himalaya/albums/my_painter.dart';
+import 'package:flutter_himalaya/util/my_painter.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/track_item.dart';
 import 'package:flutter_himalaya/model/tracks.dart';

@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/diagnostics.dart';
-import 'package:flutter_himalaya/albums/album_songs_data.dart';
+import 'package:flutter_himalaya/model/album_songs_data.dart';
 import 'package:flutter_himalaya/model/track_item.dart';
 import 'dart:async';
 

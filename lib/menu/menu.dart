@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_himalaya/albums/albums_cardview_list.dart';
 import 'package:flutter_himalaya/albums/hot_recommends.dart';
-import 'package:flutter_himalaya/albums/my_painter.dart';
+import 'package:flutter_himalaya/util/my_painter.dart';
 import 'package:flutter_himalaya/menu/expand_down_menu.dart';
 
 class MenuPage extends StatefulWidget {
