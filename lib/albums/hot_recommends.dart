@@ -6,6 +6,7 @@ import 'package:flutter_himalaya/vo/recommends_json_convert.dart';
 
 import 'albums_item.dart';
 
+///热门推荐
 class HotRecommends extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -51,25 +52,25 @@ class _HotRecommendsState extends State {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, final int index) {
-          Datas datas = dataRecommendsList[index];
+          Datas item = dataRecommendsList[index];
           //作者
-          Announcer _announcer = new Announcer(nickname: datas.nickname);
+          Announcer _announcer = new Announcer(nickname: item.nickname);
           //专辑封装
           Albums _albums = new Albums(
-              id: datas.albumId,
-              albumTitle: datas.title,
+              id: item.albumId,
+              albumTitle: item.title,
               kind: "album",
-              playCount: datas.playsCounts,
+              playCount: item.playsCounts,
               shareCount: 0,
-              shortIntro: datas.intro,
-              coverUrlMiddle: datas.coverMiddle,
+              shortIntro: item.intro,
+              coverUrlMiddle: item.coverMiddle,
               announcer: _announcer);
 
           return Card(
             child: GestureDetector(
               onTap: () {
                 onTab(_albums);
-                print("on item :${datas.title}");
+                print("on item :${item.title}");
               },
               child: SizedBox(
                 width: 150,
@@ -82,7 +83,7 @@ class _HotRecommendsState extends State {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(5.0),
                       child: Image.network(
-                        datas.coverMiddle,
+                        item.coverMiddle,
                         fit: BoxFit.cover,
                         width: 100,
                         height: 100,
@@ -92,7 +93,7 @@ class _HotRecommendsState extends State {
                       height: 10,
                     ),
                     Text(
-                      "${datas.title}",
+                      "${item.title}",
                       softWrap: true,
                       textAlign: TextAlign.center,
                       maxLines: 2,
