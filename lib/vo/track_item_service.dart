@@ -19,7 +19,7 @@ Future<TruckItemDto> getTruckItemMusic(int trackId) async {
         "https://www.ximalaya.com/revision/play/v1/audio?id=${trackId}&ptype=1";
     Response response = await Dio().get(url, options: options);
     if (response.statusCode == 200) {
-      print(response.request.uri);
+//      print(response.request.uri);
       String result = response.data.toString();
       final jsonMap = json.decode(result);
       return TruckItemDto.fromJson(jsonMap);

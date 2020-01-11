@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:color_thief_flutter/color_thief_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -43,11 +44,25 @@ class TrackItemPlay3 extends StatefulWidget {
 }
 
 class _TrackItemPlayState<Albums> extends PlayerManager {
+  List<int> color_rgb;
+
+  void _getMainColor() async {
+    // 提取网络图片的主要颜色
+    await getColorFromUrl("${_albums.coverUrlMiddle}").then((color) {
+      setState(() {
+        color_rgb = color;
+        print(color); // [R,G,B]
+      });
+    });
+  }
+
   ///
   @override
   void initState() {
     // 初始化数据
     this.initPlayerManager(playTracks: _tracks, songData: SongData(_trackList));
+    //
+    _getMainColor();
     //
     super.initState();
   }
@@ -91,11 +106,12 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     );
   }
 
-  Widget _albumConver() {
+  Widget _albumCover() {
     return new Opacity(
       //透明度
       opacity: 1,
       child: Container(
+        //头部整个背景颜色
         alignment: Alignment.center,
         width: 150,
         height: 150,
@@ -122,91 +138,146 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     );
   }
 
-  Widget _body() {
+  ///
+  Widget _playerControlBar() {
+    return SizedBox(
+      height: 40,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.reorder, color: Colors.white),
+            onPressed: () {
+              showModalSheet();
+            },
+          ),
+
+          //返回前一首
+          IconButton(
+            icon: Icon(Icons.skip_previous, color: Colors.white),
+            onPressed: () {
+              _prev();
+            },
+          ),
+          // 播放，暂停
+          IconButton(
+            //判断是否播放中，返回不同按钮状态
+            icon: playFlag == true
+                ? Icon(Icons.pause, color: Colors.red) //暂停
+                : Icon(Icons.play_arrow, color: Colors.white),
+            // 播放
+            onPressed: () {
+              setState(() {
+                controlPlay();
+              });
+            },
+          ),
+          //一下首
+          IconButton(
+            icon: Icon(Icons.skip_next, color: Colors.white),
+            onPressed: () {
+              _next();
+            },
+          ),
+
+          IconButton(
+            icon: Icon(Icons.timer, color: Colors.white),
+            onPressed: () {
+              // _showModalSheet();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  ///
+  StatefulWidget _nestedScrollView() {
     var process = processWidget();
     var slider = sliderWidget;
-    return Container(
-      alignment: Alignment.topCenter,
-      //头部整个背景颜色
-      height: double.infinity,
-
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            "${this.playTracks.title}",
-            style: TextStyle(fontSize: 15),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          _albumConver(),
-
-          //
-          SizedBox(
-            height: 10,
-          ),
-          process,
-          //process bar
-          SizedBox(
-            height: 30,
-            child: slider(),
-          ),
-          //
-
-          SizedBox(
-            height: 40,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.reorder, color: Colors.black),
-                  onPressed: () {
-                    showModalSheet();
-                  },
-                ),
-
-                //返回前一首
-                IconButton(
-                  icon: Icon(Icons.skip_previous, color: Colors.black),
-                  onPressed: () {
-                    _prev();
-                  },
-                ),
-                // 播放，暂停
-                IconButton(
-                  //判断是否播放中，返回不同按钮状态
-                  icon: playFlag == true
-                      ? Icon(Icons.pause, color: Colors.red) //暂停
-                      : Icon(Icons.play_arrow, color: Colors.black),
-                  // 播放
-                  onPressed: () {
-                    setState(() {
-                      controlPlay();
-                    });
-                  },
-                ),
-                //一下首
-                IconButton(
-                  icon: Icon(Icons.skip_next, color: Colors.black),
-                  onPressed: () {
-                    _next();
-                  },
-                ),
-
-                IconButton(
-                  icon: Icon(Icons.timer, color: Colors.black),
-                  onPressed: () {
-                    // _showModalSheet();
-                  },
-                ),
-              ],
+    //
+    return new NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+            pinned: true,
+            floating: true,
+            expandedHeight: 440,
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.pin,
+              background: Stack(
+                alignment: AlignmentDirectional.topCenter,
+                children: <Widget>[
+                  //头部背景图片
+                  new Image(
+                    image: new AssetImage('assets/images/bg01.jpeg'),
+                    fit: BoxFit.fitWidth,
+                    width: double.infinity,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      //动态获取封面背景色
+                      color: Color.fromARGB(
+                          200,
+                          color_rgb == null ? 0 : color_rgb[0],
+                          color_rgb == null ? 0 : color_rgb[1],
+                          color_rgb == null ? 0 : color_rgb[2]),
+                    ),
+                    //头部整个背景颜色
+                    height: double.infinity,
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 80,
+                        ),
+                        //唱片
+                        _albumCover(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          height: 50,
+                          child: Text(
+                            "${this.playTracks.title}",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            maxLines: 2,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        process,
+                        slider(),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        _playerControlBar(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
+        ];
+      },
+      body: _body(),
+    );
+  }
+
+  Widget _body() {
+    return Container(
+      padding: EdgeInsets.only(left: 10, right: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "简介：" + _albums.shortIntro,
+          ),
+          Text("作者: ${_albums.announcer.nickname}"),
         ],
       ),
     );
@@ -290,11 +361,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("${this.playTracks.index}", style: TextStyle(fontSize: 15)),
-      ),
-      body: _body(),
+      body: _nestedScrollView(),
     );
   }
 }

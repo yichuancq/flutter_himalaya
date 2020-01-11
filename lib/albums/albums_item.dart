@@ -73,7 +73,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
+                  Wrap(
                     children: <Widget>[
                       Text("" + _albums.albumTitle,
                           maxLines: 2,

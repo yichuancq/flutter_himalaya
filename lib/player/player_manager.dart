@@ -62,8 +62,8 @@ abstract class PlayerManager<T> extends State {
   ///播放进度条
   Widget sliderWidget() {
     return Slider(
-      activeColor: Colors.redAccent,
-      inactiveColor: Colors.red,
+      activeColor: Colors.white,
+      inactiveColor: Colors.black12,
       value: (_position != null &&
               _duration != null &&
               _position.inMilliseconds > 0 &&
@@ -83,7 +83,7 @@ abstract class PlayerManager<T> extends State {
         _position != null
             ? '${_positionText ?? ''} / ${_durationText ?? ''}'
             : _duration != null ? _durationText : '',
-        style: TextStyle(fontSize: 15.0, color: Colors.redAccent));
+        style: TextStyle(fontSize: 15.0, color: Colors.white));
   }
 
   ///音乐地址
