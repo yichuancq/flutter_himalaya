@@ -22,6 +22,8 @@ abstract class PlayerManager<T> extends State {
 
   ///
   void initPlayerManager({Tracks playTracks, SongData songData}) {
+    assert(playTracks != null);
+    assert(songData != null);
     this.songData = songData;
     this.playTracks = playTracks;
   }
