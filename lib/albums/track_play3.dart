@@ -50,7 +50,6 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     this.initPlayerManager(playTracks: _tracks, songData: SongData(_trackList));
     //
     super.initState();
-    setState(() {});
   }
 
   void _prev() {
