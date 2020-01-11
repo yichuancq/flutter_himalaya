@@ -89,13 +89,16 @@ abstract class PlayerManager<T> extends State {
   ///音乐地址
   Future<String> _loadMusicUrl(final int trackId) async {
     TruckItemDto truckItemDto = await getTruckItemMusic(trackId);
-
-    if (truckItemDto != null) {
-      setState(() {
-        //音乐地址
-        musicUrl = truckItemDto.data.src;
-      });
+    if (truckItemDto != null &&
+        truckItemDto.data != null &&
+        truckItemDto.data.src != null) {
+      musicUrl = truckItemDto.data.src;
+    } else {
+      print("无法获取播放地址...");
     }
+    setState(() {
+      //音乐地址
+    });
     return musicUrl;
   }
 

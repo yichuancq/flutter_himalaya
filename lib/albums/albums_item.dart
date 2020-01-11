@@ -75,7 +75,13 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Text("" + _albums.albumTitle),
+                      Text("" + _albums.albumTitle,
+                          maxLines: 2,
+                          style: TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.none,
+                              color: Colors.black),
+                          overflow: TextOverflow.ellipsis),
                       SizedBox(
                         width: 10,
                       ),
@@ -197,9 +203,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   }
 
   void loadData() async {
-    //getTracksList(int albumId)
-//    await getXimalaya();
-    //TrackDto trackDto2 = await getTracksList2(_albums.id);
     TrackDto trackDto = await getTracksList2(_albums.id);
     print("trackDto==${trackDto}}");
     if (trackDto != null && trackDto.data != null) {
@@ -210,7 +213,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
       print("专辑的播放列表： ${_tracks.length}");
       _tracks = _albumContent.data.tracks;
     }
-//    _trackList = _tracks;
     //更新列表
     setState(() {
       //状态

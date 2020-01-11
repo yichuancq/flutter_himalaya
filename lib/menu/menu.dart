@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_himalaya/albums/albums_cardview_list.dart';
+import 'package:flutter_himalaya/albums/hot_recommends.dart';
 import 'package:flutter_himalaya/albums/my_painter.dart';
-import 'package:flutter_himalaya/me/me_page.dart';
 import 'package:flutter_himalaya/menu/expand_down_menu.dart';
 
 class MenuPage extends StatefulWidget {
@@ -264,7 +264,7 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
   void onTabPageRoute() {
     ///ReportPage
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new ExpandDownMenuPage();
+      return new HotRecommends();
       // return new MePage();
     }));
     print("me..");
@@ -277,7 +277,6 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
 //          //悬浮按钮
 //          child: Icon(Icons.music_video),
 //          onPressed: () {}),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _albumsPlayer(),
       bottomNavigationBar: BottomAppBar(
