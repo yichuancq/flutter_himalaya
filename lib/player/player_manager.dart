@@ -1,14 +1,13 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/diagnostics.dart';
-import 'package:flutter_himalaya/model/album_songs_data.dart';
-import 'package:flutter_himalaya/model/track_item.dart';
-import 'dart:async';
-
-import 'package:flutter_himalaya/model/tracks.dart';
-import 'package:flutter_himalaya/vo/track_item_service.dart';
 import 'dart:async';
 import 'dart:ui';
+
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_himalaya/model/album_songs_data.dart';
+import 'package:flutter_himalaya/model/track_item.dart';
+import 'package:flutter_himalaya/model/tracks.dart';
+import 'package:flutter_himalaya/vo/track_item_service.dart';
+import 'package:toast/toast.dart';
 
 ///
 enum PlayerState { stopped, playing, paused }
@@ -86,6 +85,10 @@ abstract class PlayerManager<T> extends State {
         style: TextStyle(fontSize: 15.0, color: Colors.white));
   }
 
+  void showToast(String msg, {int duration, int gravity}) {
+    Toast.show(msg, context, duration: duration, gravity: gravity);
+  }
+
   ///音乐地址
   Future<String> _loadMusicUrl(final int trackId) async {
     TruckItemDto truckItemDto = await getTruckItemMusic(trackId);
@@ -93,12 +96,14 @@ abstract class PlayerManager<T> extends State {
         truckItemDto.data != null &&
         truckItemDto.data.src != null) {
       musicUrl = truckItemDto.data.src;
+      setState(() {
+        //音乐地址
+      });
     } else {
+      showToast("无法获取播放地址", gravity: Toast.CENTER);
       print("无法获取播放地址...");
     }
-    setState(() {
-      //音乐地址
-    });
+
     return musicUrl;
   }
 
