@@ -263,7 +263,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                 size: 18,
                 color: Colors.grey,
               ),
-              Text("${tracks.playCount % 10000}万"),
+              Text("${tracks.playCount % 10000} 万"),
               SizedBox(
                 width: 20,
               ),

@@ -46,9 +46,8 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
   ///
   @override
   void initState() {
-    this.setSongData(new SongData(_trackList));
-    //
-    this.playTracks = _tracks;
+    // 初始化数据
+    this.initPlayerManager(playTracks: _tracks, songData: SongData(_trackList));
     //
     super.initState();
     setState(() {});
@@ -225,7 +224,9 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     Iterable iterable = _trackList.reversed;
     setState(() {
       _trackList = iterable.toList();
-      this.setSongData(new SongData(_trackList));
+      this.initPlayerManager(
+          playTracks: playTracks, songData: SongData(_trackList));
+      //this.setSongData(new SongData(_trackList));
       print("_reversOrder...");
     });
   }

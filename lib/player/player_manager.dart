@@ -14,15 +14,23 @@ import 'dart:ui';
 enum PlayerState { stopped, playing, paused }
 
 abstract class PlayerManager<T> extends State {
+  //region初始化player
+  //当前播放的专辑声音
   Tracks playTracks;
-
-  AudioPlayer audioPlayer = AudioPlayer();
-
-//  //region 变量
-//  BuildContext context;
 
   //播放专辑列表
   SongData songData;
+
+  ///
+  void initPlayerManager({Tracks playTracks, SongData songData}) {
+    this.songData = songData;
+    this.playTracks = playTracks;
+  }
+
+  // endregion
+
+  //region AudioPlayer
+  AudioPlayer audioPlayer = AudioPlayer();
 
   //音乐的URL
   String musicUrl;
@@ -51,15 +59,6 @@ abstract class PlayerManager<T> extends State {
 
   //endregion
 
-  void setSongData(SongData songData) {
-    this.songData = songData;
-  }
-
-  void setPlayTrack(Tracks tracks) {
-    this.playTracks = tracks;
-  }
-
-  ///sliderValue
   ///播放进度条
   Widget sliderWidget() {
     return Slider(
@@ -72,8 +71,8 @@ abstract class PlayerManager<T> extends State {
           ? _position.inMilliseconds / _duration.inMilliseconds
           : 0.0,
       onChanged: (newValue) {
-        final Position = newValue * _duration.inMilliseconds;
-        _audioPlayer.seek(Duration(milliseconds: Position.round()));
+        final position = newValue * _duration.inMilliseconds;
+        _audioPlayer.seek(Duration(milliseconds: position.round()));
       },
     );
   }
