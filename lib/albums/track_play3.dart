@@ -44,13 +44,13 @@ class TrackItemPlay3 extends StatefulWidget {
 }
 
 class _TrackItemPlayState<Albums> extends PlayerManager {
-  List<int> color_rgb;
+  List<int> colorRgb;
 
   void _getMainColor() async {
     // 提取网络图片的主要颜色
     await getColorFromUrl("${_albums.coverUrlMiddle}").then((color) {
       setState(() {
-        color_rgb = color;
+        colorRgb = color;
         print(color); // [R,G,B]
       });
     });
@@ -220,9 +220,9 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
                       //动态获取封面背景色
                       color: Color.fromARGB(
                           200,
-                          color_rgb == null ? 0 : color_rgb[0],
-                          color_rgb == null ? 0 : color_rgb[1],
-                          color_rgb == null ? 0 : color_rgb[2]),
+                          colorRgb == null ? 0 : colorRgb[0],
+                          colorRgb == null ? 0 : colorRgb[1],
+                          colorRgb == null ? 0 : colorRgb[2]),
                     ),
                     //头部整个背景颜色
                     height: double.infinity,
