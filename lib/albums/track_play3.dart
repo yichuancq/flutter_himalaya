@@ -205,7 +205,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
           SliverAppBar(
             actions: <Widget>[
               new IconButton(
-                icon: new Icon(Icons.add_alarm),
+                icon: new Icon(Icons.more_horiz),
                 tooltip: 'Add Alarm',
                 onPressed: () {
                   // do nothing
