@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_himalaya/albums/track_play3.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/model/album_content.dart';
 import 'package:flutter_himalaya/model/tracks.dart';
 import 'package:flutter_himalaya/vo/albums_track_json_convert.dart';
-import 'package:flutter_himalaya/vo/search.dart';
+import 'package:toast/toast.dart';
 
 Albums _albums;
 AlbumContent _albumContent;
@@ -29,6 +33,11 @@ class AlbumsItemList extends StatefulWidget {
 
 class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   List<Tracks> _tracks = new List();
+  int _trackTotalCount;
+  int _pageNum = 1;
+  int _pageSize = 30;
+  int _totalPage = 0;
+  int _currentPage = 1;
 
   ///
   Widget _headerBuilder() {
@@ -187,8 +196,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
   dispose() {
     super.dispose();
     _tracks = null;
-//    _albums = null;
-//    _albumContent = null;
   }
 
   @override
@@ -198,20 +205,40 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
     //  searchAlbum();
   }
 
-  void searchAlbum() async {
-    await searchAlbumByKeyWords("music");
-  }
-
   void loadData() async {
-    TrackDto trackDto = await getTracksList2(_albums.id);
-    print("trackDto==${trackDto}}");
+    TrackDto trackDto = await getTracksList2(_albums.id, _pageNum);
     if (trackDto != null && trackDto.data != null) {
       _tracks = trackDto.data.tracks;
+      _trackTotalCount = trackDto.data.trackTotalCount;
+      _pageNum = trackDto.data.pageNum;
+      _pageSize = trackDto.data.pageSize;
+      print("_trackTotalCount： ${_trackTotalCount}");
+      print("_pageNum： ${_pageNum}");
+      print("_pageSize： ${_pageSize}");
+
+      //返回大于等于( >= )给定参数的的最小整数
+      _totalPage = (_trackTotalCount / _pageSize).ceil();
+      print("_totalPage： ${_totalPage}");
+      //
+
     } else {
-      trackDto = await getTracksList(_albums.id);
-      print(_albumContent.data.albumId);
-      print("专辑的播放列表： ${_tracks.length}");
-      _tracks = _albumContent.data.tracks;
+      Toast.show("获取数据失败！", context);
+    }
+    //更新列表
+    setState(() {
+      //状态
+    });
+  }
+
+  void getPageData() async {
+    TrackDto trackDto = await getTracksList2(_albums.id, _pageNum);
+    if (trackDto != null && trackDto.data != null) {
+      _tracks = trackDto.data.tracks;
+      _pageNum = trackDto.data.pageNum;
+      _pageSize = trackDto.data.pageSize;
+      print("_pageNum： ${_pageNum}");
+    } else {
+      Toast.show("获取数据失败！", context);
     }
     //更新列表
     setState(() {
@@ -278,7 +305,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
     );
   }
 
-  ///
   Widget _albumsListView() {
     return ListView.separated(
       scrollDirection: Axis.vertical,
@@ -292,6 +318,57 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
             child: _albumItemContentBuilder(
                 position)); //_albumItemContentBuilder(position);
       },
+    );
+  }
+
+  ///上拉
+  Future _onRefresh() async {
+    print("_onRefresh...");
+    await Future.delayed(Duration(seconds: 2), () {
+      if (_pageNum - 1 <= 0) {
+        Toast.show("没有数据了！", context);
+        return;
+      }
+      if (_pageNum > 0 &&
+          _pageNum <= _totalPage &&
+          _currentPage >= 1 &&
+          _currentPage <= _totalPage) {
+        //load
+        _pageNum -= 1;
+        _currentPage -= 1;
+        getPageData();
+        setState(() {});
+      }
+    });
+  }
+
+  ///下拉
+  Future _onLoad() async {
+    print("_onLoad...");
+    await Future.delayed(Duration(seconds: 2), () {
+      if (_pageNum >= _totalPage) {
+        Toast.show("没有数据了！", context);
+        return;
+      }
+      if (_pageNum > 0 &&
+          _pageNum <= _totalPage &&
+          _currentPage >= 1 &&
+          _currentPage <= _totalPage) {
+        //load
+        _pageNum += 1;
+        _currentPage += 1;
+        getPageData();
+      }
+      setState(() {});
+    });
+  }
+
+  ///分页
+  Widget _albumsListRefresh() {
+    return new EasyRefresh(
+      onRefresh: _onRefresh,
+      onLoad: _onLoad,
+      child: _albumsListView(),
     );
   }
 
@@ -348,7 +425,7 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
             ),
             //专辑列表
             Expanded(
-              child: _albumsListView(),
+              child: _albumsListRefresh(),
               // _headerBuilder(),
             ),
           ],

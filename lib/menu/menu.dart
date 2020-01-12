@@ -227,7 +227,7 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('首页')),
           BottomNavigationBarItem(icon: Icon(null), title: Text('')),
-          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('我')),
+          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('推荐')),
         ],
       ),
     );

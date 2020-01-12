@@ -33,7 +33,7 @@ Future<TrackDto> getTracksList(int albumId) async {
   return album;
 }
 
-Future<TrackDto> getTracksList2(int albumId) async {
+Future<TrackDto> getTracksList2(int albumId, int pageNumber) async {
   try {
     Map<String, dynamic> headers = new Map();
 
@@ -46,11 +46,11 @@ Future<TrackDto> getTracksList2(int albumId) async {
         new Options(headers: headers, responseType: ResponseType.plain);
     //https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=15000&pageNum=1
     final String url =
-        "https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=${albumId}&pageNum=1";
+        "https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=${albumId}&pageNum=${pageNumber}";
     Response response = await Dio().get(url, options: options);
-//    print("" + response.request.baseUrl);
+    print("" + response.request.baseUrl);
     if (response.statusCode == 200) {
-      print(response.request.uri);
+//      print(response.request.uri);
       String result = response.data.toString();
 //      print(result);
       final jsonMap = json.decode(result);
