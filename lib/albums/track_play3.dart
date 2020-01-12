@@ -82,6 +82,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     return GestureDetector(
       onTap: () {},
       child: ListTile(
+        dense: true,
         //序号居中
         leading: SizedBox(
             child: Column(
@@ -198,13 +199,24 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     var slider = sliderWidget;
     //
     return new NestedScrollView(
+
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
+            actions: <Widget>[
+              new IconButton(
+                icon: new Icon(Icons.add_alarm),
+                tooltip: 'Add Alarm',
+                onPressed: () {
+                  // do nothing
+                },
+              ),
+            ],
             pinned: true,
             floating: true,
             expandedHeight: 440,
             flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
               collapseMode: CollapseMode.pin,
               background: Stack(
                 alignment: AlignmentDirectional.topCenter,
@@ -361,6 +373,9 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+//      appBar: AppBar(
+//        flexibleSpace: Text("hello"),
+//      ),
       body: _nestedScrollView(),
     );
   }

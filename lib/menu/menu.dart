@@ -33,12 +33,19 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
   double percentage = 0.0;
   double newPercentage = 0.0;
 
-  final List<Widget> _children = [
-    AlbumsList(),
-    AlbumsList(),
-    AlbumsList(),
-    AlbumsList()
-  ];
+  int index = 0;
+
+  buildBodyPage() {
+    if (index == 0) {
+      return AlbumsList();
+    }
+    if (index == 1) {
+      return HotRecommends();
+    }
+    if (index == 2) {
+      return HotRecommends();
+    }
+  }
 
   void initAnimationController() {
     percentage = 0.0;
@@ -98,8 +105,8 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
     return new Container(
       padding: EdgeInsets.only(top: 10),
       //控制唱片的大小
-      width: 60.0,
-      height: 60.0,
+      width: 50.0,
+      height: 50.0,
       child: RotationTransition(
         alignment: Alignment.center,
         turns: animation,
@@ -190,74 +197,6 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
     });
   }
 
-  Widget _widgetBottom() {
-    return Container(
-      color: Colors.white,
-      height: 40,
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              SizedBox(
-                height: 15,
-                child: Icon(
-                  Icons.home,
-                  size: 20,
-                ),
-              ),
-              Text(
-                "首页",
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              _albumsPlayer(),
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              SizedBox(
-                height: 15,
-                child: Icon(
-                  Icons.person,
-                  size: 20,
-                ),
-              ),
-//              Icon(
-//                Icons.person,
-//                size: 20,
-//              ),
-              Text(
-                "我",
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//        body: AlbumsList(),
-//        //
-//        bottomNavigationBar: new ButtonBar(
-//          children: <Widget>[
-//            //_widgetContent(),
-//            //
-//            _widgetBottom(),
-//          ],
-//        ));
-//  }
-
   //MePage
 
   ///onTabPageRoute
@@ -273,49 +212,26 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//      floatingActionButton: FloatingActionButton(
-//          //悬浮按钮
-//          child: Icon(Icons.music_video),
-//          onPressed: () {}),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _albumsPlayer(),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        shape: CircularNotchedRectangle(), // 底部导航栏打一个圆形的洞
-
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
-          children: [
-            IconButton(icon: Icon(Icons.home)),
-            SizedBox(), //中间位置空出
-            IconButton(
-              icon: Icon(Icons.person),
-              onPressed: onTabPageRoute,
-            ),
-          ],
-        ),
+      body: buildBodyPage(),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
+        currentIndex: index,
+        onTap: (int index) {
+          setState(() {
+            this.index = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('首页')),
+          BottomNavigationBarItem(icon: Icon(null), title: Text('')),
+          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('我')),
+        ],
       ),
-      body: AlbumsList(),
     );
   }
-
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-//      floatingActionButton: _albumsPlayer(),
-//      bottomNavigationBar: BottomNavigationBar(
-//        backgroundColor: Colors.white70,
-//        selectedFontSize: 12,
-//        unselectedFontSize: 12,
-//        items: [
-//          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('首页')),
-//          BottomNavigationBarItem(icon: Icon(null), title: Text('')),
-//          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('B')),
-//        ],
-//      ),
-//    );
-//  }
 
   void onTabTapped(int index) {
     setState(() {

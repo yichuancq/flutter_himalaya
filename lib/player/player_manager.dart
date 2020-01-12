@@ -148,7 +148,6 @@ abstract class PlayerManager<T> extends State {
         _audioPlayer.onPlayerCompletion.listen((event) {
       _onComplete();
       setState(() {
-        //_tracks = tracks;
         _position = _duration;
       });
     });
