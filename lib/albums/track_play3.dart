@@ -199,7 +199,6 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     var slider = sliderWidget;
     //
     return new NestedScrollView(
-
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
@@ -281,11 +280,39 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
 
   Widget _body() {
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: EdgeInsets.only(left: 5, right: 5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          ListTile(
+            leading: ClipRRect(
+              //圆角
+              borderRadius: BorderRadius.circular(6.0),
+              child: Image.network(
+                "${_albums.coverUrlMiddle}",
+                fit: BoxFit.fill,
+                width: 50,
+                height: 50,
+              ),
+            ),
+            title: Text("${_albums.albumTitle ?? _albums.albumTitle.trim()}"),
+            subtitle: Text(
+              "播放量：" + "${_albums.playCount ?? _albums.playCount / 10000} 万",
+            ),
+            trailing: SizedBox(
+              height: 30,
+              width: 80,
+              child: OutlineButton.icon(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.add,
+                  size: 12,
+                ),
+                label: Text("订阅", style: TextStyle(fontSize: 12)),
+              ),
+            ),
+          ),
           Text(
             "简介：" + _albums.shortIntro,
           ),
@@ -373,9 +400,6 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-//      appBar: AppBar(
-//        flexibleSpace: Text("hello"),
-//      ),
       body: _nestedScrollView(),
     );
   }

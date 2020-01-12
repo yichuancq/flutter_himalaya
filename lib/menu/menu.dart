@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_himalaya/albums/albums_cardview_list.dart';
 import 'package:flutter_himalaya/albums/hot_recommends.dart';
 import 'package:flutter_himalaya/util/my_painter.dart';
-import 'package:flutter_himalaya/menu/expand_down_menu.dart';
 
 class MenuPage extends StatefulWidget {
   @override
@@ -40,7 +39,7 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
       return AlbumsList();
     }
     if (index == 1) {
-      return HotRecommends();
+      //return HotRecommends();
     }
     if (index == 2) {
       return HotRecommends();
@@ -58,12 +57,6 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
               percentage, newPercentage, percentageAnimationController.value);
         });
       });
-    //AnimationController是一个特殊的Animation对象，在屏幕刷新的每一帧，就会生成一个新的值，
-    // 默认情况下，AnimationController在给定的时间段内会线性的生成从0.0到1.0的数字
-    //用来控制动画的开始与结束以及设置动画的监听
-    //vsync参数，存在vsync时会防止屏幕外动画（动画的UI不在当前屏幕时）消耗不必要的资源
-    //duration 动画的时长，这里设置的 seconds: 2 为2秒，当然也可以设置毫秒 milliseconds：2000.
-
     albumController =
         AnimationController(duration: const Duration(seconds: 3), vsync: this);
 //    animation = Tween(begin: 0.0, end:0.5).animate(controller);
@@ -151,29 +144,6 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
       ),
     );
   }
-
-  List<BottomNavigationBarItem> _list = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      title: Text('Home'),
-      //backgroundColor: Colors.orange
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.book),
-      title: Text('订阅'),
-      //backgroundColor: Colors.orange
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.music_video),
-      title: Text('Music'),
-      //backgroundColor: Colors.orange
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      title: Text('Me'),
-      //backgroundColor: Colors.orange
-    ),
-  ];
 
   ///暂停
   void stop() {
