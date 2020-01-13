@@ -15,7 +15,6 @@ class MenuPage extends StatefulWidget {
 class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
   int _currentIndex = 0;
   TabController _tabController; //需要定义一个Controller
-  List tabs = ["新闻", "历史", "图片"];
 
 //动画控制器
   AnimationController albumController;
@@ -166,11 +165,7 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
     });
   }
 
-  //MePage
-
-  ///onTabPageRoute
   void onTabPageRoute() {
-    ///ReportPage
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       return new HotRecommends();
       // return new MePage();
@@ -190,13 +185,15 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
         unselectedFontSize: 12,
         currentIndex: index,
         onTap: (int index) {
-          setState(() {
-            this.index = index;
-          });
+          if (index != 1)
+            setState(() {
+              this.index = index;
+            });
         },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('首页')),
-          BottomNavigationBarItem(icon: _albumsPlayer(), title: Text('')),// 动画按钮
+          // 动画按钮
+          BottomNavigationBarItem(icon: _albumsPlayer(), title: Text('')),
           BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('推荐')),
         ],
       ),
