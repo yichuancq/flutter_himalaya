@@ -96,7 +96,7 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
   ///
   Widget _albumsPlayer() {
     return new Container(
-      padding: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.only(top: 5, bottom: 0),
       //控制唱片的大小
       width: 50.0,
       height: 50.0,
@@ -105,9 +105,8 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
         turns: animation,
         child: new CustomPaint(
           foregroundPainter: new MyPainter(
-              lineColor: Colors.black45,
+              lineColor: Colors.white,
               completeColor: Colors.deepOrangeAccent,
-              // completePercent: percentage,
               completePercent: percentage,
               width: 5),
           child: new Padding(
@@ -182,10 +181,11 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _albumsPlayer(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+//      floatingActionButton: _albumsPlayer(),
       body: buildBodyPage(),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white70,
         selectedFontSize: 12,
         unselectedFontSize: 12,
         currentIndex: index,
@@ -196,7 +196,7 @@ class _MenuPageStateful extends State<MenuPage> with TickerProviderStateMixin {
         },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('首页')),
-          BottomNavigationBarItem(icon: Icon(null), title: Text('')),
+          BottomNavigationBarItem(icon: _albumsPlayer(), title: Text('')),// 动画按钮
           BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('推荐')),
         ],
       ),
