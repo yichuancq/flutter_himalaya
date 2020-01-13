@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'menu/menu.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(new MyApp());
@@ -23,17 +24,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-//      supportedLocales: [
-//        Locale('en', ''),
-//        Locale('zh', 'CN'),
-//      ],
-      // debugShow
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
       home: MenuPage(),
+      localizationsDelegates: [
+        //此处
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        //此处
+        const Locale('zh', 'CH'),
+        const Locale('en', 'US'),
+      ],
     );
   }
 }
