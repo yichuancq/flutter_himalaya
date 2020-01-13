@@ -34,3 +34,8 @@ samples, guidance on mobile development, and a full API reference.
 
 <img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_04.png" width="40%" height="40%">
 
+- 推荐列表界面
+
+<img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_05.png" width="40%" height="40%">
+
+
