@@ -56,7 +56,7 @@ packages:
       name: color_thief_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   convert:
     dependency: transitive
     description:
@@ -204,7 +204,7 @@ packages:
       name: quantize_dart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   quiver:
     dependency: transitive
     description:

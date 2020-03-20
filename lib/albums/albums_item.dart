@@ -87,16 +87,19 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                       Text("" + _albums.albumTitle,
                           maxLines: 2,
                           style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               decoration: TextDecoration.none,
                               color: Colors.black),
                           overflow: TextOverflow.ellipsis),
                       SizedBox(
-                        width: 10,
+                        width: 5,
                       ),
                       Text(_albums.kind == "album"
                           ? "分类:" + "专辑"
-                          : "${_albums.kind}"),
+                          : "${_albums.kind}", style: TextStyle(
+                          fontSize: 12,
+                          decoration: TextDecoration.none,
+                          color: Colors.black),),
                     ],
                   ),
                   Text(
@@ -154,34 +157,66 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
                       ),
                     ],
                   ),
+                  Container(
+//                    height: 40,
+                    padding: const EdgeInsets.all(1.0),
+                    margin: EdgeInsets.all(3),
+                    alignment: Alignment.topLeft,
+                    child: Wrap(
+                      direction :Axis.horizontal,
+                      spacing: 4.0, // 主轴(水平)方向间距
+                      runSpacing: 2.0, // 纵轴（垂直）方向间距
+                      alignment: WrapAlignment.start, //沿主轴方向居中
+                      children: <Widget>[
+                        SizedBox(
+                          height: 30,
+                          width: 70,
+                          child: OutlineButton.icon(
+                            onPressed: () {},
+                            label: Text("下载",style: TextStyle(
+                                fontSize: 12,
+                                decoration: TextDecoration.none,
+                                color: Colors.black),),
+                            icon: Icon(Icons.file_download,
+                              size: 10, color: Colors.red,),
+                          ),
+                        ),
 
-                  ///
-                  Row(
-                    children: <Widget>[
-                      OutlineButton.icon(
-                        onPressed: () {},
-                        label: Text("下载"),
-                        icon: Icon(Icons.file_download,
-                            size: 20, color: Colors.red),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      OutlineButton.icon(
-                        onPressed: () {},
-                        label: Text("订阅"),
-                        icon: Icon(Icons.subscriptions,
-                            size: 20, color: Colors.red),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      OutlineButton.icon(
-                        onPressed: () {},
-                        label: Text("分享"),
-                        icon: Icon(Icons.share, size: 20, color: Colors.red),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 4,
+                        ),
+                        SizedBox(
+                          height: 30,
+                          width: 70,
+                          child:   OutlineButton.icon(
+                            onPressed: () {},
+                            label: Text("订阅",style: TextStyle(
+                                fontSize: 12,
+                                decoration: TextDecoration.none,
+                                color: Colors.black),),
+                            icon: Icon(Icons.subscriptions,
+                                size: 10, color: Colors.red),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        SizedBox(
+                          height: 30,
+                          width: 70,
+                          child: OutlineButton.icon(
+                            onPressed: () {},
+                            label: Text("分享",style: TextStyle(
+                                fontSize: 12,
+                                decoration: TextDecoration.none,
+                                color: Colors.black),
+                            ),
+                            icon: Icon(Icons.share, size: 10, color: Colors.red),
+                          ),
+                        ),
+
+                      ],
+                    ),
                   ),
                 ],
               ),
