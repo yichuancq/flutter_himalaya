@@ -138,6 +138,7 @@ class _HotRecommendsState extends State {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text("热门推荐", style: TextStyle(fontSize: 15)),
       ),
       body: _widgetBody(),

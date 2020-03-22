@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_himalaya/model/album.dart';
 import 'package:flutter_himalaya/vo/albums_json_convert.dart';
 import 'package:flutter_himalaya/vo/search.dart';
-import 'package:loader_search_bar/loader_search_bar.dart';
+
 import 'albums_item.dart';
 
 class AlbumsList extends StatefulWidget {
@@ -198,36 +198,11 @@ class _AlbumsListState extends State<AlbumsList> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.transparent.withOpacity(0.1),
       backgroundColor: Colors.transparent,
-      //把scaffold的背景色改成透明
-      appBar: PreferredSize(
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: NetworkImage(
-                  'https://img.zcool.cn/community/0372d195ac1cd55a8012062e3b16810.jpg'),
-              fit: BoxFit.cover,
-            )),
-            child: SafeArea(
-              child: SearchBar(
-                onQuerySubmitted: (query) {},
-                onQueryChanged: (query) {},
-                searchHint: "输入专辑 ",
-                defaultBar: AppBar(
-                  backgroundColor: Colors.transparent,
-                  centerTitle: true,
-                  title: Text(
-                    '输入专辑',
-                    style: new TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          preferredSize: Size(double.infinity, 60)),
+      appBar: AppBar(
+        title: Text("专辑列表", style: TextStyle(fontSize: 15)),
+        centerTitle: true,
+      ),
       body: _albumsBuilder(),
     );
   }
