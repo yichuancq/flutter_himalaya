@@ -1,8 +1,10 @@
 import 'dart:io';
-import 'package:flutter/services.dart';
+
 import 'package:flutter/material.dart';
-import 'menu/menu.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'menu/menu.dart';
 
 void main() {
   runApp(new MyApp());
@@ -16,7 +18,7 @@ void main() {
 }
 
 //https://pub.flutter-io.cn/packages
-////https://javiercbk.github.io/json_to_dart/
+//https://javiercbk.github.io/json_to_dart/
 //分页获取听单内容
 /// //http://open.ximalaya.com/doc/detailQuickStart?categoryId=15&articleId=27#%E9%A6%96%E9%A1%B5
 class MyApp extends StatelessWidget {

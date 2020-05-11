@@ -271,7 +271,6 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
       _totalPage = (_trackTotalCount / _pageSize).ceil();
       print("_totalPage： ${_totalPage}");
       //
-
     } else {
       Toast.show("获取数据失败！", context);
     }
@@ -366,8 +365,8 @@ class _AlbumsItemListState<Albums> extends State<AlbumsItemList> {
       itemBuilder: (BuildContext context, int position) {
         return Padding(
             padding: EdgeInsets.all(5.0),
-            child: _albumItemContentBuilder(
-                position)); //_albumItemContentBuilder(position);
+            child: _albumItemContentBuilder(position)
+        ); //_albumItemContentBuilder(position);
       },
     );
   }
