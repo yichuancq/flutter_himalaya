@@ -38,4 +38,59 @@ samples, guidance on mobile development, and a full API reference.
 
 <img src="https://github.com/yichuancq/flutter_himalaya/blob/master/screenshot/screenshot_05.png" width="40%" height="40%">
 
+```dart
+  ///播放控制按钮组
+  Widget _playerControlBar() {
+    return SizedBox(
+      height: 40,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.reorder, color: Colors.white),
+            onPressed: () {
+              showModalSheet();
+            },
+          ),
+
+          //返回前一首
+          IconButton(
+            icon: Icon(Icons.skip_previous, color: Colors.white),
+            onPressed: () {
+              _prev();
+            },
+          ),
+          // 播放，暂停
+          IconButton(
+            //判断是否播放中，返回不同按钮状态
+            icon: playFlag == true
+                ? Icon(Icons.pause, color: Colors.red) //暂停
+                : Icon(Icons.play_arrow, color: Colors.white),
+            // 播放
+            onPressed: () {
+              setState(() {
+                controlPlay();
+              });
+            },
+          ),
+          //一下首
+          IconButton(
+            icon: Icon(Icons.skip_next, color: Colors.white),
+            onPressed: () {
+              _next();
+            },
+          ),
+
+          IconButton(
+            icon: Icon(Icons.timer, color: Colors.white),
+            onPressed: () {
+              // _showModalSheet();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+```
 

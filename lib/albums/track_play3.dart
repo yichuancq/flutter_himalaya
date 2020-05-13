@@ -139,7 +139,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     );
   }
 
-  ///
+  ///播放控制按钮组
   Widget _playerControlBar() {
     return SizedBox(
       height: 40,
@@ -281,7 +281,8 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
   Widget _body() {
     return Container(
       padding: EdgeInsets.only(left: 5, right: 5),
-      child: new Wrap(//防止溢出
+      child: new Wrap(
+        //防止溢出
         direction: Axis.horizontal,
         children: <Widget>[
           Column(
@@ -325,48 +326,11 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
             ],
           ),
         ],
-//        child: Column(
-//          mainAxisAlignment: MainAxisAlignment.start,
-//          crossAxisAlignment: CrossAxisAlignment.start,
-//          children: <Widget>[
-//            ListTile(
-//              leading: ClipRRect(
-//                //圆角
-//                borderRadius: BorderRadius.circular(6.0),
-//                child: Image.network(
-//                  "${_albums.coverUrlMiddle}",
-//                  fit: BoxFit.fill,
-//                  width: 50,
-//                  height: 50,
-//                ),
-//              ),
-//              title: Text("${_albums.albumTitle ?? _albums.albumTitle.trim()}"),
-//              subtitle: Text(
-//                "播放量：" + "${_albums.playCount ?? _albums.playCount / 10000} 万",
-//              ),
-//              trailing: SizedBox(
-//                height: 30,
-//                width: 80,
-//                child: OutlineButton.icon(
-//                  onPressed: () {},
-//                  icon: Icon(
-//                    Icons.add,
-//                    size: 12,
-//                  ),
-//                  label: Text("订阅", style: TextStyle(fontSize: 12)),
-//                ),
-//              ),
-//            ),
-//            Text(
-//              "简介：" + _albums.shortIntro,
-//            ),
-//            Text("作者: ${_albums.announcer.nickname}"),
-//          ],
-//        ),
       ),
     );
   }
 
+  ///dispose 调用父类方法,停止播放
   @override
   void dispose() {
     super.dispose();
@@ -382,7 +346,7 @@ class _TrackItemPlayState<Albums> extends PlayerManager {
     });
   }
 
-  ///
+  /// 显示底部弹出播放列表
   void showModalSheet() {
     showModalBottomSheet(
       isScrollControlled: true,
